@@ -1,38 +1,42 @@
-# create-svelte
-
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
+# Контрибуция
+Если вы хотите приложить руку к разработке, то вам надо будет развернуть всю эту байду у себя локально.
+### Установка
+1. Откройте терминал в нужной папке
+2. Склонируйте к себе репозиторий
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+git clone https://github.com/teatov/mediarahan.git
 ```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
+3. Перейдите в директорию свежесклонированного репозитория
+```bash
+cd mediarahan
+```
+4. Установите все зависимости
+```bash
+npm i
+```
+### Разработка
+Чтобы запустить разработчиковский сервер, который будет в реальном времени обновлять вам страницу по мере того как вы вносите изменения, выполните
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
-
-## Building
-
-To create a production version of your app:
-
+### Сборка
+Чтобы проверить как всё будет работать по-настоящему, выполните сборку проекта
 ```bash
 npm run build
 ```
+Запустить собранный проект можно через
+```bash
+npm run preview
+```
+### Версионирование
+В проекте используется [commitizen](http://commitizen.github.io/cz-cli/) со спецификацией [Conventional Commits](https://www.conventionalcommits.org) для описательных и единообразных названий коммитов, чтобы история версий не превратилась в нечитаемую кашу.
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Установите себе их глобально
+```bash
+npm i -G commitizen cz-conventional-changelog
+```
+И теперь каждый раз, когда собираетесь коммитить, вместо `git commit` запускайте
+```bash
+git cz
+```
+Если не получается придумать хорошее лаконичное название для коммита - разбивайте его на несколько коммитов, добавляя в `stage` только файлы или даже индивидуальные строки, которые логически обособлены.
