@@ -10,6 +10,7 @@
 .svelte-kit
 .vscode
 build
+docker-compose.yml
 Dockerfile
 eslint.config.js
 node_modules
