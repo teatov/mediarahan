@@ -14,5 +14,5 @@ export default defineConfig({
 
   verbose: true,
   strict: true,
-  dialect: 'mysql',
+  dialect: 'postgresql',
 });
