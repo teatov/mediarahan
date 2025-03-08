@@ -11,6 +11,11 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mediarahan-db:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-uroot', '-ppass']
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
 volumes:
   mediarahan-db:
