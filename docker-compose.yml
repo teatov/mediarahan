@@ -1,7 +1,21 @@
 services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 5173:3000
+    env_file: '.env'
+    environment:
+      - DB_HOST=db
+    networks:
+      - mediarahan
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: mysql:8
-    restart: always
+    restart: unless-stopped
     ports:
       - ${DB_PORT:-3306}:3306
     environment:
@@ -11,11 +25,17 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mediarahan-db:/var/lib/mysql
+    networks:
+      - mediarahan
     healthcheck:
       test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-uroot', '-ppass']
       interval: 5s
       timeout: 5s
       retries: 20
+
+networks:
+  mediarahan:
+    driver: bridge
 
 volumes:
   mediarahan-db:
