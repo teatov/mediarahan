@@ -147,6 +147,9 @@
 	[role='button']:not(:disabled) {
 		cursor: pointer;
 	}
+	a {
+		@apply ring-offset-background focus-visible:ring-ring transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden;
+	}
 }
 
 @utility container {
