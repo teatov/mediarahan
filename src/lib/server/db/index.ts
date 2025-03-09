@@ -2,7 +2,6 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import * as schema from './schema';
 import { env } from '$env/dynamic/private';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
 
 const client = postgres({
   database: env.DB_DATABASE,
@@ -15,7 +14,3 @@ const client = postgres({
 export const db = drizzle(client, {
   schema,
 });
-
-console.log('Запускаем миграции БД...');
-await migrate(db, { migrationsFolder: './drizzle' });
-console.log('Миграции готовы!');
