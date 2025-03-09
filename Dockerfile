@@ -1,11 +1,6 @@
 FROM node:22-alpine AS base
-
 ARG PORT
 ENV PORT=$PORT
-
-RUN apk upgrade
-RUN apk add --no-interactive curl
-#                            ^^^^ ГАНДОН
 
 FROM base AS builder
 WORKDIR /app
@@ -15,7 +10,6 @@ RUN npm run build
 RUN npm prune --production
 
 FROM base
-
 WORKDIR /app
 COPY --from=builder /app/build build/
 COPY --from=builder /app/drizzle drizzle/
