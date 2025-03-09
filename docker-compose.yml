@@ -46,7 +46,7 @@ services:
 
 networks:
   mediarahan:
-    driver: bridge
+    external: true
 
 volumes:
   mediarahan-db:
