@@ -18,6 +18,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      test: ['CMD-SHELL', 'curl -f ${ORIGIN}/health || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   db:
     image: postgres:17
