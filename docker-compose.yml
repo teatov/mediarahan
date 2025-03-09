@@ -7,8 +7,6 @@ services:
       args:
         PORT: ${PORT}
         ORIGIN: ${ORIGIN}
-    profiles:
-      - production
     restart: unless-stopped
     ports:
       - ${PORT}:${PORT}
