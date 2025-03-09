@@ -50,4 +50,5 @@ networks:
 
 volumes:
   mediarahan-db:
+    name: mediarahan-db
     driver: local
