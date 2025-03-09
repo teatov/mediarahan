@@ -1,6 +1,6 @@
 FROM node:22-alpine AS base
 RUN apk upgrade
-RUN apk add --no-interactive ca-certificates curl gnupg net-tools wget
+# RUN apk add --no-interactive ca-certificates curl gnupg net-tools wget
 
 FROM base AS builder
 WORKDIR /app
