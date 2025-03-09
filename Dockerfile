@@ -1,9 +1,6 @@
-FROM node:22-alpine AS base
+FROM node:22-slim AS base
 ARG PORT
 ENV PORT=$PORT
-
-RUN apk add --no-interactive curl
-#                            ^^^^ ГАНДОН
 
 FROM base AS builder
 WORKDIR /app
