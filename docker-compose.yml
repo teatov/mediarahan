@@ -41,6 +41,7 @@ networks:
     coolify:
         external: true
         name: coolify
+        attachable: true
 
 volumes:
   mediarahan-db:
