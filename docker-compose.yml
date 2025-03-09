@@ -9,13 +9,6 @@ services:
     restart: unless-stopped
     ports:
       - ${PORT}:${PORT}
-    environment:
-      - DB_HOST=db
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - mediarahan
 
   db:
     image: postgres:17
@@ -26,6 +19,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
+    profiles:
+      - local
     volumes:
       - mediarahan-db:/var/lib/postgresql
     networks:
@@ -35,10 +30,6 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
-
-networks:
-  mediarahan:
-    driver: bridge
 
 volumes:
   mediarahan-db:
