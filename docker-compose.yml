@@ -2,11 +2,7 @@ services:
   app:
     image: mediarahan-app:1.0.0
     container_name: mediarahan-app
-    build:
-      context: .
-      args:
-        PORT: 3000
-        ORIGIN: ${ORIGIN}
+    build: .
     restart: unless-stopped
     ports:
       - 3000:3000

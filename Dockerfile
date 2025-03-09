@@ -1,8 +1,5 @@
 FROM node:22-alpine AS builder
 
-ARG ORIGIN
-ENV ORIGIN=$ORIGIN
-
 WORKDIR /app
 COPY . .
 RUN npm ci
