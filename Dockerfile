@@ -18,4 +18,5 @@ COPY --from=builder /app/drizzle drizzle/
 COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 ENV NODE_ENV=production
+EXPOSE ${PORT}
 CMD [ "node", "build/index.js" ]

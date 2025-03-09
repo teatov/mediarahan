@@ -1,5 +1,7 @@
 services:
   app:
+    image: mediarahan-app:1.0.0
+    container_name: mediarahan-app
     build:
       context: .
       args:
@@ -9,8 +11,7 @@ services:
       - production
     restart: unless-stopped
     ports:
-      - ${PORT:-5173}:${PORT:-5173}
-    env_file: '.env'
+      - ${PORT}:${PORT}
     environment:
       - DB_HOST=db
     depends_on:
