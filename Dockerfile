@@ -2,7 +2,7 @@ FROM node:22-slim AS base
 ARG PORT
 ENV PORT=$PORT
 
-RUN apt-get update && apt-get install -y curl
+RUN apt-get update && apt-get install -y curl --no-install-recommends
 #                                        ^^^^ ГАНДОН
 
 FROM base AS builder
