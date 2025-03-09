@@ -5,11 +5,11 @@ services:
     build:
       context: .
       args:
-        PORT: ${PORT}
+        PORT: 3000
         ORIGIN: ${ORIGIN}
     restart: unless-stopped
     ports:
-      - ${PORT}:${PORT}
+      - 3000:3000
     environment:
       - DB_HOST=db
     depends_on:

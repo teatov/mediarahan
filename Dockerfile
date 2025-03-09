@@ -1,7 +1,5 @@
 FROM node:22-alpine AS builder
 
-ARG PORT
-ENV PORT=$PORT
 ARG ORIGIN
 ENV ORIGIN=$ORIGIN
 
@@ -18,5 +16,5 @@ COPY --from=builder /app/drizzle drizzle/
 COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 ENV NODE_ENV=production
-EXPOSE ${PORT}
+EXPOSE 3000
 CMD [ "node", "build/index.js" ]
