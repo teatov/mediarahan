@@ -1,4 +1,8 @@
 FROM node:22-alpine AS base
+
+ARG PORT
+ENV PORT=$PORT
+
 RUN apk upgrade
 RUN apk add --no-interactive curl
 #                            ^^^^ ГАНДОН
@@ -18,5 +22,5 @@ COPY --from=builder /app/drizzle drizzle/
 COPY --from=builder /app/node_modules node_modules/
 COPY package.json .
 ENV NODE_ENV=production
-EXPOSE 3000
+EXPOSE ${PORT}
 CMD [ "node", "build/index.js" ]

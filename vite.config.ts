@@ -4,4 +4,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [sveltekit(), tailwindcss()],
+  server: {
+    port: Number(process.env.PORT!),
+    strictPort: true,
+  },
 });
