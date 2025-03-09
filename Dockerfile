@@ -1,6 +1,7 @@
 FROM node:22-alpine AS base
 RUN apk upgrade
 RUN apk add --no-interactive curl
+#                            ^^^^ ГАНДОН
 
 FROM base AS builder
 WORKDIR /app
