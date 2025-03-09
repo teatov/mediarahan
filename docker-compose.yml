@@ -9,7 +9,7 @@ services:
       - production
     restart: unless-stopped
     ports:
-      - ${PORT:-5173}:${PORT:-5173}
+      - 8080:${PORT:-5173}
     env_file: '.env'
     environment:
       - DB_HOST=db
