@@ -1,4 +1,4 @@
-FROM node:22-slim AS builder
+FROM node:22 AS builder
 
 WORKDIR /app
 COPY . .
@@ -6,7 +6,7 @@ RUN npm ci
 RUN npm run build
 RUN npm prune --production
 
-FROM node:22-slim
+FROM node:22
 WORKDIR /app
 COPY --from=builder /app/build build/
 COPY --from=builder /app/drizzle drizzle/
