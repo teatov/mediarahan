@@ -51,3 +51,4 @@ networks:
 volumes:
   mediarahan-db:
     driver: local
+    external: true
