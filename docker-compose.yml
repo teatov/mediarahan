@@ -33,5 +33,4 @@ services:
 
 volumes:
   mediarahan-db:
-    name: mediarahan-db
-    external: true
+    driver: local
