@@ -1,17 +1,17 @@
-FROM node:22-alpine AS builder
+FROM node:22
 
-WORKDIR /app
-COPY . .
+# Create app directory
+WORKDIR /usr/src/app
+
+COPY ./package*.json ./
 RUN npm ci
-RUN npm run build
-RUN npm prune --production
 
-FROM node:22-alpine
-WORKDIR /app
-COPY --from=builder /app/build build/
-COPY --from=builder /app/drizzle drizzle/
-COPY --from=builder /app/node_modules node_modules/
-COPY package.json .
-ENV NODE_ENV=production
+COPY . .
+RUN npm install
+
+# Cnnot run build here, but we can copy the app-output directly into container
+RUN npm run build
+
 EXPOSE 3000
-CMD [ "node", "build/index.js" ]
+# EXPOSE 24678
+CMD ["node", "build/index.js"]
