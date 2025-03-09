@@ -2,17 +2,22 @@ services:
   app:
     image: mediarahan-app:1.0.0
     container_name: mediarahan-app
-    build: .
+    build:
+      context: .
+      args:
+        PORT: ${PORT}
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}
     environment:
       - DB_HOST=db
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - mediarahan
     healthcheck:
-      test: ['CMD-SHELL', 'curl -f http://127.0.0.1:3000/health || exit 1']
+      test: ['CMD-SHELL', 'curl -f http://127.0.0.1:${PORT}/health || exit 1']
       interval: 1m30s
       timeout: 10s
       retries: 3
@@ -29,11 +34,17 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - mediarahan-db:/var/lib/postgresql
+    networks:
+      - mediarahan
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U ${DB_USER} -d ${DB_DATABASE}']
       interval: 5s
       timeout: 5s
       retries: 20
+
+networks:
+  mediarahan:
+    driver: bridge
 
 volumes:
   mediarahan-db:
