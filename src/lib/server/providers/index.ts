@@ -4,6 +4,7 @@ import type { RequestEvent } from '@sveltejs/kit';
 import twitch from '$lib/server/providers/twitch';
 import github from '$lib/server/providers/github';
 import google from '$lib/server/providers/google';
+import donationalerts from '$lib/server/providers/donationalerts';
 
 export type ProviderUserInfo = {
   externalUserId: string;
@@ -18,4 +19,4 @@ export type Provider = {
   getUserInfo(accessToken: OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
-export default { twitch, github, google } as Record<string, Provider>;
+export default { twitch, github, google, donationalerts } as Record<string, Provider>;

@@ -41,11 +41,11 @@ async function getUserInfo(tokens: OAuth2Tokens) {
   const userRequest = new Request('https://api.github.com/user');
   userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
   const userResponse = await fetch(userRequest);
-  const userResult: {
+  const userResult = (await userResponse.json()) as {
     login: string;
     id: number;
     avatar_url: string;
-  } = await userResponse.json();
+  };
 
   return {
     externalUserId: String(userResult.id),
