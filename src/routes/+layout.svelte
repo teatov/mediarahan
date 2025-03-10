@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ModeWatcher } from 'mode-watcher';
-  import Header from '$lib/components/layout/Header.svelte';
   import Footer from '$lib/components/layout/Footer.svelte';
+  import Header from '$lib/components/layout/Header.svelte';
   import '../app.css';
 
   let { children, data } = $props();

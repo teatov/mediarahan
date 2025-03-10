@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
-  import { Button, type ButtonVariant } from '$lib/components/ui/button';
-  import * as Card from '$lib/components/ui/card';
-  import Avatar from '$lib/components/layout/Avatar.svelte';
-  import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import { IconLogout } from '@tabler/icons-svelte';
+  import { enhance } from '$app/forms';
   import type { ProviderName } from '$lib';
+  import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
+  import Avatar from '$lib/components/layout/Avatar.svelte';
+  import { Button } from '$lib/components/ui/button';
+  import * as Card from '$lib/components/ui/card';
 
   let { data } = $props();
 
@@ -28,7 +28,7 @@
     <div class={`flex items-center justify-between ${className}`}>
       <div class="flex items-center gap-2">
         <div>
-          <AutoProviderIcon {provider}/>
+          <AutoProviderIcon {provider} />
         </div>
         <div>
           {name}: {externalUsernames[provider]}

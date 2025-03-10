@@ -1,8 +1,8 @@
 import type { Handle } from '@sveltejs/kit';
-import * as auth from '$lib/server/auth.js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import db from '$lib/server/db';
 import { env } from '$env/dynamic/private';
+import * as auth from '$lib/server/auth.js';
+import db from '$lib/server/db';
 
 if (env.NODE_ENV === 'production') {
   console.log('Запускаем миграции БД...');

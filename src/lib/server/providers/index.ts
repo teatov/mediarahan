@@ -1,9 +1,9 @@
-import type { ProviderName } from '$lib';
 import type { OAuth2Tokens } from 'arctic';
-import twitch from '$lib/server/providers/twitch';
+import type { ProviderName } from '$lib';
+import donationalerts from '$lib/server/providers/donationalerts';
 import github from '$lib/server/providers/github';
 import google from '$lib/server/providers/google';
-import donationalerts from '$lib/server/providers/donationalerts';
+import twitch from '$lib/server/providers/twitch';
 
 export type ProviderUserInfo = {
   externalUserId: string;

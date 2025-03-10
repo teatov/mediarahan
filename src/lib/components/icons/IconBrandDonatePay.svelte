@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Icon from '$lib/../../node_modules/@tabler/icons-svelte/dist/Icon.svelte';
   import type { SvelteHTMLElements, SVGAttributes } from 'svelte/elements';
+  import Icon from '$lib/../../node_modules/@tabler/icons-svelte/dist/Icon.svelte';
 
   const iconNode: [elementName: keyof SvelteHTMLElements, attrs: SVGAttributes<SVGSVGElement>][] = [
     [
