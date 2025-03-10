@@ -1,17 +1,18 @@
 import { Twitch, OAuth2Tokens, decodeIdToken } from 'arctic';
 import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN } from '$env/static/private';
-import type { Provider } from '$lib';
+import type { Provider } from '$lib/server/providers';
 import type { RequestEvent } from '@sveltejs/kit';
 
 const oauth = new Twitch(TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN + '/login/twitch/callback');
 
-function setOauthCookie(state: string, event: RequestEvent) {
+function prepareAuthUrl(state: string, event: RequestEvent) {
   const url = oauth.createAuthorizationURL(state, ['openid']);
   url.searchParams.set(
     'claims',
     JSON.stringify({
       id_token: {
         picture: null,
+        preferred_username: null,
       },
     })
   );
@@ -27,7 +28,7 @@ function setOauthCookie(state: string, event: RequestEvent) {
   return url;
 }
 
-async function validateOauthToken(event: RequestEvent) {
+async function validateAuthToken(event: RequestEvent) {
   const storedState = event.cookies.get('twitch_oauth_state') ?? null;
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
@@ -45,7 +46,7 @@ async function validateOauthToken(event: RequestEvent) {
   }
 }
 
-async function requestUserInfo(tokens: OAuth2Tokens) {
+async function getUserInfo(tokens: OAuth2Tokens) {
   const claims = decodeIdToken(tokens.idToken()) as {
     sub: string;
     preferred_username: string;
@@ -61,7 +62,7 @@ async function requestUserInfo(tokens: OAuth2Tokens) {
 
 export default {
   name: 'twitch',
-  setOauthCookie,
-  validateOauthToken,
-  requestUserInfo,
+  prepareAuthUrl,
+  validateAuthToken,
+  getUserInfo,
 } as Provider;

@@ -1,16 +1,23 @@
 import type { RequestEvent } from './$types';
-import { handleAuthRedirect } from '$lib/server/providers';
-import { error } from '@sveltejs/kit';
-import { providers } from '$lib/server/providers';
+import { error, redirect } from '@sveltejs/kit';
+import providers from '$lib/server/providers';
+import { generateState } from 'arctic';
 
 export function GET(event: RequestEvent): Response {
   const providerName = event.params.provider;
 
   if (!Object.keys(providers).includes(providerName)) {
-    return error(400, 'Такого сервиса не существует');
+    return error(404, 'Такого сервиса не существует');
+  }
+
+  if (event.locals.user) {
+    return redirect(302, '/');
   }
 
   const provider = providers[providerName];
 
-  return handleAuthRedirect(provider, event);
+  const state = generateState();
+  const url = provider.prepareAuthUrl(state, event);
+
+  return redirect(302, url);
 }

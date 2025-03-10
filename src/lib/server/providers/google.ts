@@ -1,6 +1,6 @@
 import { Google, OAuth2Tokens, generateCodeVerifier, decodeIdToken } from 'arctic';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ORIGIN } from '$env/static/private';
-import type { Provider } from '$lib';
+import type { Provider } from '$lib/server/providers';
 import type { RequestEvent } from '@sveltejs/kit';
 
 export const oauth = new Google(
@@ -9,7 +9,7 @@ export const oauth = new Google(
   ORIGIN + '/login/google/callback'
 );
 
-function setOauthCookie(state: string, event: RequestEvent) {
+function prepareAuthUrl(state: string, event: RequestEvent) {
   const codeVerifier = generateCodeVerifier();
   const url = oauth.createAuthorizationURL(state, codeVerifier, ['openid', 'profile']);
 
@@ -31,7 +31,7 @@ function setOauthCookie(state: string, event: RequestEvent) {
   return url;
 }
 
-async function validateOauthToken(event: RequestEvent) {
+async function validateAuthToken(event: RequestEvent) {
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
   const storedState = event.cookies.get('google_oauth_state') ?? null;
@@ -50,7 +50,7 @@ async function validateOauthToken(event: RequestEvent) {
   }
 }
 
-async function requestUserInfo(tokens: OAuth2Tokens) {
+async function getUserInfo(tokens: OAuth2Tokens) {
   const claims = decodeIdToken(tokens.idToken()) as { sub: string; name: string; picture: string };
 
   return {
@@ -62,7 +62,7 @@ async function requestUserInfo(tokens: OAuth2Tokens) {
 
 export default {
   name: 'google',
-  setOauthCookie,
-  validateOauthToken,
-  requestUserInfo,
+  prepareAuthUrl,
+  validateAuthToken,
+  getUserInfo,
 } as Provider;

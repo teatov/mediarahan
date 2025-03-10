@@ -1,16 +1,67 @@
-import { handleAuthCallback } from '$lib/server/providers';
-import type { RequestEvent } from './$types';
-import { providers } from '$lib/server/providers';
-import { error } from '@sveltejs/kit';
+import type { RequestEvent } from '@sveltejs/kit';
+import * as table from '$lib/server/db/schema';
+import { eq, and } from 'drizzle-orm';
+import db from '$lib/server/db';
+import * as auth from '$lib/server/auth';
+import { generateUserId } from '$lib/server/auth';
+import { error, redirect } from '@sveltejs/kit';
+import providers from '$lib/server/providers';
 
 export async function GET(event: RequestEvent): Promise<Response> {
   const providerName = event.params.provider;
 
-  if (!Object.keys(providers).includes(providerName)) {
-    return error(400, 'Такого сервиса не существует');
+  if (!providerName || !Object.keys(providers).includes(providerName)) {
+    return error(404, 'Такого сервиса не существует');
+  }
+
+  if (event.locals.user) {
+    return redirect(302, '/');
   }
 
   const provider = providers[providerName];
 
-  return await handleAuthCallback(provider, event);
+  const tokens = await provider.validateAuthToken(event);
+
+  if (!tokens) {
+    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
+  }
+
+  const { externalUserId, username, avatarUrl } = await provider.getUserInfo(tokens);
+
+  const existingExternalAccount = await db.query.externalAccount.findFirst({
+    where: and(
+      eq(table.externalAccount.provider, provider.name),
+      eq(table.externalAccount.externalUserId, externalUserId)
+    ),
+  });
+
+  if (existingExternalAccount) {
+    const sessionToken = auth.generateSessionToken();
+    const session = await auth.createSession(sessionToken, existingExternalAccount.userId);
+    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+    return redirect(302, '/');
+  }
+
+  try {
+    const userId = generateUserId();
+
+    await db.transaction(async (tx) => {
+      await db.insert(table.user).values({ id: userId, username, avatarUrl });
+      await tx.insert(table.externalAccount).values({
+        userId,
+        provider: provider.name,
+        externalUserId,
+        externalUsername: username,
+      });
+    });
+
+    const sessionToken = auth.generateSessionToken();
+    const session = await auth.createSession(sessionToken, userId);
+    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+  } catch (e) {
+    console.error(e);
+    return error(500, 'При сохранении нового пользователя возникла ошибка');
+  }
+
+  return redirect(302, '/profile');
 }
