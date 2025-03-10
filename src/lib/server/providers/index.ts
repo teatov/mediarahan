@@ -8,6 +8,8 @@ import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 import { error, redirect } from '@sveltejs/kit';
 
+import twitch from '$lib/server/providers/twitch';
+
 export function handleAuthRedirect(provider: Provider, event: RequestEvent): Response {
   if (event.locals.user) {
     return redirect(302, '/');
@@ -30,7 +32,7 @@ export async function handleAuthCallback(
   const tokens = await provider.validateOauthToken(event);
 
   if (!tokens) {
-    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные.');
+    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
   }
 
   const { externalUserId, username, avatarUrl } = await provider.requestUserInfo(tokens);
@@ -67,8 +69,10 @@ export async function handleAuthCallback(
     auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
   } catch (e) {
     console.error(e);
-    return error(500, 'При сохранении нового пользователя возникла ошибка.');
+    return error(500, 'При сохранении нового пользователя возникла ошибка');
   }
 
   return redirect(302, '/profile');
 }
+
+export const providers: Record<string, Provider> = { twitch };
