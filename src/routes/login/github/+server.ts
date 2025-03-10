@@ -1,4 +1,4 @@
-import * as oauth from '$lib/server/providers/oauth';
+import * as github from '$lib/server/providers/github';
 import { generateState } from 'arctic';
 import type { RequestEvent } from './$types';
 import { redirect } from '@sveltejs/kit';
@@ -9,7 +9,7 @@ export function GET(event: RequestEvent): Response {
   }
 
   const state = generateState();
-  const url = oauth.github.createAuthorizationURL(state, ['user:email']);
+  const url = github.oauth.createAuthorizationURL(state, ['user:email']);
 
   event.cookies.set('github_oauth_state', state, {
     httpOnly: true,
