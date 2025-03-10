@@ -16,9 +16,6 @@
   <Card.Content class="space-y-4">
     <Button class="w-full" variant="twitch"><IconBrandTwitch />Через Twitch</Button>
     <Button class="w-full" variant="google"><IconBrandGoogle />Через Google</Button>
-    <Button class="w-full" variant="donationalerts"
-      ><IconBrandDonationAlerts />Через DonationAlerts</Button
-    >
     <Button class="w-full" variant="github" href="/login/github"
       ><IconBrandGithub />Через GitHub</Button
     >
