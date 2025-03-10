@@ -5,6 +5,10 @@
   let { data } = $props();
 </script>
 
+<svelte:head>
+	<title>Профиль</title>
+</svelte:head>
+
 <div class="mx-auto max-w-xl">
   <h1>{data.user.username}!</h1>
   <form method="post" action="/logout" use:enhance>
