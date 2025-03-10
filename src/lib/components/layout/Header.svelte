@@ -19,10 +19,12 @@
 {/snippet}
 
 <header>
-  <div class="bg-background border-b py-2">
-    <div class="container flex max-w-6xl items-center justify-between h-12">
+  <div class="bg-background border-b py-2 overflow-x-auto">
+    <div class="container flex max-w-6xl items-center justify-between h-12 gap-4">
       <nav class="flex items-center gap-4">
-        <a href="/" class="inline-block font-bold"><Logo /><span class="px-1">mediarahan</span></a>
+        <a href="/" class="inline-block font-bold text-nowrap mr-4">
+          <Logo /><span class="px-1">mediarahan</span>
+        </a>
         {@render navLink('/', 'Главная')}
         {#if user}
           {@render navLink('/wheel', 'Колесо', true)}
@@ -38,7 +40,7 @@
     </div>
   </div>
   {#if url.pathname.startsWith('/wheel')}
-    <div class="bg-background border-b py-2">
+    <div class="bg-background border-b py-2 overflow-x-auto">
       <div class="container flex max-w-6xl items-center justify-center gap-4">
         {@render navLink('/wheel', 'Колесо')}
         {@render navLink('/wheel/slots', 'Ячейки')}
