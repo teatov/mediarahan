@@ -1,11 +1,11 @@
 import { GitHub, OAuth2Tokens } from 'arctic';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN } from '$env/static/private';
-import type { Provider } from '$lib';
+import type { Provider } from '$lib/server/providers';
 import type { RequestEvent } from '@sveltejs/kit';
 
 const oauth = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN + '/login/github/callback');
 
-function setOauthCookie(state: string, event: RequestEvent) {
+function prepareAuthUrl(state: string, event: RequestEvent) {
   const url = oauth.createAuthorizationURL(state, []);
 
   event.cookies.set('github_oauth_state', state, {
@@ -19,7 +19,7 @@ function setOauthCookie(state: string, event: RequestEvent) {
   return url;
 }
 
-async function validateOauthToken(event: RequestEvent) {
+async function validateAuthToken(event: RequestEvent) {
   const storedState = event.cookies.get('github_oauth_state') ?? null;
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
@@ -37,7 +37,7 @@ async function validateOauthToken(event: RequestEvent) {
   }
 }
 
-async function requestUserInfo(tokens: OAuth2Tokens) {
+async function getUserInfo(tokens: OAuth2Tokens) {
   const userRequest = new Request('https://api.github.com/user');
   userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
   const userResponse = await fetch(userRequest);
@@ -56,7 +56,7 @@ async function requestUserInfo(tokens: OAuth2Tokens) {
 
 export default {
   name: 'github',
-  setOauthCookie,
-  validateOauthToken,
-  requestUserInfo,
+  prepareAuthUrl,
+  validateAuthToken,
+  getUserInfo,
 } as Provider;
