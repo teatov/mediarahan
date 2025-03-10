@@ -31,7 +31,7 @@
           <AutoProviderIcon {provider} />
         </div>
         <div>
-          {name}: {externalUsernames[provider]}
+          {name}: <strong>{externalUsernames[provider]}</strong>
         </div>
       </div>
       <Button variant={(provider + 'Outline') as any} href={'/login/' + provider}>Отключить</Button>
