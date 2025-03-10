@@ -41,6 +41,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const githubId = userResult.id;
   const username = userResult.login;
+  const avatarUrl = userResult.avatar_url;
 
   const existingUser = await db.query.user.findFirst({
     where: eq(table.user.githubId, githubId),
@@ -55,7 +56,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   try {
     const userId = generateUserId();
-    await db.insert(table.user).values({ id: userId, username, githubId });
+    await db.insert(table.user).values({ id: userId, username, githubId, avatarUrl });
 
     const sessionToken = auth.generateSessionToken();
     const session = await auth.createSession(sessionToken, userId);

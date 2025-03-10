@@ -4,6 +4,7 @@ export const user = pgTable('user', {
   id: text('id').primaryKey(),
   githubId: integer('github_id').notNull().unique(),
   username: text('username').notNull(),
+  avatarUrl: text('avatar_url'),
 });
 
 export const session = pgTable('session', {
