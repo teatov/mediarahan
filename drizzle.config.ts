@@ -2,7 +2,7 @@ import { defineConfig } from 'drizzle-kit';
 
 export default defineConfig({
   schema: './src/lib/server/db/schema.ts',
-  out: "./drizzle",
+  out: './drizzle',
 
   dbCredentials: {
     database: process.env.DB_DATABASE!,

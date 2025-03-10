@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Icon from '$lib/../../node_modules/@tabler/icons-svelte/dist/Icon.svelte';
   import type { SvelteHTMLElements, SVGAttributes } from 'svelte/elements';
+  import Icon from '$lib/../../node_modules/@tabler/icons-svelte/dist/Icon.svelte';
 
   const iconNode: [elementName: keyof SvelteHTMLElements, attrs: SVGAttributes<SVGSVGElement>][] = [
     ['path', { d: 'M11.8333 6L11.4167 11M11.1667 14V13.6496' }],

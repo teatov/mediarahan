@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { IconLogin } from '@tabler/icons-svelte';
+  import Avatar from '$lib/components/layout/Avatar.svelte';
   import Logo from '$lib/components/layout/Logo.svelte';
   import { Button } from '$lib/components/ui/button';
   import type { SessionValidationResult } from '$lib/server/auth';
-  import { IconLogin } from '@tabler/icons-svelte';
-  import Avatar from '$lib/components/layout/Avatar.svelte';
 
   let { user }: { user: SessionValidationResult['user'] } = $props();
 </script>

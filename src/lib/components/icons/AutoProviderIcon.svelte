@@ -1,8 +1,8 @@
 <script lang="ts">
   import { IconBrandGithub, IconBrandTwitch, IconBrandGoogle } from '@tabler/icons-svelte';
-  import IconBrandDonationAlerts from '$lib/components/icons/IconBrandDonationAlerts.svelte';
-  import IconBrandDonatePay from '$lib/components/icons/IconBrandDonatePay.svelte';
   import type { ProviderName } from '$lib';
+  import IconBrandDonatePay from '$lib/components/icons/IconBrandDonatePay.svelte';
+  import IconBrandDonationAlerts from '$lib/components/icons/IconBrandDonationAlerts.svelte';
 
   let { provider, ...restProps }: { provider: ProviderName; [x: string]: any } = $props();
 </script>

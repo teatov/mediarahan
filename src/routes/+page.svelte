@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Mediarahan - набор потенциально полезных инструментов для стримеров</title>
+  <title>Mediarahan - набор потенциально полезных инструментов для стримеров</title>
 </svelte:head>
 
 <main class="container max-w-xl">

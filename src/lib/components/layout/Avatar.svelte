@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { Avatar as AvatarPrimitive } from 'bits-ui';
   import * as Avatar from '$lib/components/ui/avatar';
   import type { SessionValidationResult } from '$lib/server/auth';
-  import { Avatar as AvatarPrimitive } from 'bits-ui';
 
   let {
     user,

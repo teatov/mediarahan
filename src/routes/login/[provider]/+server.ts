@@ -1,7 +1,7 @@
-import type { RequestEvent } from './$types';
 import { error, redirect } from '@sveltejs/kit';
-import providers from '$lib/server/providers';
 import { generateState, generateCodeVerifier } from 'arctic';
+import providers from '$lib/server/providers';
+import type { RequestEvent } from './$types';
 
 export function GET(event: RequestEvent): Response {
   const providerName = event.params.provider;

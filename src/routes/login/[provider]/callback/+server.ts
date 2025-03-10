@@ -1,10 +1,10 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import * as table from '$lib/server/db/schema';
+import { error, redirect } from '@sveltejs/kit';
 import { eq, and } from 'drizzle-orm';
-import db from '$lib/server/db';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
-import { error, redirect } from '@sveltejs/kit';
+import db from '$lib/server/db';
+import * as table from '$lib/server/db/schema';
 import providers from '$lib/server/providers';
 
 export async function GET(event: RequestEvent): Promise<Response> {
