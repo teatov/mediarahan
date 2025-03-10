@@ -5,6 +5,10 @@
   import { IconBrandGithub, IconBrandTwitch, IconBrandGoogle } from '@tabler/icons-svelte';
 </script>
 
+<svelte:head>
+	<title>Войти или зарегистрироваться</title>
+</svelte:head>
+
 <Card.Root class="mx-auto max-w-sm">
   <Card.Header>
     <Card.Title>Войти или зарегистрироваться</Card.Title>

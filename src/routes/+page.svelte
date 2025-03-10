@@ -2,6 +2,10 @@
   import { Button } from '$lib/components/ui/button';
 </script>
 
+<svelte:head>
+	<title>Mediarahan - набор потенциально полезных инструментов для стримеров</title>
+</svelte:head>
+
 <main class="container max-w-xl">
   <h1>Welcome to SvelteKit</h1>
   <p>
