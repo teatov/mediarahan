@@ -3,7 +3,7 @@
   import { Button, type ButtonVariant } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import Avatar from '$lib/components/layout/Avatar.svelte';
-  import AutoProviderIcon from '$lib/components/icons/IconBrandDonationAlerts.svelte';
+  import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import { IconLogout } from '@tabler/icons-svelte';
   import type { Provider } from '$lib';
 
@@ -17,8 +17,12 @@
 </svelte:head>
 
 {#snippet providerButton(provider: Provider, name: string)}
-  <Button class="w-full" variant={provider} href={'/login/' + provider}
-    ><AutoProviderIcon {provider} />{#if providers.includes(provider)}
+  {@const included = providers.includes(provider)}
+  <Button
+    class="w-full"
+    variant={(included ? provider + 'Outline' : provider) as any}
+    href={'/login/' + provider}
+    ><AutoProviderIcon {provider} />{#if included}
       Отключить
     {:else}
       Подключить
