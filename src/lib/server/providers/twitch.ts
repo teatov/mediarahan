@@ -1,11 +1,10 @@
 import { Twitch, OAuth2Tokens, decodeIdToken } from 'arctic';
 import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
-import type { RequestEvent } from '@sveltejs/kit';
 
 const oauth = new Twitch(TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN + '/login/twitch/callback');
 
-function prepareAuthUrl(state: string, event: RequestEvent) {
+function createAuthorizationURL(state: string) {
   const url = oauth.createAuthorizationURL(state, ['openid']);
   url.searchParams.set(
     'claims',
@@ -16,28 +15,10 @@ function prepareAuthUrl(state: string, event: RequestEvent) {
       },
     })
   );
-
-  event.cookies.set('twitch_oauth_state', state, {
-    httpOnly: true,
-    maxAge: 60 * 10,
-    secure: import.meta.env.PROD,
-    path: '/',
-    sameSite: 'lax',
-  });
-
   return url;
 }
 
-async function validateAuthToken(event: RequestEvent) {
-  const storedState = event.cookies.get('twitch_oauth_state') ?? null;
-  const code = event.url.searchParams.get('code');
-  const state = event.url.searchParams.get('state');
-
-  if (!storedState || !code || !state || storedState !== state) {
-    console.error({ storedState, code, state });
-    return null;
-  }
-
+async function validateAuthorizationCode(code: string) {
   try {
     return await oauth.validateAuthorizationCode(code);
   } catch (e) {
@@ -62,7 +43,8 @@ async function getUserInfo(tokens: OAuth2Tokens) {
 
 export default {
   name: 'twitch',
-  prepareAuthUrl,
-  validateAuthToken,
+  stateCookie: 'twitch_oauth_state',
+  createAuthorizationURL,
+  validateAuthorizationCode,
   getUserInfo,
 } as Provider;

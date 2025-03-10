@@ -20,10 +20,31 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const provider = providers[providerName];
 
-  const tokens = await provider.validateAuthToken(event);
+  const code = event.url.searchParams.get('code');
+  const state = event.url.searchParams.get('state');
+  const storedState = event.cookies.get(provider.stateCookie) ?? undefined;
+  const codeVerifier = provider.verifierCookie
+    ? (event.cookies.get(provider.verifierCookie) ?? undefined)
+    : undefined;
+
+  if (
+    !code ||
+    !state ||
+    !storedState ||
+    (provider.verifierCookie && !codeVerifier) ||
+    state !== storedState
+  ) {
+    console.error({ storedState, code, state });
+    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
+  }
+
+  const tokens = await provider.validateAuthorizationCode(
+    code,
+    provider.verifierCookie ? codeVerifier : undefined
+  );
 
   if (!tokens) {
-    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
+    return error(400, 'Токен авторизации оказался невалидным');
   }
 
   const { externalUserId, username, avatarUrl } = await provider.getUserInfo(tokens);
