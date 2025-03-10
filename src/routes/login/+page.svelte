@@ -13,7 +13,9 @@
     <Card.Title>Войти или зарегистрироваться</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    <Button class="w-full" variant="twitch"><IconBrandTwitch />Через Twitch</Button>
+    <Button class="w-full" variant="twitch" href="/login/twitch">
+      <IconBrandTwitch />Через Twitch
+    </Button>
     <Button class="w-full" variant="google" href="/login/google">
       <IconBrandGoogle />Через Google
     </Button>
