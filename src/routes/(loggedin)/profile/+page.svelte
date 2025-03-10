@@ -5,7 +5,7 @@
   import Avatar from '$lib/components/layout/Avatar.svelte';
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import { IconLogout } from '@tabler/icons-svelte';
-  import type { Provider } from '$lib';
+  import type { ProviderName } from '$lib';
 
   let { data } = $props();
 
@@ -16,7 +16,7 @@
   <title>Профиль</title>
 </svelte:head>
 
-{#snippet providerButton(provider: Provider, name: string)}
+{#snippet providerButton(provider: ProviderName, name: string)}
   {@const included = providers.includes(provider)}
   <Button
     class="w-full"
