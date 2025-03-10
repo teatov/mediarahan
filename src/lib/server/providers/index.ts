@@ -28,18 +28,18 @@ export async function handleAuthCallback(
     return redirect(302, '/');
   }
 
-  const tokens: OAuth2Tokens | null = await provider.validateOauthToken(event);
+  const tokens = await provider.validateOauthToken(event);
 
   if (!tokens) {
     return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные.');
   }
 
-  const { userId, username, avatarUrl } = await provider.requestUserInfo(tokens.accessToken());
+  const { externalUserId, username, avatarUrl } = await provider.requestUserInfo(tokens);
 
   const existingExternalAccount = await db.query.externalAccount.findFirst({
     where: and(
       eq(table.externalAccount.provider, provider.name),
-      eq(table.externalAccount.externalUserId, userId)
+      eq(table.externalAccount.externalUserId, externalUserId)
     ),
   });
 
@@ -56,9 +56,9 @@ export async function handleAuthCallback(
     await db.transaction(async (tx) => {
       await db.insert(table.user).values({ id: userId, username, avatarUrl });
       await tx.insert(table.externalAccount).values({
-        userId: userId,
+        userId,
         provider: provider.name,
-        externalUserId: userId,
+        externalUserId,
         externalUsername: username,
       });
     });
