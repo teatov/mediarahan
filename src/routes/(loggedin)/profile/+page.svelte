@@ -4,7 +4,12 @@
   import * as Card from '$lib/components/ui/card';
   import Avatar from '$lib/components/layout/Avatar.svelte';
   import IconBrandDonationAlerts from '$lib/components/icons/IconBrandDonationAlerts.svelte';
-  import { IconBrandGithub, IconBrandTwitch, IconBrandGoogle } from '@tabler/icons-svelte';
+  import {
+    IconBrandGithub,
+    IconBrandTwitch,
+    IconBrandGoogle,
+    IconLogout,
+  } from '@tabler/icons-svelte';
 
   let { data } = $props();
 </script>
@@ -20,7 +25,7 @@
   </Card.Content>
   <Card.Footer class="justify-end">
     <form method="post" action="/logout" use:enhance>
-      <Button type="submit" variant="destructive">Выйти</Button>
+      <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
     </form>
   </Card.Footer>
 </Card.Root>
