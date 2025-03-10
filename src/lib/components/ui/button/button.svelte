@@ -27,6 +27,9 @@
           'bg-donationalerts text-donationalerts-foreground hover:bg-donationalerts/90',
         donationalertsOutline:
           'border-donationalerts text-donationalerts bg-background hover:bg-donationalerts hover:text-donationalerts-foreground border',
+        donatepay: 'bg-donatepay text-donatepay-foreground hover:bg-donatepay/90',
+        donatepayOutline:
+          'border-donatepay text-donatepay bg-background hover:bg-donatepay hover:text-donatepay-foreground border',
       },
       size: {
         default: 'h-10 px-4 py-2',

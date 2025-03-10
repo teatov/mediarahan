@@ -27,14 +27,6 @@
   --color-border: var(--border);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-destructive: var(--destructive);
-  --color-github-foreground: var(--github-foreground);
-  --color-github: var(--github);
-  --color-twitch-foreground: var(--twitch-foreground);
-  --color-twitch: var(--twitch);
-  --color-google-foreground: var(--google-foreground);
-  --color-google: var(--google);
-  --color-donationalerts-foreground: var(--donationalerts-foreground);
-  --color-donationalerts: var(--donationalerts);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -53,6 +45,17 @@
   --radius-xl: calc(var(--radius) + 4px);
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  --color-github-foreground: var(--github-foreground);
+  --color-github: var(--github);
+  --color-twitch-foreground: var(--twitch-foreground);
+  --color-twitch: var(--twitch);
+  --color-google-foreground: var(--google-foreground);
+  --color-google: var(--google);
+  --color-donationalerts-foreground: var(--donationalerts-foreground);
+  --color-donationalerts: var(--donationalerts);
+  --color-donatepay-foreground: var(--donatepay-foreground);
+  --color-donatepay: var(--donatepay);
 
   @keyframes accordion-down {
     from {
@@ -90,14 +93,6 @@
   --accent-foreground: oklch(0.216 0.006 56.043);
   --destructive: oklch(0.57 0.2151 27.32);
   --destructive-foreground: oklch(0.98 0.0013 106.42);
-  --github: oklch(0.27 0.0179 251.92);
-  --github-foreground: oklch(0.97 0.0103 247.93);
-  --twitch: oklch(0.59 0.2535 296);
-  --twitch-foreground: oklch(1 0 0);
-  --google: oklch(0.90 0 0);
-  --google-foreground: oklch(0.20 0 0);
-  --donationalerts: oklch(0.75 0.1717 59.28);
-  --donationalerts-foreground: oklch(1 0 0);
   --border: oklch(0.923 0.003 48.717);
   --input: oklch(0.923 0.003 48.717);
   --ring: oklch(0.709 0.01 56.259);
@@ -115,6 +110,17 @@
   --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
   --sidebar-border: oklch(0.923 0.003 48.717);
   --sidebar-ring: oklch(0.709 0.01 56.259);
+
+  --github: oklch(0.27 0.0179 251.92);
+  --github-foreground: oklch(0.97 0.0103 247.93);
+  --twitch: oklch(0.59 0.2535 296);
+  --twitch-foreground: oklch(1 0 0);
+  --google: oklch(0.90 0 0);
+  --google-foreground: oklch(0.20 0 0);
+  --donationalerts: oklch(0.75 0.1717 59.28);
+  --donationalerts-foreground: oklch(1 0 0);
+  --donatepay: oklch(0.65 0.1615 145.36);
+  --donatepay-foreground: oklch(1 0 0);
 }
 
 .dark {
