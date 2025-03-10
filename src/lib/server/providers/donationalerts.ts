@@ -6,7 +6,6 @@ import {
   ORIGIN,
 } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
-import type { RequestEvent } from '@sveltejs/kit';
 
 class DonationAlerts {
   private clientId: string;
@@ -48,34 +47,15 @@ const oauth = new DonationAlerts(
   ORIGIN + '/login/donationalerts/callback'
 );
 
-function prepareAuthUrl(state: string, event: RequestEvent) {
-  const url = oauth.createAuthorizationURL(state, [
+function createAuthorizationURL(state: string) {
+  return oauth.createAuthorizationURL(state, [
     'oauth-donation-subscribe',
     'oauth-donation-index',
     'oauth-user-show',
   ]);
-
-  event.cookies.set('donationalerts_oauth_state', state, {
-    httpOnly: true,
-    maxAge: 60 * 10,
-    secure: import.meta.env.PROD,
-    path: '/',
-    sameSite: 'lax',
-  });
-
-  return url;
 }
 
-async function validateAuthToken(event: RequestEvent) {
-  const storedState = event.cookies.get('donationalerts_oauth_state') ?? null;
-  const code = event.url.searchParams.get('code');
-  const state = event.url.searchParams.get('state');
-
-  if (!storedState || !code || !state || storedState !== state) {
-    console.error({ storedState, code, state });
-    return null;
-  }
-
+async function validateAuthorizationCode(code: string) {
   try {
     return await oauth.validateAuthorizationCode(code);
   } catch (e) {
@@ -96,7 +76,6 @@ async function getUserInfo(tokens: OAuth2Tokens) {
       socket_connection_token: string;
     };
   };
-  console.log(userResult);
 
   return {
     externalUserId: String(userResult.data.id),
@@ -107,7 +86,8 @@ async function getUserInfo(tokens: OAuth2Tokens) {
 
 export default {
   name: 'donationalerts',
-  prepareAuthUrl,
-  validateAuthToken,
+  stateCookie: 'donationalerts_oauth_state',
+  createAuthorizationURL,
+  validateAuthorizationCode,
   getUserInfo,
 } as Provider;

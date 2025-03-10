@@ -1,6 +1,5 @@
 import type { ProviderName } from '$lib';
 import type { OAuth2Tokens } from 'arctic';
-import type { RequestEvent } from '@sveltejs/kit';
 import twitch from '$lib/server/providers/twitch';
 import github from '$lib/server/providers/github';
 import google from '$lib/server/providers/google';
@@ -14,8 +13,10 @@ export type ProviderUserInfo = {
 
 export type Provider = {
   name: ProviderName;
-  prepareAuthUrl(state: string, event: RequestEvent): URL;
-  validateAuthToken(event: RequestEvent): Promise<OAuth2Tokens | null>;
+  stateCookie: string;
+  verifierCookie?: string;
+  createAuthorizationURL(state: string, codeVerifier?: string): URL;
+  validateAuthorizationCode(code: string, codeVerifier?: string): Promise<OAuth2Tokens | null>;
   getUserInfo(accessToken: OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
