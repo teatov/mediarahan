@@ -1,5 +1,6 @@
 import { pgTable, text, timestamp, pgEnum, primaryKey, unique } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
+import { providers } from '$lib';
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -32,7 +33,7 @@ export const sessionRelations = relations(session, ({ one }) => ({
 export type Session = typeof session.$inferSelect;
 export type NewSession = typeof session.$inferInsert;
 
-export const providerEnum = pgEnum('provider', ['twitch', 'google', 'donationalerts', 'github']);
+export const providerEnum = pgEnum('provider', providers);
 
 export const externalAccount = pgTable(
   'external_account',
