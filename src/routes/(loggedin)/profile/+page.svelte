@@ -22,13 +22,14 @@
     class="w-full"
     variant={(included ? provider + 'Outline' : provider) as any}
     href={'/login/' + provider}
-    ><AutoProviderIcon {provider} />{#if included}
+  >
+    <AutoProviderIcon {provider} />{#if included}
       Отключить
     {:else}
       Подключить
     {/if}
-    {name}</Button
-  >
+    {name}
+  </Button>
 {/snippet}
 
 <Card.Root class="mx-auto max-w-sm">
@@ -51,6 +52,7 @@
     {@render providerButton('twitch', 'Twitch')}
     {@render providerButton('google', 'Google')}
     {@render providerButton('donationalerts', 'DonationAlerts')}
+    {@render providerButton('donatepay', 'DonatePay')}
     {@render providerButton('github', 'GitHub')}
   </Card.Content>
 </Card.Root>

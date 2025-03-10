@@ -1,3 +1,3 @@
-export const providers = ['twitch', 'google', 'donationalerts', 'github'] as const;
+export const providers = ['twitch', 'google', 'donationalerts', 'donatepay', 'github'] as const;
 
 export type Provider = (typeof providers)[number];
