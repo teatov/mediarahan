@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconLogout } from '@tabler/icons-svelte';
+  import { IconLogout, IconTrash } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
   import type { ProviderName } from '$lib';
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
@@ -65,5 +65,18 @@
     {@render providerButton('donationalerts', 'DonationAlerts', 'text-donationalerts')}
     {@render providerButton('donatepay', 'DonatePay', 'text-donatepay')}
     {@render providerButton('github', 'GitHub', 'text-github dark:text-github-foreground')}
+  </Card.Content>
+</Card.Root>
+
+<Card.Root class="mx-auto max-w-md">
+  <Card.Header>
+    <Card.Title>Опасное</Card.Title>
+  </Card.Header>
+  <Card.Content class="space-y-4">
+    <form method="post" action="/delete" use:enhance>
+      <Button type="submit" variant="destructive" class="w-full">
+        <IconTrash />Удалить учётную запись
+      </Button>
+    </form>
   </Card.Content>
 </Card.Root>
