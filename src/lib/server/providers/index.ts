@@ -2,6 +2,8 @@ import type { ProviderName } from '$lib';
 import type { OAuth2Tokens } from 'arctic';
 import type { RequestEvent } from '@sveltejs/kit';
 import twitch from '$lib/server/providers/twitch';
+import github from '$lib/server/providers/github';
+import google from '$lib/server/providers/google';
 
 export type ProviderUserInfo = {
   externalUserId: string;
@@ -16,4 +18,4 @@ export type Provider = {
   getUserInfo(accessToken: OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
-export default { twitch } as Record<string, Provider>;
+export default { twitch, github, google } as Record<string, Provider>;
