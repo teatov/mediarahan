@@ -8,11 +8,11 @@
   let { user, url }: { user: SessionValidationResult['user']; url: URL } = $props();
 </script>
 
-{#snippet navLink(href: string, label: string, section: boolean = false)}
+{#snippet navLink(href: string, label: string, section: boolean = false, dim: boolean = false)}
   {@const current = section ? url.pathname.startsWith(href) : url.pathname === href}
   <a
     {href}
-    class={`inline-block transition-colors hover:text-foreground/80 ${current ? 'text-foreground' : 'text-foreground/60'}`}
+    class={`inline-block transition-colors hover:text-foreground/80 ${current ? 'text-foreground' : dim ? 'text-foreground/30' : 'text-foreground/60'}`}
   >
     {label}
   </a>
@@ -23,11 +23,12 @@
     <div class="container flex max-w-6xl items-center justify-between h-12">
       <nav class="flex items-center gap-4">
         <a href="/" class="inline-block font-bold"><Logo /><span class="px-1">mediarahan</span></a>
+        {@render navLink('/', 'Главная')}
         {#if user}
-          {@render navLink('/', 'Главная')}
           {@render navLink('/wheel', 'Колесо', true)}
-          {@render navLink('/mediasharing', 'Медиашеринг', true)}
+          {@render navLink('/mediasharing', 'Медиашеринг', true, true)}
         {/if}
+        {@render navLink('/docs', 'Документация', true)}
       </nav>
       {#if user}
         <a href="/profile" class="inline-block" title="На страницу профиля"><Avatar {user} /></a>
