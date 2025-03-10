@@ -18,7 +18,7 @@
     <h1 class="text-4xl font-bold">{data.user.username}</h1>
     <Avatar user={data.user} class="size-20" />
   </Card.Content>
-  <Card.Footer>
+  <Card.Footer class="justify-end">
     <form method="post" action="/logout" use:enhance>
       <Button type="submit" variant="destructive">Выйти</Button>
     </form>
