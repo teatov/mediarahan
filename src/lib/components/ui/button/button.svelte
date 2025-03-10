@@ -9,6 +9,10 @@
 			variant: {
 				default: "bg-primary text-primary-foreground hover:bg-primary/90",
 				destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+				github: "bg-github text-github-foreground hover:bg-github/90",
+				twitch: "bg-twitch text-twitch-foreground hover:bg-twitch/90",
+				google: "bg-google text-google-foreground hover:bg-google/90",
+				donationalerts: "bg-donationalerts text-donationalerts-foreground hover:bg-donationalerts/90",
 				outline:
 					"border-input bg-background hover:bg-accent hover:text-accent-foreground border",
 				secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
