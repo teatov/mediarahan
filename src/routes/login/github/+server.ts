@@ -4,6 +4,10 @@ import type { RequestEvent } from './$types';
 import { redirect } from '@sveltejs/kit';
 
 export function GET(event: RequestEvent): Response {
+  if (event.locals.user) {
+    return redirect(302, '/');
+  }
+
   const state = generateState();
   const url = oauth.github.createAuthorizationURL(state, ['user:email']);
 
