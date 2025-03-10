@@ -10,6 +10,10 @@ import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 
 export async function GET(event: RequestEvent): Promise<Response> {
+  if (event.locals.user) {
+    return redirect(302, '/');
+  }
+
   const storedState = event.cookies.get('github_oauth_state') ?? null;
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
@@ -26,10 +30,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   if (!storedState || !code || !state || !tokens || storedState !== state) {
     console.error({ storedState, code, state, tokens });
-    return error(
-      400,
-      'Сервис, через который вы пытаетесь войти, вернул неправильные данные.'
-    );
+    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные.');
   }
 
   const githubAccessToken = tokens.accessToken();
