@@ -10,7 +10,7 @@
 <ModeWatcher />
 <div class="relative flex min-h-screen flex-col justify-between">
   <Header user={data.user} />
-  <div>
+  <div class="space-y-4">
     {@render children()}
   </div>
   <Footer />
