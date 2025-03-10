@@ -1,4 +1,4 @@
-import * as github from '$lib/server/providers/github';
+import github from '$lib/server/providers/github';
 import type { OAuth2Tokens } from 'arctic';
 import { error, redirect } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';

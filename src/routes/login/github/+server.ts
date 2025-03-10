@@ -1,4 +1,4 @@
-import * as github from '$lib/server/providers/github';
+import github from '$lib/server/providers/github';
 import { generateState } from 'arctic';
 import type { RequestEvent } from './$types';
 import { redirect } from '@sveltejs/kit';
