@@ -26,6 +26,7 @@
         {#if user}
           {@render navLink('/', 'Главная')}
           {@render navLink('/wheel', 'Колесо', true)}
+          {@render navLink('/mediasharing', 'Медиашеринг', true)}
         {/if}
       </nav>
       {#if user}
