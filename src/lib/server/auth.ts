@@ -1,8 +1,8 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { sha256 } from '@oslojs/crypto/sha2';
-import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
-import { db } from '$lib/server/db';
+import { encodeBase64url, encodeHexLowerCase, encodeBase32LowerCase } from '@oslojs/encoding';
+import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
@@ -78,4 +78,11 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
   event.cookies.delete(sessionCookieName, {
     path: '/',
   });
+}
+
+export function generateUserId() {
+  // ID with 120 bits of entropy, or about the same as UUID v4.
+  const bytes = crypto.getRandomValues(new Uint8Array(15));
+  const id = encodeBase32LowerCase(bytes);
+  return id;
 }
