@@ -44,7 +44,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
   );
 
   if (!tokens) {
-    return error(400, 'Токен авторизации оказался невалидным');
+    return error(400, 'Ошибка при валидации токена авторизации');
   }
 
   const { externalUserId, username, avatarUrl } = await provider.getUserInfo(tokens);
