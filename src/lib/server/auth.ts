@@ -28,25 +28,27 @@ export async function createSession(token: string, userId: string) {
 
 export async function validateSessionToken(token: string) {
   const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
-  const [result] = await db
-    .select({
-      // Adjust user table here to tweak returned data
-      user: { username: table.user.username, avatarUrl: table.user.avatarUrl },
-      session: table.session,
-    })
-    .from(table.session)
-    .innerJoin(table.user, eq(table.session.userId, table.user.id))
-    .where(eq(table.session.id, sessionId));
+
+  const result = await db.query.session.findFirst({
+    where: eq(table.session.id, sessionId),
+    with: {
+      user: {
+        columns: { username: true, avatarUrl: true },
+        with: { externalAccounts: { columns: { provider: true } } },
+      },
+    },
+  });
 
   if (!result) {
-    return { session: null, user: null };
+    return { user: null, session: null };
   }
-  const { session, user } = result;
+
+  const { user, ...session } = result;
 
   const sessionExpired = Date.now() >= session.expiresAt.getTime();
   if (sessionExpired) {
     await db.delete(table.session).where(eq(table.session.id, session.id));
-    return { session: null, user: null };
+    return { user: null, session: null };
   }
 
   const renewSession = Date.now() >= session.expiresAt.getTime() - DAY_IN_MS * 15;
@@ -69,11 +71,11 @@ export async function invalidateSession(sessionId: string) {
 
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {
   event.cookies.set(sessionCookieName, token, {
-		httpOnly: true,
+    httpOnly: true,
     expires: expiresAt,
     path: '/',
-		secure: import.meta.env.PROD,
-		sameSite: "lax",
+    secure: import.meta.env.PROD,
+    sameSite: 'lax',
   });
 }
 
