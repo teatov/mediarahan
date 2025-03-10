@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
 
-  let message = page?.error?.message;
+  let message = page.error?.message;
 
   if (page.status === 404) {
     message = 'Такой страницы у нас нет';
