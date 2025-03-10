@@ -15,6 +15,8 @@
     <Button class="w-full" variant="donationalerts"
       ><IconBrandDonationAlerts />Через DonationAlerts</Button
     >
-    <Button class="w-full" variant="github"><IconBrandGithub />Через GitHub</Button>
+    <Button class="w-full" variant="github" href="/login/github"
+      ><IconBrandGithub />Через GitHub</Button
+    >
   </Card.Content>
 </Card.Root>

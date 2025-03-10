@@ -1,7 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import * as auth from '$lib/server/auth.js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import { db } from '$lib/server/db';
+import db from '$lib/server/db';
 import { env } from '$env/dynamic/private';
 
 if (env.NODE_ENV === 'production') {
