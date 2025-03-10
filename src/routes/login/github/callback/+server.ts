@@ -64,8 +64,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
     auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
   } catch (e) {
     console.error(e);
-    return error(500, 'При сохранении пользователя возникла ошибка.');
+    return error(500, 'При сохранении нового пользователя возникла ошибка.');
   }
 
-  return redirect(302, '/');
+  return redirect(302, '/profile');
 }
