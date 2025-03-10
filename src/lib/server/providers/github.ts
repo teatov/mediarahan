@@ -1,56 +1,69 @@
 import { GitHub } from 'arctic';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN } from '$env/static/private';
 import type { Provider } from '$lib';
+import type { RequestEvent } from '@sveltejs/kit';
+import type { OAuth2Tokens } from 'arctic';
 
 const oauth = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN + '/login/github/callback');
 
-export default { oauth } as Provider;
+function setOauthCookie(state: string, event: RequestEvent) {
+  const url = oauth.createAuthorizationURL(state, ['user:email']);
+  event.cookies.set('github_oauth_state', state, {
+    httpOnly: true,
+    maxAge: 60 * 10,
+    secure: import.meta.env.PROD,
+    path: '/',
+    sameSite: 'lax',
+  });
+
+  return url;
+}
+
+async function validateOauthToken(event: RequestEvent) {
+  const storedState = event.cookies.get('github_oauth_state') ?? null;
+  const code = event.url.searchParams.get('code');
+  const state = event.url.searchParams.get('state');
+
+  if (!storedState || !code || !state || storedState !== state) {
+    console.error({ storedState, code, state });
+    return null;
+  }
+
+  let tokens: OAuth2Tokens | null = null;
+
+  try {
+    tokens = await oauth.validateAuthorizationCode(code);
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
+
+  return tokens;
+}
+
+async function requestUserInfo(accessToken: string) {
+  const userRequest = new Request('https://api.github.com/user');
+  userRequest.headers.set('Authorization', `Bearer ${accessToken}`);
+  const userResponse = await fetch(userRequest);
+  const userResult: GithubPublicUser = await userResponse.json();
+
+  return {
+    userId: String(userResult.id),
+    username: userResult.login,
+    avatarUrl: userResult.avatar_url,
+  };
+}
+
+export default {
+  name: 'github',
+  oauth,
+  setOauthCookie,
+  validateOauthToken,
+  requestUserInfo,
+} as Provider;
 
 export type GithubPublicUser = {
   login: string;
   id: number;
-  user_view_type?: string;
-  node_id: string;
   avatar_url: string;
-  gravatar_id: string | null;
-  url: string;
-  html_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  starred_url: string;
-  subscriptions_url: string;
-  organizations_url: string;
-  repos_url: string;
-  events_url: string;
-  received_events_url: string;
-  type: string;
-  site_admin: boolean;
-  name: string | null;
-  company: string | null;
-  blog: string | null;
-  location: string | null;
-  email: string | null;
-  notification_email?: string | null;
-  hireable: boolean | null;
-  bio: string | null;
-  twitter_username?: string | null;
-  public_repos: number;
-  public_gists: number;
-  followers: number;
-  following: number;
-  created_at: string;
-  updated_at: string;
-  plan?: {
-    collaborators: number;
-    name: string;
-    space: number;
-    private_repos: number;
-    [k: string]: unknown;
-  };
-  private_gists?: number;
-  total_private_repos?: number;
-  owned_private_repos?: number;
-  disk_usage?: number;
-  collaborators?: number;
 };
