@@ -5,16 +5,43 @@
   import { Button } from '$lib/components/ui/button';
   import type { SessionValidationResult } from '$lib/server/auth';
 
-  let { user }: { user: SessionValidationResult['user'] } = $props();
+  let { user, url }: { user: SessionValidationResult['user']; url: URL } = $props();
 </script>
 
-<header class="bg-background border-b py-2">
-  <div class="container flex max-w-6xl items-center justify-between h-12">
-    <a href="/" class="inline-block font-bold"><Logo /><span class="px-1">mediarahan</span></a>
-    {#if user}
-      <a href="/profile" class="inline-block" title="На страницу профиля"><Avatar {user} /></a>
-    {:else}
-      <Button href="/login"><IconLogin />Войти</Button>
-    {/if}
+{#snippet navLink(href: string, label: string, section: boolean = false)}
+  {@const current = section ? url.pathname.startsWith(href) : url.pathname === href}
+  <a
+    {href}
+    class={`inline-block transition-colors hover:text-foreground/80 ${current ? 'text-foreground' : 'text-foreground/60'}`}
+  >
+    {label}
+  </a>
+{/snippet}
+
+<header>
+  <div class="bg-background border-b py-2">
+    <div class="container flex max-w-6xl items-center justify-between h-12">
+      <nav class="flex items-center gap-4">
+        <a href="/" class="inline-block font-bold"><Logo /><span class="px-1">mediarahan</span></a>
+        {#if user}
+          {@render navLink('/', 'Главная')}
+          {@render navLink('/wheel', 'Колесо', true)}
+        {/if}
+      </nav>
+      {#if user}
+        <a href="/profile" class="inline-block" title="На страницу профиля"><Avatar {user} /></a>
+      {:else}
+        <Button href="/login"><IconLogin />Войти</Button>
+      {/if}
+    </div>
   </div>
+  {#if url.pathname.startsWith('/wheel')}
+    <div class="bg-background border-b py-2">
+      <div class="container flex max-w-6xl items-center justify-center gap-4">
+        {@render navLink('/wheel', 'Колесо')}
+        {@render navLink('/wheel/slots', 'Ячейки')}
+        {@render navLink('/wheel/settings', 'Настройки')}
+      </div>
+    </div>
+  {/if}
 </header>

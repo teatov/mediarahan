@@ -1,5 +1,6 @@
 <script lang="ts">
   import { ModeWatcher } from 'mode-watcher';
+  import { page } from '$app/state';
   import Footer from '$lib/components/layout/Footer.svelte';
   import Header from '$lib/components/layout/Header.svelte';
   import '../app.css';
@@ -9,7 +10,7 @@
 
 <ModeWatcher />
 <div class="relative flex min-h-screen flex-col justify-between">
-  <Header user={data.user} />
+  <Header user={data.user} url={page.url} />
   <div class="space-y-4">
     {@render children()}
   </div>
