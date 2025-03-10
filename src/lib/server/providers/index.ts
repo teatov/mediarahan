@@ -6,7 +6,6 @@ import { eq, and } from 'drizzle-orm';
 import db from '$lib/server/db';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
-import type { OAuth2Tokens } from 'arctic';
 import { error, redirect } from '@sveltejs/kit';
 
 export function handleAuthRedirect(provider: Provider, event: RequestEvent): Response {
