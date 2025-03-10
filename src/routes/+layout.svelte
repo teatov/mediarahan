@@ -7,9 +7,9 @@
 </script>
 
 <ModeWatcher />
-<div class="relative flex min-h-screen flex-col">
+<div class="relative flex min-h-screen flex-col justify-between">
   <Header />
-  <div class="grow">
+  <div>
     {@render children()}
   </div>
   <Footer />
