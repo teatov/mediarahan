@@ -3,12 +3,13 @@
   import Header from '$lib/components/layout/Header.svelte';
   import Footer from '$lib/components/layout/Footer.svelte';
   import '../app.css';
-  let { children } = $props();
+
+  let { children, data } = $props();
 </script>
 
 <ModeWatcher />
 <div class="relative flex min-h-screen flex-col justify-between">
-  <Header />
+  <Header user={data.user} />
   <div>
     {@render children()}
   </div>
