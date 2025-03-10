@@ -27,8 +27,12 @@
   {#if providers.includes(provider)}
     <div class={`flex items-center justify-between ${className}`}>
       <div class="flex items-center gap-2">
-        <AutoProviderIcon {provider} />
-        {name}: {externalUsernames[provider]}
+        <div>
+          <AutoProviderIcon {provider}/>
+        </div>
+        <div>
+          {name}: {externalUsernames[provider]}
+        </div>
       </div>
       <Button variant={(provider + 'Outline') as any} href={'/login/' + provider}>Отключить</Button>
     </div>
