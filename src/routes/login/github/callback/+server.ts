@@ -4,7 +4,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
 import type { GithubPublicUser } from '$lib/server/providers/types';
 import * as table from '$lib/server/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import db from '$lib/server/db';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
@@ -40,24 +40,36 @@ export async function GET(event: RequestEvent): Promise<Response> {
   const userResponse = await fetch(userRequest);
   const userResult: GithubPublicUser = await userResponse.json();
 
-  const githubId = userResult.id;
+  const githubUserId = String(userResult.id);
   const username = userResult.login;
   const avatarUrl = userResult.avatar_url;
 
-  const existingUser = await db.query.user.findFirst({
-    where: eq(table.user.githubId, githubId),
+  const existingExternalAccount = await db.query.externalAccount.findFirst({
+    where: and(
+      eq(table.externalAccount.provider, 'github'),
+      eq(table.externalAccount.externalUserId, githubUserId)
+    ),
   });
 
-  if (existingUser) {
+  if (existingExternalAccount) {
     const sessionToken = auth.generateSessionToken();
-    const session = await auth.createSession(sessionToken, existingUser.id);
+    const session = await auth.createSession(sessionToken, existingExternalAccount.userId);
     auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
     return redirect(302, '/');
   }
 
   try {
     const userId = generateUserId();
-    await db.insert(table.user).values({ id: userId, username, githubId, avatarUrl });
+
+    await db.transaction(async (tx) => {
+      await db.insert(table.user).values({ id: userId, username, avatarUrl });
+      await tx.insert(table.externalAccount).values({
+        userId: userId,
+        provider: 'github',
+        externalUserId: githubUserId,
+        externalUsername: username,
+      });
+    });
 
     const sessionToken = auth.generateSessionToken();
     const session = await auth.createSession(sessionToken, userId);
