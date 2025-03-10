@@ -1,8 +1,8 @@
-import * as oauth from '$lib/server/providers/oauth';
+import * as github from '$lib/server/providers/github';
 import type { OAuth2Tokens } from 'arctic';
 import { error, redirect } from '@sveltejs/kit';
 import type { RequestEvent } from './$types';
-import type { GithubPublicUser } from '$lib/server/providers/types';
+import type { GithubPublicUser } from '$lib/server/providers/github';
 import * as table from '$lib/server/db/schema';
 import { eq, and } from 'drizzle-orm';
 import db from '$lib/server/db';
@@ -22,7 +22,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   if (code) {
     try {
-      tokens = await oauth.github.validateAuthorizationCode(code);
+      tokens = await github.oauth.validateAuthorizationCode(code);
     } catch (e) {
       console.error(e);
     }
