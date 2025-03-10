@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp, pgEnum, primaryKey, unique } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
 
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
@@ -8,6 +9,10 @@ export const user = pgTable('user', {
 
 export type User = typeof user.$inferSelect;
 export type NewUser = typeof user.$inferInsert;
+
+export const userRelations = relations(user, ({ many }) => ({
+  externalAccounts: many(externalAccount),
+}));
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
@@ -20,6 +25,13 @@ export const session = pgTable('session', {
 export type Session = typeof session.$inferSelect;
 export type NewSession = typeof session.$inferInsert;
 
+export const sessionRelations = relations(session, ({ one }) => ({
+  user: one(user, {
+    fields: [session.userId],
+    references: [user.id],
+  }),
+}));
+
 export const providerEnum = pgEnum('provider', ['twitch', 'google', 'donationalerts', 'github']);
 
 export const externalAccount = pgTable(
@@ -28,7 +40,7 @@ export const externalAccount = pgTable(
     userId: text('user_id')
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
-    provider: providerEnum(),
+    provider: providerEnum().notNull(),
     externalUserId: text('external_user_id').notNull(),
     externalUsername: text('external_usename').notNull(),
     accessToken: text('access_token'),
@@ -42,3 +54,10 @@ export const externalAccount = pgTable(
 
 export type ExternalAccount = typeof externalAccount.$inferSelect;
 export type NewExternalAccount = typeof externalAccount.$inferInsert;
+
+export const externalAccountRelations = relations(externalAccount, ({ one }) => ({
+  user: one(user, {
+    fields: [externalAccount.userId],
+    references: [user.id],
+  }),
+}));
