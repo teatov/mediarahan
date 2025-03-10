@@ -13,7 +13,7 @@
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        //
+
         github: 'bg-github text-github-foreground hover:bg-github/90',
         githubOutline:
           'border-github text-github bg-background hover:bg-github hover:text-github-foreground border dark:border-github-foreground dark:text-github-foreground dark:hover:bg-github dark:hover:text-github-foreground dark:hover:border-github',
