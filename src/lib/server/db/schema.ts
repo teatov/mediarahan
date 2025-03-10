@@ -7,12 +7,12 @@ export const user = pgTable('user', {
   avatarUrl: text('avatar_url'),
 });
 
-export type User = typeof user.$inferSelect;
-export type NewUser = typeof user.$inferInsert;
-
 export const userRelations = relations(user, ({ many }) => ({
   externalAccounts: many(externalAccount),
 }));
+
+export type User = typeof user.$inferSelect;
+export type NewUser = typeof user.$inferInsert;
 
 export const session = pgTable('session', {
   id: text('id').primaryKey(),
@@ -22,15 +22,15 @@ export const session = pgTable('session', {
   expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
 });
 
-export type Session = typeof session.$inferSelect;
-export type NewSession = typeof session.$inferInsert;
-
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, {
     fields: [session.userId],
     references: [user.id],
   }),
 }));
+
+export type Session = typeof session.$inferSelect;
+export type NewSession = typeof session.$inferInsert;
 
 export const providerEnum = pgEnum('provider', ['twitch', 'google', 'donationalerts', 'github']);
 
@@ -52,12 +52,12 @@ export const externalAccount = pgTable(
   ]
 );
 
-export type ExternalAccount = typeof externalAccount.$inferSelect;
-export type NewExternalAccount = typeof externalAccount.$inferInsert;
-
 export const externalAccountRelations = relations(externalAccount, ({ one }) => ({
   user: one(user, {
     fields: [externalAccount.userId],
     references: [user.id],
   }),
 }));
+
+export type ExternalAccount = typeof externalAccount.$inferSelect;
+export type NewExternalAccount = typeof externalAccount.$inferInsert;
