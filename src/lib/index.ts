@@ -1,1 +1,3 @@
-// place files you want to import through the `$lib` alias in this folder.
+export const providers = ['twitch', 'google', 'donationalerts', 'github'] as const;
+
+export type Provider = (typeof providers)[number];

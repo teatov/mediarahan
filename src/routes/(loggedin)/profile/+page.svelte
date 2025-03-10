@@ -1,22 +1,31 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { Button } from '$lib/components/ui/button';
+  import { Button, type ButtonVariant } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import Avatar from '$lib/components/layout/Avatar.svelte';
-  import IconBrandDonationAlerts from '$lib/components/icons/IconBrandDonationAlerts.svelte';
-  import {
-    IconBrandGithub,
-    IconBrandTwitch,
-    IconBrandGoogle,
-    IconLogout,
-  } from '@tabler/icons-svelte';
+  import AutoProviderIcon from '$lib/components/icons/IconBrandDonationAlerts.svelte';
+  import { IconLogout } from '@tabler/icons-svelte';
+  import type { Provider } from '$lib';
 
   let { data } = $props();
+
+  const providers = data.user.externalAccounts.map((externalAccount) => externalAccount.provider);
 </script>
 
 <svelte:head>
   <title>Профиль</title>
 </svelte:head>
+
+{#snippet providerButton(provider: Provider, name: string)}
+  <Button class="w-full" variant={provider} href={'/login/' + provider}
+    ><AutoProviderIcon {provider} />{#if providers.includes(provider)}
+      Отключить
+    {:else}
+      Подключить
+    {/if}
+    {name}</Button
+  >
+{/snippet}
 
 <Card.Root class="mx-auto max-w-sm">
   <Card.Content class="flex justify-between">
@@ -35,13 +44,9 @@
     <Card.Title>Сервисы</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    <Button class="w-full" variant="twitch"><IconBrandTwitch />Подключить Twitch</Button>
-    <Button class="w-full" variant="google"><IconBrandGoogle />Подключить Google</Button>
-    <Button class="w-full" variant="donationalerts"
-      ><IconBrandDonationAlerts />Подключить DonationAlerts</Button
-    >
-    <Button class="w-full" variant="github" href="/login/github"
-      ><IconBrandGithub />Подключить GitHub</Button
-    >
+    {@render providerButton('twitch', 'Twitch')}
+    {@render providerButton('google', 'Google')}
+    {@render providerButton('donationalerts', 'DonationAlerts')}
+    {@render providerButton('github', 'GitHub')}
   </Card.Content>
 </Card.Root>
