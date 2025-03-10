@@ -9,14 +9,12 @@
 </script>
 
 <header class="bg-background border-b py-2">
-  <div class="container flex max-w-6xl items-center justify-between">
+  <div class="container flex max-w-6xl items-center justify-between h-12">
     <a href="/" class="inline-block font-bold"><Logo /><span class="px-1">mediarahan</span></a>
-    <div>
-      {#if user}
-        <a href="/profile" class="inline-block" title="На страницу профиля"><Avatar {user} /></a>
-      {:else}
-        <Button href="/login"><IconLogin />Войти</Button>
-      {/if}
-    </div>
+    {#if user}
+      <a href="/profile" class="inline-block" title="На страницу профиля"><Avatar {user} /></a>
+    {:else}
+      <Button href="/login"><IconLogin />Войти</Button>
+    {/if}
   </div>
 </header>
