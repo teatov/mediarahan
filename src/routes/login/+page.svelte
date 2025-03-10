@@ -5,7 +5,7 @@
   import { IconBrandGithub, IconBrandTwitch, IconBrandGoogle } from '@tabler/icons-svelte';
 </script>
 
-<Card.Root class="mx-auto w-[380px]">
+<Card.Root class="mx-auto max-w-sm">
   <Card.Header>
     <Card.Title>Войти или зарегистрироваться</Card.Title>
   </Card.Header>
