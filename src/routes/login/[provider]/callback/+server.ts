@@ -1,6 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { error, redirect } from '@sveltejs/kit';
 import { eq, and } from 'drizzle-orm';
+import { authProviders, type ProviderName } from '$lib';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 import db from '$lib/server/db';
@@ -14,9 +15,20 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return error(404, 'Такого сервиса не существует');
   }
 
-  if (event.locals.user) {
-    return redirect(302, '/');
-  }
+  if (event.locals.session) {
+    const existingExternalAccount = await db.query.externalAccount.findFirst({
+      where: and(
+        eq(table.externalAccount.provider, providerName as ProviderName),
+        eq(table.externalAccount.userId, event.locals.session.userId)
+      ),
+    });
+
+    if (existingExternalAccount) {
+      return error(400, 'Этот сервис уже привязан');
+    }
+  } else if (!authProviders.includes(providerName as ProviderName)) {
+      return error(400, 'Этот сервис не предназначен для авторизации');
+    }
 
   const provider = providers[providerName];
 
@@ -56,33 +68,50 @@ export async function GET(event: RequestEvent): Promise<Response> {
     ),
   });
 
-  if (existingExternalAccount) {
+  if (event.locals.session && existingExternalAccount) {
+    return error(400, 'К этому сервису уже привязан кто-то другой');
+  }
+
+  if (event.locals.session && !existingExternalAccount) {
+    await db.insert(table.externalAccount).values({
+      userId: event.locals.session.userId,
+      provider: provider.name,
+      externalUserId,
+      externalUsername: username,
+    });
+    return redirect(302, '/profile');
+  }
+
+  if (!event.locals.session && existingExternalAccount) {
     const sessionToken = auth.generateSessionToken();
     const session = await auth.createSession(sessionToken, existingExternalAccount.userId);
     auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
     return redirect(302, '/');
   }
 
-  try {
-    const userId = generateUserId();
+  if (!event.locals.session && !existingExternalAccount) {
+    try {
+      const userId = generateUserId();
 
-    await db.transaction(async (tx) => {
-      await db.insert(table.user).values({ id: userId, username, avatarUrl });
-      await tx.insert(table.externalAccount).values({
-        userId,
-        provider: provider.name,
-        externalUserId,
-        externalUsername: username,
+      await db.transaction(async (tx) => {
+        await tx.insert(table.user).values({ id: userId, username, avatarUrl });
+        await tx.insert(table.externalAccount).values({
+          userId,
+          provider: provider.name,
+          externalUserId,
+          externalUsername: username,
+        });
       });
-    });
 
-    const sessionToken = auth.generateSessionToken();
-    const session = await auth.createSession(sessionToken, userId);
-    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-  } catch (e) {
-    console.error(e);
-    return error(500, 'При сохранении нового пользователя возникла ошибка');
+      const sessionToken = auth.generateSessionToken();
+      const session = await auth.createSession(sessionToken, userId);
+      auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+      return redirect(302, '/profile');
+    } catch (e) {
+      console.error(e);
+      return error(500, 'При сохранении нового пользователя возникла ошибка');
+    }
   }
 
-  return redirect(302, '/profile');
+  return error(500, 'Этого не может быть...');
 }
