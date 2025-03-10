@@ -2,9 +2,9 @@
   import { IconBrandGithub, IconBrandTwitch, IconBrandGoogle } from '@tabler/icons-svelte';
   import IconBrandDonationAlerts from '$lib/components/icons/IconBrandDonationAlerts.svelte';
   import IconBrandDonatePay from '$lib/components/icons/IconBrandDonatePay.svelte';
-  import type { Provider } from '$lib';
+  import type { ProviderName } from '$lib';
 
-  let { provider, ...restProps }: { provider: Provider; [x: string]: any } = $props();
+  let { provider, ...restProps }: { provider: ProviderName; [x: string]: any } = $props();
 </script>
 
 {#if provider === 'github'}
