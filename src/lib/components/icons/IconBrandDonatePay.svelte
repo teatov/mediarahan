@@ -10,8 +10,8 @@
       },
     ],
   ];
+
+  let restProps: { [x: string]: any } = $props();
 </script>
 
-<Icon type="outline" name="donatepay" {...$$props} {iconNode}>
-  <slot />
-</Icon>
+<Icon type="outline" name="donatepay" {...restProps} {iconNode}/>
