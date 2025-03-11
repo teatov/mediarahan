@@ -1,5 +1,5 @@
-import * as table from '$lib/server/db/schema';
-import type { Message } from '$lib/server/socket';
+import * as table from '../db/schema';
+import type { Message } from '../socket';
 
 export async function createSocket(externalAccount: table.ExternalAccount) {
   const channelId = `$alerts:donation_${externalAccount.externalUserId}`;
@@ -34,7 +34,9 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
     if (!clientId && isClientIdMessage(data)) {
       clientId = data.result.client;
       const response = await requestChannels(clientId, channelId, externalAccount);
-      console.log(response);
+      if (import.meta.env.DEV) {
+        console.log(response);
+      }
 
       if (!isChannelsResponse(response)) {
         console.error('Неправильный ответ с /centrifuge/subscribe');
@@ -77,7 +79,9 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
         value: donation.amount,
       },
     };
-    console.log(message);
+    if (import.meta.env.DEV) {
+      console.log(message);
+    }
   });
 
   socket.addEventListener('close', (event) => {
