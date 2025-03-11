@@ -1,8 +1,8 @@
-import { Google, OAuth2Tokens, decodeIdToken } from 'arctic';
+import * as arctic from 'arctic';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ORIGIN } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
 
-export const oauth = new Google(
+export const oauth = new arctic.Google(
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
   ORIGIN + '/login/google/callback'
@@ -18,16 +18,11 @@ export default {
   },
 
   validateAuthorizationCode: async (code: string, codeVerifier: string) => {
-    try {
-      return await oauth.validateAuthorizationCode(code, codeVerifier);
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    return await oauth.validateAuthorizationCode(code, codeVerifier);
   },
 
-  getUserInfo: async (tokens: OAuth2Tokens) => {
-    const claims = decodeIdToken(tokens.idToken()) as {
+  getUserInfo: async (tokens: arctic.OAuth2Tokens) => {
+    const claims = arctic.decodeIdToken(tokens.idToken()) as {
       sub: string;
       name: string;
       picture: string;

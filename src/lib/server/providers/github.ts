@@ -1,8 +1,12 @@
-import { GitHub, OAuth2Tokens } from 'arctic';
+import * as arctic from 'arctic';
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
 
-const oauth = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN + '/login/github/callback');
+const oauth = new arctic.GitHub(
+  GITHUB_CLIENT_ID,
+  GITHUB_CLIENT_SECRET,
+  ORIGIN + '/login/github/callback'
+);
 
 export default {
   name: 'github',
@@ -13,15 +17,10 @@ export default {
   },
 
   validateAuthorizationCode: async (code: string) => {
-    try {
-      return await oauth.validateAuthorizationCode(code);
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    return await oauth.validateAuthorizationCode(code);
   },
 
-  getUserInfo: async (tokens: OAuth2Tokens) => {
+  getUserInfo: async (tokens: arctic.OAuth2Tokens) => {
     const userRequest = new Request('https://api.github.com/user');
     userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
     const userResponse = await fetch(userRequest);

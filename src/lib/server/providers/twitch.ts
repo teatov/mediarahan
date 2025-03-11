@@ -1,8 +1,9 @@
-import { Twitch, OAuth2Tokens, decodeIdToken } from 'arctic';
+
+import * as arctic from 'arctic';
 import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
 
-const oauth = new Twitch(TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN + '/login/twitch/callback');
+const oauth = new arctic.Twitch(TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN + '/login/twitch/callback');
 
 export default {
   name: 'twitch',
@@ -23,16 +24,11 @@ export default {
   },
 
   validateAuthorizationCode: async (code: string) => {
-    try {
-      return await oauth.validateAuthorizationCode(code);
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    return await oauth.validateAuthorizationCode(code);
   },
 
-  getUserInfo: async (tokens: OAuth2Tokens) => {
-    const claims = decodeIdToken(tokens.idToken()) as {
+  getUserInfo: async (tokens: arctic.OAuth2Tokens) => {
+    const claims = arctic.decodeIdToken(tokens.idToken()) as {
       sub: string;
       preferred_username: string;
       picture: string;

@@ -1,4 +1,4 @@
-import { DonationAlerts, OAuth2Tokens } from 'arctic';
+import * as arctic from 'arctic';
 import {
   DONATIONALERTS_CLIENT_ID,
   DONATIONALERTS_CLIENT_SECRET,
@@ -6,7 +6,7 @@ import {
 } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
 
-const oauth = new DonationAlerts(
+const oauth = new arctic.DonationAlerts(
   DONATIONALERTS_CLIENT_ID,
   DONATIONALERTS_CLIENT_SECRET,
   ORIGIN + '/login/donationalerts/callback'
@@ -24,15 +24,10 @@ export default {
   },
 
   validateAuthorizationCode: async (code: string) => {
-    try {
-      return await oauth.validateAuthorizationCode(code);
-    } catch (e) {
-      console.error(e);
-      return null;
-    }
+    return await oauth.validateAuthorizationCode(code);
   },
 
-  getUserInfo: async (tokens: OAuth2Tokens) => {
+  getUserInfo: async (tokens: arctic.OAuth2Tokens) => {
     const userRequest = new Request('https://www.donationalerts.com/api/v1/user/oauth');
     userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
     const userResponse = await fetch(userRequest);
