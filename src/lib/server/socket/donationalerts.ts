@@ -1,4 +1,5 @@
 import * as table from '$lib/server/db/schema';
+import type { Message } from '$lib/server/socket';
 
 export async function createSocket(externalAccount: table.ExternalAccount) {
   const channelId = `$alerts:donation_${externalAccount.externalUserId}`;
@@ -22,16 +23,16 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
   socket.addEventListener('message', async (event) => {
     console.log('Сообщение: ', event.data);
 
-    let message: unknown;
+    let data: unknown;
     try {
-      message = JSON.parse(event.data);
+      data = JSON.parse(event.data);
     } catch (e) {
       console.error(e);
       return;
     }
 
-    if (!clientId && isClientIdMessage(message)) {
-      clientId = message.result.client;
+    if (!clientId && isClientIdMessage(data)) {
+      clientId = data.result.client;
       const response = await requestChannels(clientId, channelId, externalAccount);
       console.log(response);
 
@@ -55,18 +56,28 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
       return;
     }
 
-    if (!connected && isChannelConnectMessage(message)) {
+    if (!connected && isChannelConnectMessage(data)) {
       connected = true;
       console.log('Подключение официально готово!');
       return;
     }
 
-    if (!isDonationMessage(message)) {
+    if (!isDonationMessage(data)) {
       return;
     }
 
-    const donation = message.result.data.data;
-    console.log(donation);
+    const donation = data.result.data.data;
+    const message: Message = {
+      username: donation.username,
+      text: donation.message,
+      value: donation.amount_in_user_currency,
+      sentAt: new Date(),
+      valueInCurrency: {
+        currency: donation.currency,
+        value: donation.amount,
+      },
+    };
+    console.log(message);
   });
 
   socket.addEventListener('close', (event) => {
@@ -81,7 +92,7 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
 async function requestChannels(
   clientId: string,
   channelId: string,
-  externalAccount: ExternalAccount
+  externalAccount: table.ExternalAccount
 ) {
   const request = new Request('https://www.donationalerts.com/api/v1/centrifuge/subscribe', {
     method: 'POST',
