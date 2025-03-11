@@ -1,14 +1,16 @@
-import type { Handle } from '@sveltejs/kit';
+import type { Handle, ServerInit } from '@sveltejs/kit';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { env } from '$env/dynamic/private';
 import * as auth from '$lib/server/auth.js';
 import db from '$lib/server/db';
 
-if (env.NODE_ENV === 'production') {
-  console.log('Запускаем миграции БД...');
-  await migrate(db, { migrationsFolder: './drizzle' });
-  console.log('Миграции готовы!');
-}
+export const init: ServerInit = async () => {
+  if (env.NODE_ENV === 'production') {
+    console.log('Запускаем миграции БД...');
+    await migrate(db, { migrationsFolder: './drizzle' });
+    console.log('Миграции готовы!');
+  }
+};
 
 const handleAuth: Handle = async ({ event, resolve }) => {
   const sessionToken = event.cookies.get(auth.sessionCookieName);
