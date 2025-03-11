@@ -1,5 +1,7 @@
 <script lang="ts">
   import { ModeWatcher } from 'mode-watcher';
+  import { toast } from 'svelte-sonner';
+  import { getFlash } from 'sveltekit-flash-message';
   import { page } from '$app/state';
   import Footer from '$lib/components/layout/Footer.svelte';
   import Header from '$lib/components/layout/Header.svelte';
@@ -7,6 +9,19 @@
   import '../app.css';
 
   let { children, data } = $props();
+
+  const flash = getFlash(page);
+  $effect(() => {
+    if (!$flash) return;
+    if ($flash.type === 'success') {
+      toast.success($flash.message, { description: $flash.description });
+    } else if ($flash.type === 'error') {
+      toast.error($flash.message, { description: $flash.description });
+    } else {
+      toast($flash.message, { description: $flash.description });
+    }
+    $flash = undefined;
+  });
 </script>
 
 <ModeWatcher />
