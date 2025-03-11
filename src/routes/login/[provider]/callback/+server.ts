@@ -1,4 +1,3 @@
-import * as argon2 from '@node-rs/argon2';
 import type { RequestEvent } from '@sveltejs/kit';
 import { error, redirect } from '@sveltejs/kit';
 import * as arctic from 'arctic';
@@ -80,7 +79,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return error(400, 'Токен авторизации оказался невалидным');
   }
 
-  const { externalUserId, username, avatarUrl, socketToken } = await provider.getUserInfo(tokens);
+  const { externalUserId, username, avatarUrl, accessToken, socketToken } =
+    await provider.getUserInfo(tokens);
 
   const existingExternalAccount = await db.query.externalAccount.findFirst({
     where: and(
@@ -100,7 +100,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
         provider: provider.name,
         externalUserId,
         externalUsername: username,
-        socketTokenHash: socketToken ? await argon2.hash(socketToken, auth.hashOptions) : null,
+        accessToken,
+        socketToken,
       });
     } catch (e) {
       console.error(e);
@@ -127,7 +128,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
           provider: provider.name,
           externalUserId,
           externalUsername: username,
-          socketTokenHash: socketToken ? await argon2.hash(socketToken, auth.hashOptions) : null,
+          accessToken,
+          socketToken,
         });
       });
 
