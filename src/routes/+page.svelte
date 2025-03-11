@@ -20,4 +20,5 @@
     error: 'Error'
   })}>Show toast</Button>
   <Spinner slot="loading-icon" />
+  <a href="/sse">sse</a>
 </main>

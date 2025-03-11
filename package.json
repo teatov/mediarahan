@@ -43,6 +43,7 @@
     "svelte-check": "^4.0.0",
     "svelte-sonner": "^0.3.28",
     "sveltekit-flash-message": "^2.4.6",
+    "sveltekit-sse": "^0.13.14",
     "tailwind-merge": "^3.0.2",
     "tailwind-variants": "^1.0.0",
     "tailwindcss": "^4.0.0",
