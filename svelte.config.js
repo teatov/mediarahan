@@ -10,11 +10,6 @@ const config = {
 
   kit: {
     adapter: adapter(),
-    csrf: { checkOrigin: true },
-    csp: {
-      mode: 'auto',
-      directives: { 'script-src': ['self'] },
-    },
   },
 
   extensions: ['.svelte', '.svx'],
