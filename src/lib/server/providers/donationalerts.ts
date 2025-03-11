@@ -28,10 +28,10 @@ export default {
   },
 
   getUserInfo: async (tokens: arctic.OAuth2Tokens) => {
-    const userRequest = new Request('https://www.donationalerts.com/api/v1/user/oauth');
-    userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
-    const userResponse = await fetch(userRequest);
-    const userResult = (await userResponse.json()) as {
+    const request = new Request('https://www.donationalerts.com/api/v1/user/oauth');
+    request.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
+    const response = await fetch(request);
+    const { data } = (await response.json()) as {
       data: {
         id: number;
         name: string;
@@ -40,11 +40,15 @@ export default {
       };
     };
 
+    if (import.meta.env.DEV) {
+      console.log(data);
+    }
+
     return {
-      externalUserId: String(userResult.data.id),
-      username: userResult.data.name,
-      avatarUrl: userResult.data.avatar,
-      socketToken: userResult.data.socket_connection_token,
+      externalUserId: String(data.id),
+      username: data.name,
+      avatarUrl: data.avatar,
+      socketToken: data.socket_connection_token,
     };
   },
 } as Provider;

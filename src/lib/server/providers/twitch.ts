@@ -34,6 +34,10 @@ export default {
       picture: string;
     };
 
+    if (import.meta.env.DEV) {
+      console.log(claims);
+    }
+
     return {
       externalUserId: claims.sub,
       username: claims.preferred_username,
