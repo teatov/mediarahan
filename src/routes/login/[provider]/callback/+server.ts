@@ -37,14 +37,14 @@ export async function GET(event: RequestEvent): Promise<Response> {
   const storedState = provider.stateCookie
     ? (event.cookies.get(provider.stateCookie) ?? undefined)
     : undefined;
-  const codeVerifier = provider.verifierCookie
+  const storedCodeVerifier = provider.verifierCookie
     ? (event.cookies.get(provider.verifierCookie) ?? undefined)
     : undefined;
 
   if (
     !code ||
     (provider.stateCookie && (!state || !storedState || state !== storedState)) ||
-    (provider.verifierCookie && !codeVerifier)
+    (provider.verifierCookie && !storedCodeVerifier)
   ) {
     console.error({ storedState, code, state });
     return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
@@ -52,7 +52,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const tokens = await provider.validateAuthorizationCode(
     code,
-    provider.verifierCookie ? codeVerifier : undefined
+    provider.verifierCookie ? storedCodeVerifier : undefined
   );
 
   if (!tokens) {
