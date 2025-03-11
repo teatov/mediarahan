@@ -15,13 +15,14 @@ export async function POST(event: RequestEvent): Promise<Response> {
 
   return produce(
     async function start({ emit }) {
-      console.log('sse start!');
+      console.log(`SSE start: ${event.locals.user?.username}!`);
       while (true) {
         const { error } = emit(
           'message',
           JSON.stringify({ type: 'test', message: `the time is ${Date.now()}` })
         );
         if (error) {
+          console.error(error.message);
           return;
         }
         await delay(1000);
@@ -29,7 +30,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
     },
     {
       stop() {
-        console.log('sse stop...');
+        console.log(`SSE stop: ${event.locals.user?.username}...`);
       },
     }
   );
