@@ -3,7 +3,7 @@
 </script>
 
 <footer class="container flex max-w-6xl items-end justify-between py-2">
-  <p class="text-foreground/60 text-sm">
+  <p class="text-muted-foreground text-sm">
     Исходный код доступен на
     <a
       href="https://github.com/teatov/mediarahan"
