@@ -1,3 +1,4 @@
+import * as argon2 from '@node-rs/argon2';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase, encodeBase32LowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
@@ -91,3 +92,10 @@ export function generateUserId() {
   const id = encodeBase32LowerCase(bytes);
   return id;
 }
+
+export const hashOptions: argon2.Options = {
+  memoryCost: 19456,
+  timeCost: 2,
+  outputLen: 32,
+  parallelism: 1,
+};

@@ -15,7 +15,7 @@ const oauth = new arctic.DonationAlerts(
 export default {
   name: 'donationalerts',
 
-  createAuthorizationURL: (_: string) => {
+  createAuthorizationURL: () => {
     return oauth.createAuthorizationURL([
       'oauth-donation-subscribe',
       'oauth-donation-index',
@@ -44,6 +44,7 @@ export default {
       externalUserId: String(userResult.data.id),
       username: userResult.data.name,
       avatarUrl: userResult.data.avatar,
+      socketToken: userResult.data.socket_connection_token,
     };
   },
 } as Provider;

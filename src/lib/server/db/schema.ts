@@ -44,8 +44,8 @@ export const externalAccount = pgTable(
     provider: providerEnum().notNull(),
     externalUserId: text('external_user_id').notNull(),
     externalUsername: text('external_usename').notNull(),
-    accessToken: text('access_token'),
-    socketToken: text('socket_token'),
+    accessTokenHash: text('access_token'),
+    socketTokenHash: text('socket_token'),
   },
   (table) => [
     primaryKey({ columns: [table.provider, table.userId] }),
