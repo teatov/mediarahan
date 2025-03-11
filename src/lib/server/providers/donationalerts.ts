@@ -28,8 +28,9 @@ export default {
   },
 
   getUserInfo: async (tokens: arctic.OAuth2Tokens) => {
+    const accessToken = tokens.accessToken();
     const request = new Request('https://www.donationalerts.com/api/v1/user/oauth');
-    request.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
+    request.headers.set('Authorization', `Bearer ${accessToken}`);
     const response = await fetch(request);
     const { data } = (await response.json()) as {
       data: {
@@ -48,6 +49,7 @@ export default {
       externalUserId: String(data.id),
       username: data.name,
       avatarUrl: data.avatar,
+      accessToken: accessToken,
       socketToken: data.socket_connection_token,
     };
   },
