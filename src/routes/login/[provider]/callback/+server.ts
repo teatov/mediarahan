@@ -27,24 +27,24 @@ export async function GET(event: RequestEvent): Promise<Response> {
       return error(400, 'Этот сервис уже привязан');
     }
   } else if (!authProviders.includes(providerName as ProviderName)) {
-      return error(400, 'Этот сервис не предназначен для авторизации');
-    }
+    return error(400, 'Этот сервис не предназначен для авторизации');
+  }
 
   const provider = providers[providerName];
 
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
-  const storedState = event.cookies.get(provider.stateCookie) ?? undefined;
+  const storedState = provider.stateCookie
+    ? (event.cookies.get(provider.stateCookie) ?? undefined)
+    : undefined;
   const codeVerifier = provider.verifierCookie
     ? (event.cookies.get(provider.verifierCookie) ?? undefined)
     : undefined;
 
   if (
     !code ||
-    !state ||
-    !storedState ||
-    (provider.verifierCookie && !codeVerifier) ||
-    state !== storedState
+    (provider.stateCookie && (!state || !storedState || state !== storedState)) ||
+    (provider.verifierCookie && !codeVerifier)
   ) {
     console.error({ storedState, code, state });
     return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');

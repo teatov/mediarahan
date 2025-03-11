@@ -51,7 +51,6 @@ async function getUserInfo(tokens: OAuth2Tokens) {
 
 export default {
   name: 'donationalerts',
-  stateCookie: 'donationalerts_oauth_state',
   createAuthorizationURL,
   validateAuthorizationCode,
   getUserInfo,
