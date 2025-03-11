@@ -10,6 +10,16 @@ const config = {
 
   kit: {
     adapter: adapter(),
+    csrf: true,
+    csp: {
+      directives: {
+        'script-src': ['self'],
+      },
+      reportOnly: {
+        'script-src': ['self'],
+        'report-uri': ['/'],
+      },
+    },
   },
 
   extensions: ['.svelte', '.svx'],
