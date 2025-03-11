@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8" />
+    <link rel="icon" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Оказия...</title>
+		<style>
+			body {
+				--background: oklch(1 0 0);
+				--foreground: oklch(0.147 0.004 49.25);
+				background: var(--background);
+				color: var(--foreground);
+				font-family: ui-sans-serif, system-ui, sans-serif;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				margin: 0;
+			}
+
+			.error {
+				display: flex;
+				align-items: center;
+        flex-direction: column;
+			}
+
+			.status {
+				font-size: 3.75rem;
+        font-weight: 700;
+        line-height: 1;
+			}
+
+			.message {
+        font-weight: 400;
+        font-size: 1rem;
+        margin: 0;
+			}
+
+			.link {
+				color: var(--foreground);
+        font-weight: 400;
+        font-size: 1rem;
+        margin-top: 1rem;
+        text-decoration-line: underline;
+			}
+
+			@media (prefers-color-scheme: dark) {
+				body {
+					--background: oklch(0.147 0.004 49.25);
+					--foreground: oklch(0.985 0.001 106.423);
+				}
+			}
+		</style>
+	<body>
+		<div class="error">
+			<span class="status">%sveltekit.status%</span>
+			<h1 class="message">%sveltekit.error.message%</h1>
+      <a href="/" class="link">На главную</a>
+		</div>
+	</body>
+</html>
