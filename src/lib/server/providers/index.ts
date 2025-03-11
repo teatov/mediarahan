@@ -9,18 +9,20 @@ export type ProviderUserInfo = {
   externalUserId: string;
   username: string;
   avatarUrl: string | null;
+  accessToken: string | null;
+  socketToken: string | null;
 };
 
 export type Provider = {
   name: ProviderName;
   stateCookie?: string;
   verifierCookie?: string;
-  createAuthorizationURL(state: string, codeVerifier?: string): URL;
+  createAuthorizationURL(state?: string, codeVerifier?: string): URL;
   validateAuthorizationCode(
     code: string,
     codeVerifier?: string
   ): Promise<arctic.OAuth2Tokens | null>;
-  getUserInfo(accessToken: arctic.OAuth2Tokens): Promise<ProviderUserInfo>;
+  getUserInfo(tokens: arctic.OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
 export default { twitch, github, google, donationalerts } as Record<string, Provider>;
