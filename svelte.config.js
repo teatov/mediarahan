@@ -10,15 +10,10 @@ const config = {
 
   kit: {
     adapter: adapter(),
-    csrf: true,
+    csrf: { checkOrigin: true },
     csp: {
-      directives: {
-        'script-src': ['self'],
-      },
-      reportOnly: {
-        'script-src': ['self'],
-        'report-uri': ['/'],
-      },
+      mode: 'auto',
+      directives: { 'script-src': ['self'] },
     },
   },
 
