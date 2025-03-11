@@ -1,6 +1,6 @@
-import type { ExternalAccount } from '../db/schema';
+import * as table from '$lib/server/db/schema';
 
-export async function createSocket(externalAccount: ExternalAccount) {
+export async function createSocket(externalAccount: table.ExternalAccount) {
   const channelId = `$alerts:donation_${externalAccount.externalUserId}`;
   let clientId: string;
   let connected: boolean = false;
