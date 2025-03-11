@@ -3,7 +3,7 @@
   import { source } from 'sveltekit-sse';
   import type { SSE } from '$lib/sse';
 
-  let sse = $state<SSE>({ type: 'none' });
+  let sse = $state<SSE | null>(null);
 
   const sseSource = source('/sse', {
     open: () => {
