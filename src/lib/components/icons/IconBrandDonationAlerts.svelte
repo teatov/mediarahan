@@ -11,8 +11,8 @@
       },
     ],
   ];
+
+  let restProps: { [x: string]: any } = $props();
 </script>
 
-<Icon type="outline" name="donationalerts" {...$$props} {iconNode}>
-  <slot />
-</Icon>
+<Icon type="outline" name="donationalerts" {restProps} {iconNode}/>
