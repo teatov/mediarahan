@@ -5,7 +5,7 @@ import * as auth from '$lib/server/auth.js';
 import db from '$lib/server/db';
 
 export const init: ServerInit = async () => {
-  if (env.NODE_ENV === 'production') {
+  if (import.meta.env.PROD) {
     console.log('Запускаем миграции БД...');
     await migrate(db, { migrationsFolder: './drizzle' });
     console.log('Миграции готовы!');
