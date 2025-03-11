@@ -1,5 +1,4 @@
 import { error, redirect } from '@sveltejs/kit';
-
 import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
 import { authProviders, type ProviderName } from '$lib';
@@ -49,7 +48,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
   if (provider.verifierCookie) {
     codeVerifier = arctic.generateCodeVerifier();
 
-    event.cookies.set(provider.verifierCookie, arctic.codeVerifier, {
+    event.cookies.set(provider.verifierCookie, codeVerifier, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 10,
