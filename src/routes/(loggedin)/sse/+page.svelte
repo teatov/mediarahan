@@ -3,7 +3,7 @@
   import { source } from 'sveltekit-sse';
   import type { SSE } from '$lib/sse';
 
-  let message = $state<SSE>({ type: 'none' });
+  let sse = $state<SSE>({ type: 'none' });
 
   const sseSource = source('/sse', {
     open: () => {
@@ -30,7 +30,7 @@
       })
       .subscribe((value) => {
         if (!value) return;
-        message = value;
+        sse = value;
       });
   });
 
@@ -39,4 +39,4 @@
   });
 </script>
 
-{JSON.stringify(message)}
+{JSON.stringify(sse)}
