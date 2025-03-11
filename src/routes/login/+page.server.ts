@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
   if (event.locals.session) {
-    return redirect(302, '/');
+    return redirect(302, '/profile');
   }
 
   const data = await event.parent();
