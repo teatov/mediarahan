@@ -1,5 +1,6 @@
 import { error, redirect } from '@sveltejs/kit';
-import { generateState, generateCodeVerifier } from 'arctic';
+
+import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
 import { authProviders, type ProviderName } from '$lib';
 import db from '$lib/server/db';
@@ -31,7 +32,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const provider = providers[providerName];
 
-  const state = generateState();
+  const state = arctic.generateState();
 
   if (provider.stateCookie) {
     event.cookies.set(provider.stateCookie, state, {
@@ -46,9 +47,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
   let codeVerifier: string | undefined = undefined;
 
   if (provider.verifierCookie) {
-    codeVerifier = generateCodeVerifier();
+    codeVerifier = arctic.generateCodeVerifier();
 
-    event.cookies.set(provider.verifierCookie, codeVerifier, {
+    event.cookies.set(provider.verifierCookie, arctic.codeVerifier, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 10,

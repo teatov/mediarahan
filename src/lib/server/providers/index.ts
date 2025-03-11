@@ -1,4 +1,4 @@
-import type { OAuth2Tokens } from 'arctic';
+import * as arctic from 'arctic';
 import type { ProviderName } from '$lib';
 import donationalerts from '$lib/server/providers/donationalerts';
 import github from '$lib/server/providers/github';
@@ -16,8 +16,11 @@ export type Provider = {
   stateCookie?: string;
   verifierCookie?: string;
   createAuthorizationURL(state: string, codeVerifier?: string): URL;
-  validateAuthorizationCode(code: string, codeVerifier?: string): Promise<OAuth2Tokens | null>;
-  getUserInfo(accessToken: OAuth2Tokens): Promise<ProviderUserInfo>;
+  validateAuthorizationCode(
+    code: string,
+    codeVerifier?: string
+  ): Promise<arctic.OAuth2Tokens | null>;
+  getUserInfo(accessToken: arctic.OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
 export default { twitch, github, google, donationalerts } as Record<string, Provider>;

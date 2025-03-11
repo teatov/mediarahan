@@ -1,5 +1,6 @@
 import type { RequestEvent } from '@sveltejs/kit';
 import { error, redirect } from '@sveltejs/kit';
+import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
 import { authProviders, type ProviderName } from '$lib';
 import * as auth from '$lib/server/auth';
@@ -46,17 +47,36 @@ export async function GET(event: RequestEvent): Promise<Response> {
     (provider.stateCookie && (!state || !storedState || state !== storedState)) ||
     (provider.verifierCookie && !storedCodeVerifier)
   ) {
-    console.error({ storedState, code, state });
+    console.error({ code, state, storedState, storedCodeVerifier });
     return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
   }
 
-  const tokens = await provider.validateAuthorizationCode(
-    code,
-    provider.verifierCookie ? storedCodeVerifier : undefined
-  );
+  let tokens: arctic.OAuth2Tokens | null = null;
+
+  try {
+    tokens = await provider.validateAuthorizationCode(
+      code,
+      provider.verifierCookie ? storedCodeVerifier : undefined
+    );
+  } catch (e) {
+    console.error(e);
+    if (e instanceof arctic.OAuth2RequestError) {
+      return error(400, 'Невалидный код авторизации, реквизиты или URL перенаправления');
+    }
+    if (e instanceof arctic.ArcticFetchError) {
+      return error(400, 'Не удалось отправить запрос на валидацию токена');
+    }
+    if (
+      e instanceof arctic.UnexpectedResponseError ||
+      e instanceof arctic.UnexpectedErrorResponseBodyError
+    ) {
+      return error(400, 'Сервис вернул не те данные которые ожидались');
+    }
+    return error(400, 'Ошибка при валидации токена авторизации');
+  }
 
   if (!tokens) {
-    return error(400, 'Ошибка при валидации токена авторизации');
+    return error(400, 'Токен авторизации оказался невалидным');
   }
 
   const { externalUserId, username, avatarUrl } = await provider.getUserInfo(tokens);
@@ -73,12 +93,17 @@ export async function GET(event: RequestEvent): Promise<Response> {
   }
 
   if (event.locals.session && !existingExternalAccount) {
-    await db.insert(table.externalAccount).values({
-      userId: event.locals.session.userId,
-      provider: provider.name,
-      externalUserId,
-      externalUsername: username,
-    });
+    try {
+      await db.insert(table.externalAccount).values({
+        userId: event.locals.session.userId,
+        provider: provider.name,
+        externalUserId,
+        externalUsername: username,
+      });
+    } catch (e) {
+      console.error(e);
+      return error(500, 'При сохранении нового сервиса в БД возникла ошибка');
+    }
     return redirect(302, '/profile');
   }
 
@@ -109,7 +134,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
       return redirect(302, '/profile');
     } catch (e) {
       console.error(e);
-      return error(500, 'При сохранении нового пользователя возникла ошибка');
+      return error(500, 'При сохранении нового пользователя в БД возникла ошибка');
     }
   }
 
