@@ -8,34 +8,35 @@ export const oauth = new Google(
   ORIGIN + '/login/google/callback'
 );
 
-function createAuthorizationURL(state: string, codeVerifier: string) {
-  return oauth.createAuthorizationURL(state, codeVerifier, ['openid', 'profile']);
-}
-
-async function validateAuthorizationCode(code: string, codeVerifier: string) {
-  try {
-    return await oauth.validateAuthorizationCode(code, codeVerifier);
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-}
-
-async function getUserInfo(tokens: OAuth2Tokens) {
-  const claims = decodeIdToken(tokens.idToken()) as { sub: string; name: string; picture: string };
-
-  return {
-    externalUserId: claims.sub,
-    username: claims.name,
-    avatarUrl: claims.picture,
-  };
-}
-
 export default {
   name: 'google',
   stateCookie: 'google_oauth_state',
   verifierCookie: 'google_code_verifier',
-  createAuthorizationURL,
-  validateAuthorizationCode,
-  getUserInfo,
+
+  createAuthorizationURL: (state: string, codeVerifier: string) => {
+    return oauth.createAuthorizationURL(state, codeVerifier, ['openid', 'profile']);
+  },
+
+  validateAuthorizationCode: async (code: string, codeVerifier: string) => {
+    try {
+      return await oauth.validateAuthorizationCode(code, codeVerifier);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  },
+
+  getUserInfo: async (tokens: OAuth2Tokens) => {
+    const claims = decodeIdToken(tokens.idToken()) as {
+      sub: string;
+      name: string;
+      picture: string;
+    };
+
+    return {
+      externalUserId: claims.sub,
+      username: claims.name,
+      avatarUrl: claims.picture,
+    };
+  },
 } as Provider;

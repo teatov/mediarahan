@@ -12,46 +12,43 @@ const oauth = new DonationAlerts(
   ORIGIN + '/login/donationalerts/callback'
 );
 
-function createAuthorizationURL(_: string) {
-  return oauth.createAuthorizationURL([
-    'oauth-donation-subscribe',
-    'oauth-donation-index',
-    'oauth-user-show',
-  ]);
-}
-
-async function validateAuthorizationCode(code: string) {
-  try {
-    return await oauth.validateAuthorizationCode(code);
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-}
-
-async function getUserInfo(tokens: OAuth2Tokens) {
-  const userRequest = new Request('https://www.donationalerts.com/api/v1/user/oauth');
-  userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
-  const userResponse = await fetch(userRequest);
-  const userResult = (await userResponse.json()) as {
-    data: {
-      id: number;
-      name: string;
-      avatar: string;
-      socket_connection_token: string;
-    };
-  };
-
-  return {
-    externalUserId: String(userResult.data.id),
-    username: userResult.data.name,
-    avatarUrl: userResult.data.avatar,
-  };
-}
-
 export default {
   name: 'donationalerts',
-  createAuthorizationURL,
-  validateAuthorizationCode,
-  getUserInfo,
+
+  createAuthorizationURL: (_: string) => {
+    return oauth.createAuthorizationURL([
+      'oauth-donation-subscribe',
+      'oauth-donation-index',
+      'oauth-user-show',
+    ]);
+  },
+
+  validateAuthorizationCode: async (code: string) => {
+    try {
+      return await oauth.validateAuthorizationCode(code);
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
+  },
+
+  getUserInfo: async (tokens: OAuth2Tokens) => {
+    const userRequest = new Request('https://www.donationalerts.com/api/v1/user/oauth');
+    userRequest.headers.set('Authorization', `Bearer ${tokens.accessToken()}`);
+    const userResponse = await fetch(userRequest);
+    const userResult = (await userResponse.json()) as {
+      data: {
+        id: number;
+        name: string;
+        avatar: string;
+        socket_connection_token: string;
+      };
+    };
+
+    return {
+      externalUserId: String(userResult.data.id),
+      username: userResult.data.name,
+      avatarUrl: userResult.data.avatar,
+    };
+  },
 } as Provider;
