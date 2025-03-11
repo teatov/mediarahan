@@ -1,5 +1,4 @@
-import { OAuth2Tokens } from 'arctic';
-import { createOAuth2Request, sendTokenRequest } from 'arctic/dist/request';
+import { DonationAlerts, OAuth2Tokens } from 'arctic';
 import {
   DONATIONALERTS_CLIENT_ID,
   DONATIONALERTS_CLIENT_SECRET,
@@ -7,48 +6,14 @@ import {
 } from '$env/static/private';
 import type { Provider } from '$lib/server/providers';
 
-class DonationAlerts {
-  private clientId: string;
-  private clientSecret: string;
-  private redirectURI: string;
-
-  constructor(clientId: string, clientSecret: string, redirectURI: string) {
-    this.clientId = clientId;
-    this.clientSecret = clientSecret;
-    this.redirectURI = redirectURI;
-  }
-
-  public createAuthorizationURL(state: string, scopes: string[]): URL {
-    const url = new URL('https://www.donationalerts.com/oauth/authorize');
-    url.searchParams.set('response_type', 'code');
-    url.searchParams.set('client_id', this.clientId);
-    url.searchParams.set('state', state);
-    url.searchParams.set('scope', scopes.join(' '));
-    url.searchParams.set('redirect_uri', this.redirectURI);
-    return url;
-  }
-
-  public async validateAuthorizationCode(code: string): Promise<OAuth2Tokens> {
-    const body = new URLSearchParams();
-    body.set('grant_type', 'authorization_code');
-    body.set('code', code);
-    body.set('redirect_uri', this.redirectURI);
-    body.set('client_id', this.clientId);
-    body.set('client_secret', this.clientSecret);
-    const request = createOAuth2Request('https://www.donationalerts.com/oauth/token', body);
-    const tokens = await sendTokenRequest(request);
-    return tokens;
-  }
-}
-
 const oauth = new DonationAlerts(
   DONATIONALERTS_CLIENT_ID,
   DONATIONALERTS_CLIENT_SECRET,
   ORIGIN + '/login/donationalerts/callback'
 );
 
-function createAuthorizationURL(state: string) {
-  return oauth.createAuthorizationURL(state, [
+function createAuthorizationURL(_: string) {
+  return oauth.createAuthorizationURL([
     'oauth-donation-subscribe',
     'oauth-donation-index',
     'oauth-user-show',
