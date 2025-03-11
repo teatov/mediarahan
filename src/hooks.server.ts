@@ -1,6 +1,5 @@
 import type { Handle, ServerInit } from '@sveltejs/kit';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import { env } from '$env/dynamic/private';
 import * as auth from '$lib/server/auth.js';
 import db from '$lib/server/db';
 
