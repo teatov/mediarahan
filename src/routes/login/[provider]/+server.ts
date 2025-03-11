@@ -33,13 +33,15 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const state = generateState();
 
-  event.cookies.set(provider.stateCookie, state, {
-    path: '/',
-    httpOnly: true,
-    maxAge: 60 * 10,
-    secure: import.meta.env.PROD,
-    sameSite: 'lax',
-  });
+  if (provider.stateCookie) {
+    event.cookies.set(provider.stateCookie, state, {
+      path: '/',
+      httpOnly: true,
+      maxAge: 60 * 10,
+      secure: import.meta.env.PROD,
+      sameSite: 'lax',
+    });
+  }
 
   let codeVerifier: string | undefined = undefined;
 

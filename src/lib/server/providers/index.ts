@@ -13,7 +13,7 @@ export type ProviderUserInfo = {
 
 export type Provider = {
   name: ProviderName;
-  stateCookie: string;
+  stateCookie?: string;
   verifierCookie?: string;
   createAuthorizationURL(state: string, codeVerifier?: string): URL;
   validateAuthorizationCode(code: string, codeVerifier?: string): Promise<OAuth2Tokens | null>;
