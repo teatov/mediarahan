@@ -16,6 +16,6 @@
 </svelte:head>
 
 <div class="flex flex-col items-center">
-  <h1 class="text-6xl font-bold">{page?.status}</h1>
-  <p>{message}</p>
+  <span class="text-6xl font-bold">{page?.status}</span>
+  <h1>{message}</h1>
 </div>
