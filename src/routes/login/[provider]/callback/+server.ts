@@ -136,11 +136,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
       const sessionToken = auth.generateSessionToken();
       const session = await auth.createSession(sessionToken, userId);
       auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
-      return redirect(302, '/profile');
     } catch (e) {
       console.error(e);
       return error(500, 'При сохранении нового пользователя в БД возникла ошибка');
     }
+    return redirect(302, '/profile');
   }
 
   return error(500, 'Этого не может быть...');
