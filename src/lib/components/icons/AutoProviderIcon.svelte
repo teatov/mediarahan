@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconBrandGithub, IconBrandTwitch, IconBrandGoogle } from '@tabler/icons-svelte';
-  import type { ProviderName } from '$lib';
+  import type { ProviderName } from '$lib/providers';
   import IconBrandDonatePay from '$lib/components/icons/IconBrandDonatePay.svelte';
   import IconBrandDonationAlerts from '$lib/components/icons/IconBrandDonationAlerts.svelte';
 
