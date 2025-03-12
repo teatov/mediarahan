@@ -1,3 +1,4 @@
+import { decryptToken } from '../auth';
 import * as table from '../db/schema';
 import type { Message } from '../socket';
 
@@ -11,9 +12,10 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
   socket.addEventListener('open', () => {
     console.log('Соединение с WebSocket установлено!');
 
+    const socketToken = decryptToken(externalAccount.socketTokenEncrypted!);
     const connectMessage = {
       params: {
-        token: externalAccount.socketToken,
+        token: socketToken,
       },
       id: 1,
     };
@@ -98,6 +100,7 @@ async function requestChannels(
   channelId: string,
   externalAccount: table.ExternalAccount
 ) {
+  const accessToken = decryptToken(externalAccount.accessTokenEncrypted!);
   const request = new Request('https://www.donationalerts.com/api/v1/centrifuge/subscribe', {
     method: 'POST',
     body: JSON.stringify({
@@ -106,7 +109,7 @@ async function requestChannels(
     }),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${externalAccount.accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   const response = await fetch(request);

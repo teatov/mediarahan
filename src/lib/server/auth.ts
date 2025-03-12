@@ -1,7 +1,9 @@
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase, encodeBase32LowerCase } from '@oslojs/encoding';
 import type { RequestEvent } from '@sveltejs/kit';
+import crypto from 'crypto';
 import { eq } from 'drizzle-orm';
+import { SECRET_KEY, SECRET_IV } from '$env/static/private';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 
@@ -86,8 +88,22 @@ export function deleteSessionTokenCookie(event: RequestEvent) {
 }
 
 export function generateUserId() {
-  // ID with 120 bits of entropy, or about the same as UUID v4.
   const bytes = crypto.getRandomValues(new Uint8Array(15));
   const id = encodeBase32LowerCase(bytes);
   return id;
+}
+
+// const SECRET_KEY = crypto.randomBytes(32).toString("hex").slice(0, 32);
+// const SECRET_IV = crypto.randomBytes(16).toString("hex").slice(0, 16);
+
+export function encryptToken(val: string) {
+  const cipher = crypto.createCipheriv('aes-256-cbc', SECRET_KEY, SECRET_IV);
+  const encrypted = cipher.update(val, 'utf8', 'base64');
+  return encrypted + cipher.final('base64');
+}
+
+export function decryptToken(encrypted: string) {
+  const decipher = crypto.createDecipheriv('aes-256-cbc', SECRET_KEY, SECRET_IV);
+  const decrypted = decipher.update(encrypted, 'base64', 'utf8');
+  return decrypted + decipher.final('utf8');
 }
