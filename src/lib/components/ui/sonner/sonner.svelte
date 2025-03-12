@@ -11,7 +11,7 @@
   theme={$mode}
   class="toaster group"
   expand={true}
-  duration={50000}
+  duration={5000}
   visibleToasts={8}
   toastOptions={{
     unstyled: true,
