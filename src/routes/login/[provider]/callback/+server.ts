@@ -1,7 +1,7 @@
 import type { RequestEvent } from '@sveltejs/kit';
-import { error, redirect } from '@sveltejs/kit';
 import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
+import { redirect } from 'sveltekit-flash-message/server';
 import { authProviders, type ProviderName } from '$lib/providers';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
@@ -12,8 +12,16 @@ import providers from '$lib/server/providers';
 export async function GET(event: RequestEvent): Promise<Response> {
   const providerName = event.params.provider;
 
+  function errorRedirect(message: string) {
+    return redirect(
+      event.locals.session ? '/profile' : '/login',
+      { type: 'error', message },
+      event
+    );
+  }
+
   if (!providerName || !Object.keys(providers).includes(providerName)) {
-    return error(404, 'Такого сервиса не существует');
+    return errorRedirect('Такого сервиса не существует');
   }
 
   if (event.locals.session) {
@@ -25,10 +33,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
     });
 
     if (existingExternalAccount) {
-      return error(400, 'Этот сервис уже привязан');
+      return errorRedirect('Этот сервис уже привязан');
     }
   } else if (!authProviders.includes(providerName as ProviderName)) {
-    return error(400, 'Этот сервис не предназначен для авторизации');
+    return errorRedirect('Этот сервис не предназначен для авторизации');
   }
 
   const provider = providers[providerName];
@@ -48,7 +56,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     (provider.verifierCookie && !storedCodeVerifier)
   ) {
     console.error({ code, state, storedState, storedCodeVerifier });
-    return error(400, 'Сервис, через который вы пытаетесь войти, вернул неправильные данные');
+    return errorRedirect('Сервис, через который вы пытаетесь войти, вернул неправильные данные');
   }
 
   let tokens: arctic.OAuth2Tokens | null = null;
@@ -61,22 +69,22 @@ export async function GET(event: RequestEvent): Promise<Response> {
   } catch (e) {
     console.error(e);
     if (e instanceof arctic.OAuth2RequestError) {
-      return error(400, 'Невалидный код авторизации, реквизиты или URL перенаправления');
+      return errorRedirect('Невалидный код авторизации, реквизиты или URL перенаправления');
     }
     if (e instanceof arctic.ArcticFetchError) {
-      return error(400, 'Не удалось отправить запрос на валидацию токена');
+      return errorRedirect('Не удалось отправить запрос на валидацию токена');
     }
     if (
       e instanceof arctic.UnexpectedResponseError ||
       e instanceof arctic.UnexpectedErrorResponseBodyError
     ) {
-      return error(400, 'Сервис вернул не те данные которые ожидались');
+      return errorRedirect('Сервис вернул не те данные которые ожидались');
     }
-    return error(400, 'Ошибка при валидации токена авторизации');
+    return errorRedirect('Ошибка при валидации токена авторизации');
   }
 
   if (!tokens) {
-    return error(400, 'Токен авторизации оказался невалидным');
+    return errorRedirect('Токен авторизации оказался невалидным');
   }
 
   const { externalUserId, username, avatarUrl, accessToken, socketToken } =
@@ -90,7 +98,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
   });
 
   if (event.locals.session && existingExternalAccount) {
-    return error(400, 'К этому сервису уже привязан кто-то другой');
+    return errorRedirect('К этому аккаунту уже привязан кто-то другой');
   }
 
   const makeExternalAccountValues = (userId: string): table.NewExternalAccount => ({
@@ -110,7 +118,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
         .values(makeExternalAccountValues(event.locals.session.userId));
     } catch (e) {
       console.error(e);
-      return error(500, 'При сохранении нового сервиса в БД возникла ошибка');
+      return errorRedirect('При сохранении нового сервиса в БД возникла ошибка');
     }
     return redirect(302, '/profile');
   }
@@ -136,10 +144,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
       auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
     } catch (e) {
       console.error(e);
-      return error(500, 'При сохранении нового пользователя в БД возникла ошибка');
+      return errorRedirect('При сохранении нового пользователя в БД возникла ошибка');
     }
     return redirect(302, '/profile');
   }
 
-  return error(500, 'Этого не может быть...');
+  return errorRedirect('Произошло что-то непредвиденное...');
 }
