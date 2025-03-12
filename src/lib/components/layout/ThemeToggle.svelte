@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconSun, IconMoon } from '@tabler/icons-svelte';
   import { toggleMode } from 'mode-watcher';
-  import { Button } from '$lib/components/ui/button/index.js';
+  import { Button } from '$lib/components/ui/button';
 </script>
 
 <Button onclick={toggleMode} variant="outline" size="icon" title="Переключить светлую/тёмную тему">

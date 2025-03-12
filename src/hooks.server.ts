@@ -1,6 +1,6 @@
 import type { Handle, ServerInit } from '@sveltejs/kit';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
-import * as auth from '$lib/server/auth.js';
+import * as auth from '$lib/server/auth';
 import db from '$lib/server/db';
 
 export const init: ServerInit = async () => {
