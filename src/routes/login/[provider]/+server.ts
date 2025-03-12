@@ -1,7 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
-import { authProviders, type ProviderName } from '$lib';
+import { authProviders, type ProviderName } from '$lib/providers';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import providers from '$lib/server/providers';

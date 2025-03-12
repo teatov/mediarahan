@@ -2,7 +2,7 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { error, redirect } from '@sveltejs/kit';
 import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
-import { authProviders, type ProviderName } from '$lib';
+import { authProviders, type ProviderName } from '$lib/providers';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 import db from '$lib/server/db';

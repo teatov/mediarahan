@@ -1,15 +1,24 @@
 <script lang="ts">
-  import { IconLogout, IconTrash } from '@tabler/icons-svelte';
+  import { IconLogout, IconTrash, IconLogin, IconMessage } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
-  import type { ProviderName } from '$lib';
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import Avatar from '$lib/components/layout/Avatar.svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
+  import {
+    type ProviderName,
+    authProviders,
+    providerLabels,
+    providerStyles,
+    providers,
+    socketProviders,
+  } from '$lib/providers';
 
   let { data } = $props();
 
-  const providers = data.user.externalAccounts.map((externalAccount) => externalAccount.provider);
+  const userProviders = data.user.externalAccounts.map(
+    (externalAccount) => externalAccount.provider
+  );
   const externalUsernames = data.user.externalAccounts.reduce(
     (prev, curr) => {
       prev[curr.provider] = curr.externalUsername;
@@ -23,22 +32,35 @@
   <title>Профиль</title>
 </svelte:head>
 
-{#snippet providerButton(provider: ProviderName, name: string, className: string)}
-  {#if providers.includes(provider)}
-    <div class={`flex items-center justify-between ${className}`}>
-      <div class="flex items-center gap-2">
-        <div>
-          <AutoProviderIcon {provider} />
-        </div>
-        <div>
-          {name}: <strong>{externalUsernames[provider]}</strong>
-        </div>
+{#snippet providerButton(provider: ProviderName)}
+  {#if userProviders.includes(provider)}
+    <div class="flex items-center justify-between gap-2">
+      <div class="truncate">
+        <span class={providerStyles[provider]}>
+          <AutoProviderIcon {provider} class="inline -mt-0.5" />
+          {providerLabels[provider]}
+        </span>:
+        <strong class="ml-1">{externalUsernames[provider]}</strong>
       </div>
-      <Button variant={(provider + 'Outline') as any} href={'/login/' + provider}>Отключить</Button>
+      <div class="flex items-center gap-2">
+        {#if socketProviders.includes(provider)}
+          <span title="Через этот сервис можно принимать сообщения" class="cursor-help">
+            <IconMessage />
+          </span>
+        {/if}
+        {#if authProviders.includes(provider)}
+          <span title="Через этот сервис можно входить в аккаунт" class="cursor-help">
+            <IconLogin />
+          </span>
+        {/if}
+        <Button variant={(provider + 'Outline') as any} href={'/login/' + provider}>
+          Отключить
+        </Button>
+      </div>
     </div>
   {:else}
     <Button class="w-full" variant={provider} href={'/login/' + provider}>
-      <AutoProviderIcon {provider} />Подключить {name}
+      <AutoProviderIcon {provider} />Подключить {providerLabels[provider]}
     </Button>
   {/if}
 {/snippet}
@@ -55,16 +77,14 @@
   </Card.Footer>
 </Card.Root>
 
-<Card.Root class="mx-auto max-w-md">
+<Card.Root class="mx-auto max-w-lg">
   <Card.Header>
     <Card.Title>Сервисы</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    {@render providerButton('twitch', 'Twitch', 'text-twitch')}
-    {@render providerButton('google', 'Google', 'text-google-foreground dark:text-google')}
-    {@render providerButton('donationalerts', 'DonationAlerts', 'text-donationalerts')}
-    {@render providerButton('donatepay', 'DonatePay', 'text-donatepay')}
-    {@render providerButton('github', 'GitHub', 'text-github dark:text-github-foreground')}
+    {#each providers as provider}
+      {@render providerButton(provider)}
+    {/each}
   </Card.Content>
 </Card.Root>
 
@@ -75,7 +95,7 @@
   <Card.Content class="space-y-4">
     <form method="post" action="/delete" use:enhance>
       <Button type="submit" variant="destructive" class="w-full">
-        <IconTrash />Удалить учётную запись
+        <IconTrash />Удалить аккаунт
       </Button>
     </form>
   </Card.Content>

@@ -1,5 +1,5 @@
 import * as arctic from 'arctic';
-import type { ProviderName } from '$lib';
+import type { ProviderName } from '$lib/providers';
 import donationalerts from '$lib/server/providers/donationalerts';
 import github from '$lib/server/providers/github';
 import google from '$lib/server/providers/google';
