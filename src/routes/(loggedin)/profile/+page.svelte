@@ -54,13 +54,13 @@
           </span>
         {/if}
         <Button variant={(provider + 'Outline') as any} href={'/login/' + provider}>
-          Отключить
+          Отвязать
         </Button>
       </div>
     </div>
   {:else}
     <Button class="w-full" variant={provider} href={'/login/' + provider}>
-      <AutoProviderIcon {provider} />Подключить {providerLabels[provider]}
+      <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
     </Button>
   {/if}
 {/snippet}
