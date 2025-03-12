@@ -17,9 +17,7 @@
   let { data } = $props();
   let { user } = data;
 
-  const userProviders = user.externalAccounts.map(
-    (externalAccount) => externalAccount.provider
-  );
+  const userProviders = user.externalAccounts.map((externalAccount) => externalAccount.provider);
   const externalUsernames = user.externalAccounts.reduce(
     (prev, curr) => {
       prev[curr.provider] = curr.externalUsername;
@@ -68,8 +66,8 @@
 
 <Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex gap-6">
-    <Avatar user={user} class="size-24" />
-    <div class="space-y-2 min-w-0">
+    <Avatar {user} class="size-24" />
+    <div class="space-y-2 w-full min-w-0">
       <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
       <div class="flex justify-between flex-wrap gap-2">
         <Button><IconEdit />Редактировать</Button>
