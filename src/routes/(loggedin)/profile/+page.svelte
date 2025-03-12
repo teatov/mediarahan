@@ -53,9 +53,7 @@
             <IconLogin />
           </span>
         {/if}
-        <Button variant={(provider + 'Outline') as any} href={'/login/' + provider}>
-          Отвязать
-        </Button>
+        {@render removeProviderDialog(provider)}
       </div>
     </div>
   {:else}
@@ -75,6 +73,60 @@
       <AlertDialog.Footer>
         <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
         <AlertDialog.Action>Сохранить</AlertDialog.Action>
+      </AlertDialog.Footer>
+    </AlertDialog.Content>
+  </AlertDialog.Root>
+{/snippet}
+
+{#snippet removeProviderDialog(provider: ProviderName)}
+  <AlertDialog.Root>
+    <AlertDialog.Trigger class={buttonVariants({ variant: (provider + 'Outline') as any })}>
+      Отвязать
+    </AlertDialog.Trigger>
+    <AlertDialog.Content>
+      <AlertDialog.Header>
+        <AlertDialog.Title>Отвязать {providerLabels[provider]} от аккаунта?</AlertDialog.Title>
+      </AlertDialog.Header>
+      <AlertDialog.Footer>
+        <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
+        <AlertDialog.Action class={buttonVariants({ variant: 'destructive' })}>
+          Отвязать
+        </AlertDialog.Action>
+      </AlertDialog.Footer>
+    </AlertDialog.Content>
+  </AlertDialog.Root>
+{/snippet}
+
+{#snippet deleteAccountDialog()}
+  <AlertDialog.Root>
+    <AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' }) + ' w-full'}>
+      <IconTrash />Удалить аккаунт
+    </AlertDialog.Trigger>
+    <AlertDialog.Content>
+      <AlertDialog.Header>
+        <AlertDialog.Title class="text-destructive">Удалить аккаунт?</AlertDialog.Title>
+        <AlertDialog.Description>
+          Будет удалено <b>ВСЁ</b> что связано с вашим аккаунтом. Навсегда.
+        </AlertDialog.Description>
+      </AlertDialog.Header>
+      <AlertDialog.Footer>
+        <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
+        <AlertDialog.Root>
+          <AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' })}>
+            Удалить
+          </AlertDialog.Trigger>
+          <AlertDialog.Content>
+            <AlertDialog.Header>
+              <AlertDialog.Title class="text-destructive">ТОЧНО?</AlertDialog.Title>
+            </AlertDialog.Header>
+            <AlertDialog.Footer>
+              <AlertDialog.Cancel>Не точно</AlertDialog.Cancel>
+              <AlertDialog.Action class={buttonVariants({ variant: 'destructive' })}>
+                Точно.
+              </AlertDialog.Action>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
       </AlertDialog.Footer>
     </AlertDialog.Content>
   </AlertDialog.Root>
@@ -111,10 +163,6 @@
     <Card.Title>Опасное</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    <form method="post" action="/delete" use:enhance>
-      <Button type="submit" variant="destructive" class="w-full">
-        <IconTrash />Удалить аккаунт
-      </Button>
-    </form>
+    {@render deleteAccountDialog()}
   </Card.Content>
 </Card.Root>
