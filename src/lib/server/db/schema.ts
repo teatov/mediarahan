@@ -46,6 +46,7 @@ export const externalAccount = pgTable(
     externalUsername: text('external_usename').notNull(),
     accessTokenEncrypted: text('access_token'),
     socketTokenEncrypted: text('socket_token'),
+    avatarUrl: text('avatar_url'),
   },
   (table) => [
     primaryKey({ columns: [table.provider, table.userId] }),

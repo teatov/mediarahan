@@ -93,16 +93,21 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return error(400, 'К этому сервису уже привязан кто-то другой');
   }
 
+  const makeExternalAccountValues = (userId: string): table.NewExternalAccount => ({
+    userId: userId,
+    provider: provider.name,
+    externalUserId,
+    externalUsername: username,
+    accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
+    socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
+    avatarUrl,
+  });
+
   if (event.locals.session && !existingExternalAccount) {
     try {
-      await db.insert(table.externalAccount).values({
-        userId: event.locals.session.userId,
-        provider: provider.name,
-        externalUserId,
-        externalUsername: username,
-        accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
-        socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
-      });
+      await db
+        .insert(table.externalAccount)
+        .values(makeExternalAccountValues(event.locals.session.userId));
     } catch (e) {
       console.error(e);
       return error(500, 'При сохранении нового сервиса в БД возникла ошибка');
@@ -123,14 +128,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
       await db.transaction(async (tx) => {
         await tx.insert(table.user).values({ id: userId, username, avatarUrl });
-        await tx.insert(table.externalAccount).values({
-          userId,
-          provider: provider.name,
-          externalUserId,
-          externalUsername: username,
-          accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
-          socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
-        });
+        await tx.insert(table.externalAccount).values(makeExternalAccountValues(userId));
       });
 
       const sessionToken = auth.generateSessionToken();
