@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconLogout, IconTrash, IconLogin, IconMessage } from '@tabler/icons-svelte';
+  import { IconLogout, IconTrash, IconLogin, IconMessage, IconEdit } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import Avatar from '$lib/components/layout/Avatar.svelte';
@@ -15,11 +15,12 @@
   } from '$lib/providers';
 
   let { data } = $props();
+  let { user } = data;
 
-  const userProviders = data.user.externalAccounts.map(
+  const userProviders = user.externalAccounts.map(
     (externalAccount) => externalAccount.provider
   );
-  const externalUsernames = data.user.externalAccounts.reduce(
+  const externalUsernames = user.externalAccounts.reduce(
     (prev, curr) => {
       prev[curr.provider] = curr.externalUsername;
       return prev;
@@ -66,15 +67,18 @@
 {/snippet}
 
 <Card.Root class="mx-auto max-w-lg">
-  <Card.Content class="flex justify-between">
-    <h1 class="text-4xl font-bold">{data.user.username}</h1>
-    <Avatar user={data.user} class="size-20" />
+  <Card.Content class="flex gap-6">
+    <Avatar user={user} class="size-24" />
+    <div class="space-y-2 min-w-0">
+      <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
+      <div class="flex justify-between flex-wrap gap-2">
+        <Button><IconEdit />Редактировать</Button>
+        <form method="post" action="/logout" use:enhance>
+          <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
+        </form>
+      </div>
+    </div>
   </Card.Content>
-  <Card.Footer class="justify-end">
-    <form method="post" action="/logout" use:enhance>
-      <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
-    </form>
-  </Card.Footer>
 </Card.Root>
 
 <Card.Root class="mx-auto max-w-lg">

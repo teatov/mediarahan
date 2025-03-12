@@ -36,7 +36,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
       return errorRedirect('Этот сервис уже привязан');
     }
   } else if (!authProviders.includes(providerName as ProviderName)) {
-    return errorRedirect('Этот сервис не предназначен для авторизации');
+    return errorRedirect('Этот сервис не предназначен для входа');
   }
 
   const provider = providers[providerName];
