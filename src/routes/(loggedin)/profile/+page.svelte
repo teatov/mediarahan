@@ -3,7 +3,8 @@
   import { enhance } from '$app/forms';
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import Avatar from '$lib/components/layout/Avatar.svelte';
-  import { Button } from '$lib/components/ui/button';
+  import * as AlertDialog from '$lib/components/ui/alert-dialog';
+  import { Button, buttonVariants } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import {
     type ProviderName,
@@ -64,13 +65,28 @@
   {/if}
 {/snippet}
 
+{#snippet editProfileDialog()}
+  <AlertDialog.Root>
+    <AlertDialog.Trigger class={buttonVariants()}><IconEdit />Редактировать</AlertDialog.Trigger>
+    <AlertDialog.Content>
+      <AlertDialog.Header>
+        <AlertDialog.Title>Редактировать профиль</AlertDialog.Title>
+      </AlertDialog.Header>
+      <AlertDialog.Footer>
+        <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
+        <AlertDialog.Action>Сохранить</AlertDialog.Action>
+      </AlertDialog.Footer>
+    </AlertDialog.Content>
+  </AlertDialog.Root>
+{/snippet}
+
 <Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex gap-6">
     <Avatar {user} class="size-24" />
     <div class="space-y-2 w-full min-w-0">
       <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
       <div class="flex justify-between flex-wrap gap-2">
-        <Button><IconEdit />Редактировать</Button>
+        {@render editProfileDialog()}
         <form method="post" action="/logout" use:enhance>
           <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
         </form>
