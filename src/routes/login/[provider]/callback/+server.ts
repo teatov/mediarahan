@@ -100,8 +100,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
         provider: provider.name,
         externalUserId,
         externalUsername: username,
-        accessToken,
-        socketToken,
+        accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
+        socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
       });
     } catch (e) {
       console.error(e);
@@ -128,8 +128,8 @@ export async function GET(event: RequestEvent): Promise<Response> {
           provider: provider.name,
           externalUserId,
           externalUsername: username,
-          accessToken,
-          socketToken,
+          accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
+          socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
         });
       });
 
