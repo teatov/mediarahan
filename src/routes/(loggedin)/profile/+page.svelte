@@ -65,7 +65,7 @@
   {/if}
 {/snippet}
 
-<Card.Root class="mx-auto max-w-md">
+<Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex justify-between">
     <h1 class="text-4xl font-bold">{data.user.username}</h1>
     <Avatar user={data.user} class="size-20" />
@@ -88,7 +88,7 @@
   </Card.Content>
 </Card.Root>
 
-<Card.Root class="mx-auto max-w-md">
+<Card.Root class="mx-auto max-w-lg">
   <Card.Header>
     <Card.Title>Опасное</Card.Title>
   </Card.Header>
