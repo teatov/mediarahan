@@ -18,9 +18,12 @@
     : type === 'time'
       ? datetime.toISOString().split('T')[1]
       : datetime.toISOString()}
-  >{type === 'date'
-    ? datetime.toLocaleDateString()
-    : type === 'time'
-      ? datetime.toLocaleTimeString()
-      : datetime.toLocaleString()}</time
+  >{Intl.DateTimeFormat(
+    undefined,
+    type === 'date'
+      ? { dateStyle: 'medium' }
+      : type === 'time'
+        ? { timeStyle: 'short' }
+        : { timeStyle: 'short', dateStyle: 'short' },
+  ).format(datetime)}</time
 >
