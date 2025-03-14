@@ -1,9 +1,10 @@
 <script lang="ts">
   import { IconHourglass } from '@tabler/icons-svelte';
+  import { cn } from '$lib/utils';
 
-  let restProps: { [x: string]: any } = $props();
+  let { class: className, ...restProps }: IconProps = $props();
 </script>
 
-<span {...restProps}>
-  <IconHourglass class="animate-spin" />
+<span>
+  <IconHourglass class={cn(className, 'animate-spin')} {...restProps} />
 </span>
