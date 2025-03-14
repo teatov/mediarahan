@@ -98,7 +98,7 @@ export async function createSocket(externalAccount: table.ExternalAccount) {
 async function requestChannels(
   clientId: string,
   channelId: string,
-  externalAccount: table.ExternalAccount
+  externalAccount: table.ExternalAccount,
 ) {
   const accessToken = decryptToken(externalAccount.accessTokenEncrypted!);
   const request = new Request('https://www.donationalerts.com/api/v1/centrifuge/subscribe', {

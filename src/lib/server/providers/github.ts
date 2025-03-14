@@ -5,7 +5,7 @@ import type { Provider } from '$lib/server/providers';
 const oauth = new arctic.GitHub(
   GITHUB_CLIENT_ID,
   GITHUB_CLIENT_SECRET,
-  ORIGIN + '/login/github/callback'
+  ORIGIN + '/login/github/callback',
 );
 
 export default {

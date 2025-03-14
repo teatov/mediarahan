@@ -36,5 +36,5 @@ export default ts.config(
         svelteConfig,
       },
     },
-  }
+  },
 );
