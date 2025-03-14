@@ -22,20 +22,12 @@
     providerLabels,
     providerStyles,
     providers,
-    socketProviders,
   } from '$lib/providers';
 
   let { data } = $props();
-  let { user } = data;
+  let { user, externalAccounts } = data;
 
-  const userProviders = user.externalAccounts.map((externalAccount) => externalAccount.provider);
-  const externalUsernames = user.externalAccounts.reduce(
-    (prev, curr) => {
-      prev[curr.provider] = curr.externalUsername;
-      return prev;
-    },
-    {} as Record<ProviderName, string>
-  );
+  const userProviders = Object.keys(externalAccounts) as ProviderName[];
 </script>
 
 <svelte:head>
@@ -50,7 +42,7 @@
           <AutoProviderIcon {provider} class="inline -mt-0.5" />
           {providerLabels[provider]}
         </span>:
-        <strong class="ml-1">{externalUsernames[provider]}</strong>
+        <strong class="ml-1">{externalAccounts[provider].externalUsername}</strong>
       </div>
       <div class="flex items-center gap-2">
         {#if pointSocketProviders.includes(provider)}
