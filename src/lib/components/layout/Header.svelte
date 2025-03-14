@@ -3,9 +3,8 @@
   import Avatar from '$lib/components/layout/Avatar.svelte';
   import Logo from '$lib/components/layout/Logo.svelte';
   import { Button } from '$lib/components/ui/button';
-  import type { SessionValidationResult } from '$lib/server/auth';
 
-  let { user, url }: { user: SessionValidationResult['user']; url: URL } = $props();
+  let { user, url }: { user: App.Locals['user']; url: URL } = $props();
 </script>
 
 {#snippet navLink(href: string, label: string, section: boolean = false, dim: boolean = false)}
