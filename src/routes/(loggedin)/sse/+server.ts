@@ -18,6 +18,6 @@ export async function POST(event: RequestEvent): Promise<Response> {
         console.log(`SSE stop: ${event.locals.user?.username}...`);
         clients.delete(event.locals.session!.userId);
       },
-    }
+    },
   );
 }

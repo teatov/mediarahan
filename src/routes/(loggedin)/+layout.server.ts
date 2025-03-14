@@ -16,7 +16,7 @@ export const load: LayoutServerLoad = async (event) => {
       prev[curr.provider] = curr;
       return prev;
     },
-    {} as Record<ProviderName, (typeof user.externalAccounts)[number]>
+    {} as Record<ProviderName, (typeof user.externalAccounts)[number]>,
   );
 
   return { ...data, user, externalAccounts };

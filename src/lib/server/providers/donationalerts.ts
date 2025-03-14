@@ -9,7 +9,7 @@ import type { Provider } from '$lib/server/providers';
 const oauth = new arctic.DonationAlerts(
   DONATIONALERTS_CLIENT_ID,
   DONATIONALERTS_CLIENT_SECRET,
-  ORIGIN + '/login/donationalerts/callback'
+  ORIGIN + '/login/donationalerts/callback',
 );
 
 export default {

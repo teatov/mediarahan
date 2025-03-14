@@ -15,7 +15,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return redirect(
       event.locals.session ? '/profile' : '/login',
       { type: 'error', message },
-      event
+      event,
     );
   }
 
@@ -27,7 +27,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     const existingExternalAccount = await db.query.externalAccount.findFirst({
       where: and(
         eq(table.externalAccount.provider, providerName as ProviderName),
-        eq(table.externalAccount.userId, event.locals.session.userId)
+        eq(table.externalAccount.userId, event.locals.session.userId),
       ),
     });
 

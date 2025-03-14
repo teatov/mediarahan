@@ -5,7 +5,7 @@ import type { Provider } from '$lib/server/providers';
 export const oauth = new arctic.Google(
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
-  ORIGIN + '/login/google/callback'
+  ORIGIN + '/login/google/callback',
 );
 
 export default {

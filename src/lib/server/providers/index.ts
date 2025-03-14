@@ -22,7 +22,7 @@ export type Provider = {
   createAuthorizationURL(state?: string, codeVerifier?: string): URL;
   validateAuthorizationCode(
     code: string,
-    codeVerifier?: string
+    codeVerifier?: string,
   ): Promise<arctic.OAuth2Tokens | null>;
   getUserInfo(tokens: arctic.OAuth2Tokens): Promise<ProviderUserInfo>;
 };

@@ -5,7 +5,7 @@ import type { Provider } from '$lib/server/providers';
 const oauth = new arctic.Twitch(
   TWITCH_CLIENT_ID,
   TWITCH_CLIENT_SECRET,
-  ORIGIN + '/login/twitch/callback'
+  ORIGIN + '/login/twitch/callback',
 );
 
 export default {
@@ -21,7 +21,7 @@ export default {
           picture: null,
           preferred_username: null,
         },
-      })
+      }),
     );
     return url;
   },

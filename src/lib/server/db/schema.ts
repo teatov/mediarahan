@@ -56,7 +56,7 @@ export const externalAccount = pgTable(
   (table) => [
     primaryKey({ columns: [table.provider, table.userId] }),
     unique().on(table.provider, table.externalUserId),
-  ]
+  ],
 );
 
 export const externalAccountRelations = relations(externalAccount, ({ one }) => ({
