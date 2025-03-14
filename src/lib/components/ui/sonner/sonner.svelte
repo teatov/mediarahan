@@ -32,5 +32,5 @@
 >
   <IconExclamationCircle slot="error-icon" />
   <IconCircleCheck slot="success-icon" />
-    <Spinner slot="loading-icon"  class="group-[.toast-loading]:block hidden"/>
+  <Spinner slot="loading-icon" class="group-[.toast-loading]:block hidden" />
 </Sonner>

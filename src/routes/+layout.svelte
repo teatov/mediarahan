@@ -24,7 +24,7 @@
   });
 </script>
 
-<ModeWatcher defaultMode={"dark"} />
+<ModeWatcher defaultMode={'dark'} />
 <Toaster />
 <div class="relative flex min-h-screen flex-col justify-between">
   <Header user={data.user} url={page.url} />
