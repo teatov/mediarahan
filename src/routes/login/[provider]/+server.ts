@@ -40,7 +40,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const provider = providers[providerName];
 
-  let state: string;
+  let state: string | undefined = undefined;
   const cookieOptions: CookieSerializeOptions & { path: string } = {
     path: '/',
     httpOnly: true,
@@ -54,8 +54,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     event.cookies.set(provider.stateCookie, state, cookieOptions);
   }
 
-  let codeVerifier: string;
-
+  let codeVerifier: string | undefined = undefined;
   if (provider.verifierCookie) {
     codeVerifier = arctic.generateCodeVerifier();
     event.cookies.set(provider.verifierCookie, codeVerifier, cookieOptions);
