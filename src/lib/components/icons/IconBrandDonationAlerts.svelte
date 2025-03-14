@@ -15,4 +15,4 @@
   let restProps: { [x: string]: any } = $props();
 </script>
 
-<Icon type="outline" name="donationalerts" {...restProps} {iconNode}/>
+<Icon type="outline" name="donationalerts" {...restProps} {iconNode} />
