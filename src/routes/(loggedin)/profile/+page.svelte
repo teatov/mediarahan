@@ -11,7 +11,7 @@
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import Avatar from '$lib/components/layout/Avatar.svelte';
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
-  import { Button, buttonVariants } from '$lib/components/ui/button';
+  import { Button, buttonVariants, type ButtonVariant } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import * as Dialog from '$lib/components/ui/dialog';
   import {
@@ -89,7 +89,9 @@
 
 {#snippet removeProviderDialog(provider: ProviderName)}
   <AlertDialog.Root>
-    <AlertDialog.Trigger class={buttonVariants({ variant: (provider + 'Outline') as any })}>
+    <AlertDialog.Trigger
+      class={buttonVariants({ variant: (provider + 'Outline') as ButtonVariant })}
+    >
       Отвязать
     </AlertDialog.Trigger>
     <AlertDialog.Content>

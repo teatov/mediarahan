@@ -10,6 +10,13 @@ declare global {
       flash?: { type?: 'success' | 'error'; message: string; description?: string };
     }
   }
+
+  type IconProps = import('svelte/elements').SVGAttributes<SVGSVGElement> & {
+    color?: string;
+    size?: number | string;
+    stroke?: number | string;
+    class?: string;
+  };
 }
 
 export {};
