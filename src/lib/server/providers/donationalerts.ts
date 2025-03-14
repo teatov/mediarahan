@@ -49,8 +49,10 @@ export default {
       externalUserId: String(data.id),
       username: data.name,
       avatarUrl: data.avatar,
-      accessToken: accessToken,
       socketToken: data.socket_connection_token,
+      accessToken: accessToken,
+      accessTokenExpiresAt: tokens.accessTokenExpiresAt(),
+      refreshToken: tokens.refreshToken(),
     };
   },
 } as Provider;

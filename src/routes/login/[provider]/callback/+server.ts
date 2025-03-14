@@ -87,8 +87,15 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return errorRedirect('Токен авторизации оказался невалидным');
   }
 
-  const { externalUserId, username, avatarUrl, accessToken, socketToken } =
-    await provider.getUserInfo(tokens);
+  const {
+    externalUserId,
+    username,
+    avatarUrl,
+    socketToken,
+    accessToken,
+    accessTokenExpiresAt,
+    refreshToken,
+  } = await provider.getUserInfo(tokens);
 
   const existingExternalAccount = await db.query.externalAccount.findFirst({
     where: and(
@@ -106,8 +113,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
     provider: provider.name,
     externalUserId,
     externalUsername: username,
-    accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
     socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
+    accessTokenEncrypted: accessToken ? auth.encryptToken(accessToken) : null,
+    accessTokenExpiresAt,
+    refreshTokenEncrypted: refreshToken ? auth.encryptToken(refreshToken) : null,
     avatarUrl,
   });
 

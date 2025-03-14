@@ -10,7 +10,9 @@ export type ProviderUserInfo = {
   username: string;
   avatarUrl: string | null;
   accessToken: string | null;
+  accessTokenExpiresAt: Date | null;
   socketToken: string | null;
+  refreshToken: string | null;
 };
 
 export type Provider = {
