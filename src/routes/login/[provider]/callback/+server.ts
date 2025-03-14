@@ -108,7 +108,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return errorRedirect('К этому аккаунту уже привязан кто-то другой');
   }
 
-  const makeExternalAccountValues = (userId: string): table.NewExternalAccount => ({
+  const createExternalAccountValues = (userId: string): table.NewExternalAccount => ({
     userId: userId,
     provider: provider.name,
     externalUserId,
@@ -120,11 +120,17 @@ export async function GET(event: RequestEvent): Promise<Response> {
     avatarUrl,
   });
 
+  const createSession = async (userId: string) => {
+    const sessionToken = auth.generateSessionToken();
+    const session = await auth.createSession(sessionToken, userId);
+    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+  };
+
   if (event.locals.session && !existingExternalAccount) {
     try {
       await db
         .insert(table.externalAccount)
-        .values(makeExternalAccountValues(event.locals.session.userId));
+        .values(createExternalAccountValues(event.locals.session.userId));
     } catch (e) {
       console.error(e);
       return errorRedirect('При сохранении нового сервиса в БД возникла ошибка');
@@ -133,9 +139,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
   }
 
   if (!event.locals.session && existingExternalAccount) {
-    const sessionToken = auth.generateSessionToken();
-    const session = await auth.createSession(sessionToken, existingExternalAccount.userId);
-    auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+    await createSession(existingExternalAccount.userId);
     return redirect(302, '/');
   }
 
@@ -145,12 +149,10 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
       await db.transaction(async (tx) => {
         await tx.insert(table.user).values({ id: userId, username, avatarUrl });
-        await tx.insert(table.externalAccount).values(makeExternalAccountValues(userId));
+        await tx.insert(table.externalAccount).values(createExternalAccountValues(userId));
       });
 
-      const sessionToken = auth.generateSessionToken();
-      const session = await auth.createSession(sessionToken, userId);
-      auth.setSessionTokenCookie(event, sessionToken, session.expiresAt);
+      await createSession(userId);
     } catch (e) {
       console.error(e);
       return errorRedirect('При сохранении нового пользователя в БД возникла ошибка');
