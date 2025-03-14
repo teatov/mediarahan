@@ -1,4 +1,5 @@
 import * as arctic from 'arctic';
+import type { CookieSerializeOptions } from 'cookie';
 import { eq, and } from 'drizzle-orm';
 import { redirect } from 'sveltekit-flash-message/server';
 import { authProviders, type ProviderName } from '$lib/providers';
@@ -39,30 +40,25 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const provider = providers[providerName];
 
-  const state = arctic.generateState();
+  let state: string;
+  const cookieOptions: CookieSerializeOptions & { path: string } = {
+    path: '/',
+    httpOnly: true,
+    maxAge: 60 * 10,
+    secure: import.meta.env.PROD,
+    sameSite: 'lax',
+  };
 
   if (provider.stateCookie) {
-    event.cookies.set(provider.stateCookie, state, {
-      path: '/',
-      httpOnly: true,
-      maxAge: 60 * 10,
-      secure: import.meta.env.PROD,
-      sameSite: 'lax',
-    });
+    state = arctic.generateState();
+    event.cookies.set(provider.stateCookie, state, cookieOptions);
   }
 
-  let codeVerifier: string | undefined = undefined;
+  let codeVerifier: string;
 
   if (provider.verifierCookie) {
     codeVerifier = arctic.generateCodeVerifier();
-
-    event.cookies.set(provider.verifierCookie, codeVerifier, {
-      path: '/',
-      httpOnly: true,
-      maxAge: 60 * 10,
-      secure: import.meta.env.PROD,
-      sameSite: 'lax',
-    });
+    event.cookies.set(provider.verifierCookie, codeVerifier, cookieOptions);
   }
 
   const url = provider.createAuthorizationURL(state, codeVerifier);
