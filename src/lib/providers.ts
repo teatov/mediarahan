@@ -1,6 +1,8 @@
 export const providers = ['twitch', 'google', 'donationalerts', 'donatepay', 'github'] as const;
 export const authProviders: ProviderName[] = ['twitch', 'google', 'github'];
 export const socketProviders: ProviderName[] = ['donationalerts', 'donatepay', 'twitch'];
+export const pointSocketProviders: ProviderName[] = ['twitch'];
+export const donationSocketProviders: ProviderName[] = ['donationalerts', 'donatepay'];
 
 export type ProviderName = (typeof providers)[number];
 

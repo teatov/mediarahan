@@ -1,5 +1,12 @@
 <script lang="ts">
-  import { IconLogout, IconTrash, IconLogin, IconMessage, IconEdit } from '@tabler/icons-svelte';
+  import {
+    IconLogout,
+    IconTrash,
+    IconLogin,
+    IconMessageStar,
+    IconMessageDollar,
+    IconEdit,
+  } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
   import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
   import Avatar from '$lib/components/layout/Avatar.svelte';
@@ -10,6 +17,8 @@
   import {
     type ProviderName,
     authProviders,
+    donationSocketProviders,
+    pointSocketProviders,
     providerLabels,
     providerStyles,
     providers,
@@ -44,9 +53,17 @@
         <strong class="ml-1">{externalUsernames[provider]}</strong>
       </div>
       <div class="flex items-center gap-2">
-        {#if socketProviders.includes(provider)}
-          <span title="Через этот сервис можно принимать сообщения" class="cursor-help">
-            <IconMessage />
+        {#if pointSocketProviders.includes(provider)}
+          <span
+            title="Через этот сервис можно принимать награды за баллы канала"
+            class="cursor-help"
+          >
+            <IconMessageStar />
+          </span>
+        {/if}
+        {#if donationSocketProviders.includes(provider)}
+          <span title="Через этот сервис можно принимать донаты" class="cursor-help">
+            <IconMessageDollar />
           </span>
         {/if}
         {#if authProviders.includes(provider)}
