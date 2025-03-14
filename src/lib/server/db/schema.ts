@@ -44,8 +44,13 @@ export const externalAccount = pgTable(
     provider: providerEnum().notNull(),
     externalUserId: text('external_user_id').notNull(),
     externalUsername: text('external_usename').notNull(),
-    accessTokenEncrypted: text('access_token'),
     socketTokenEncrypted: text('socket_token'),
+    accessTokenEncrypted: text('access_token'),
+    accessTokenExpiresAt: timestamp('access_token_expires_at', {
+      withTimezone: true,
+      mode: 'date',
+    }),
+    refreshTokenEncrypted: text('refresh_token'),
     avatarUrl: text('avatar_url'),
   },
   (table) => [
