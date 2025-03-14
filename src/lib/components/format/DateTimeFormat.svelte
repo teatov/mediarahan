@@ -11,7 +11,13 @@
   } = $props();
 </script>
 
-<time {...restProps} datetime={datetime.toISOString()}
+<time
+  {...restProps}
+  datetime={type === 'date'
+    ? datetime.toISOString().split('T')[0]
+    : type === 'time'
+      ? datetime.toISOString().split('T')[1]
+      : datetime.toISOString()}
   >{type === 'date'
     ? datetime.toLocaleDateString()
     : type === 'time'

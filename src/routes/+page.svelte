@@ -26,6 +26,8 @@
   >
   <Spinner />
   <p><DateTimeFormat datetime={new Date()} type="date" /></p>
+  <p><DateTimeFormat datetime={new Date()} type="time" /></p>
+  <p><DateTimeFormat datetime={new Date()} /></p>
   <p><NumberFormat value={50000} currency="RUB" /></p>
   <a href="/sse">sse</a>
 </main>
