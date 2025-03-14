@@ -1,5 +1,7 @@
 <script lang="ts">
   import { toast } from 'svelte-sonner';
+  import Number from '$lib/components/format/Number.svelte';
+  import Time from '$lib/components/format/Time.svelte';
   import Spinner from '$lib/components/icons/Spinner.svelte';
   import { Button } from '$lib/components/ui/button';
 </script>
@@ -22,6 +24,8 @@
         error: 'Error',
       })}>Show toast</Button
   >
-  <Spinner slot="loading-icon" />
+  <Spinner />
+  <p><Time datetime={new Date()} type="date" /></p>
+  <p><Number value={50000} currency="RUB" /></p>
   <a href="/sse">sse</a>
 </main>
