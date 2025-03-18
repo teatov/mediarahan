@@ -6,6 +6,7 @@ services:
       context: .
       args:
         PORT: ${PORT}
+    env_file: .env
     restart: unless-stopped
     ports:
       - ${PORT}:${PORT}
