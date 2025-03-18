@@ -1,11 +1,11 @@
 import * as arctic from 'arctic';
-import { TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET, ORIGIN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Provider } from '$lib/server/providers';
 
 const oauth = new arctic.Twitch(
-  TWITCH_CLIENT_ID,
-  TWITCH_CLIENT_SECRET,
-  ORIGIN + '/login/twitch/callback',
+  env.TWITCH_CLIENT_ID,
+  env.TWITCH_CLIENT_SECRET,
+  env.ORIGIN + '/login/twitch/callback',
 );
 
 export default {

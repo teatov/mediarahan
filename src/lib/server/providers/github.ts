@@ -1,11 +1,11 @@
 import * as arctic from 'arctic';
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ORIGIN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Provider } from '$lib/server/providers';
 
 const oauth = new arctic.GitHub(
-  GITHUB_CLIENT_ID,
-  GITHUB_CLIENT_SECRET,
-  ORIGIN + '/login/github/callback',
+  env.GITHUB_CLIENT_ID,
+  env.GITHUB_CLIENT_SECRET,
+  env.ORIGIN + '/login/github/callback',
 );
 
 export default {

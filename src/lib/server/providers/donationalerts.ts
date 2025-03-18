@@ -1,15 +1,11 @@
 import * as arctic from 'arctic';
-import {
-  DONATIONALERTS_CLIENT_ID,
-  DONATIONALERTS_CLIENT_SECRET,
-  ORIGIN,
-} from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Provider } from '$lib/server/providers';
 
 const oauth = new arctic.DonationAlerts(
-  DONATIONALERTS_CLIENT_ID,
-  DONATIONALERTS_CLIENT_SECRET,
-  ORIGIN + '/login/donationalerts/callback',
+  env.DONATIONALERTS_CLIENT_ID,
+  env.DONATIONALERTS_CLIENT_SECRET,
+  env.ORIGIN + '/login/donationalerts/callback',
 );
 
 export default {

@@ -1,11 +1,11 @@
 import * as arctic from 'arctic';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ORIGIN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { Provider } from '$lib/server/providers';
 
 export const oauth = new arctic.Google(
-  GOOGLE_CLIENT_ID,
-  GOOGLE_CLIENT_SECRET,
-  ORIGIN + '/login/google/callback',
+  env.GOOGLE_CLIENT_ID,
+  env.GOOGLE_CLIENT_SECRET,
+  env.ORIGIN + '/login/google/callback',
 );
 
 export default {
