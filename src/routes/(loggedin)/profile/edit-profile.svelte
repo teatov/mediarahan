@@ -39,11 +39,11 @@
 <Dialog.Root bind:open>
   <Dialog.Trigger class={buttonVariants()}><IconEdit />Редактировать</Dialog.Trigger>
   <Dialog.Content>
-    <form method="POST" class="space-y-4" action="?/editProfile" use:enhance>
-      <Dialog.Header>
-        <Dialog.Title>Редактировать профиль</Dialog.Title>
-      </Dialog.Header>
+    <Dialog.Header>
+      <Dialog.Title>Редактировать профиль</Dialog.Title>
+    </Dialog.Header>
 
+    <form method="POST" class="space-y-4" action="?/editProfile" use:enhance>
       <Form.Field {form} name="username">
         <Form.Control>
           {#snippet children({ props })}

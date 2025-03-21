@@ -38,19 +38,20 @@
     {@render children?.()}
   </Dialog.Trigger>
   <Dialog.Content>
-    <form method="POST" class="space-y-4" action="?/donatePayLogin" use:enhance>
-      <Dialog.Header>
-        <Dialog.Title>Подключение DonatePay</Dialog.Title>
-        <Dialog.Description>
-          К сожалению, DonatePay не предоставляет такого же удобного способа входа как остальные
-          сервисы, но он даёт возможность получить API-ключ вручную.
-        </Dialog.Description>
-        <Dialog.Description>
-          Скопируйте его из <A href="https://donatepay.ru/page/api">donatepay.ru/page/api</A
-          > и вставьте в поле ниже.
-        </Dialog.Description>
-      </Dialog.Header>
+    <Dialog.Header>
+      <Dialog.Title>Подключение DonatePay</Dialog.Title>
+    </Dialog.Header>
 
+    <Dialog.Description>
+      К сожалению, DonatePay не предоставляет такого же удобного способа входа как остальные
+      сервисы, но он даёт возможность получить API-ключ вручную.
+    </Dialog.Description>
+    <Dialog.Description>
+      Скопируйте его из <A href="https://donatepay.ru/page/api">donatepay.ru/page/api</A> и вставьте
+      в поле ниже.
+    </Dialog.Description>
+
+    <form method="POST" class="space-y-4" action="?/donatePayLogin" use:enhance>
       <Form.Field {form} name="token">
         <Form.Control>
           {#snippet children({ props })}
