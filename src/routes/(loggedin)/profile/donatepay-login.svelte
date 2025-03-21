@@ -46,7 +46,7 @@
           сервисы, но он даёт возможность получить API-ключ вручную.
         </Dialog.Description>
         <Dialog.Description>
-          Скопируйте его из <A href="https://donatepay.ru/page/api">https://donatepay.ru/page/api</A
+          Скопируйте его из <A href="https://donatepay.ru/page/api">donatepay.ru/page/api</A
           > и вставьте в поле ниже.
         </Dialog.Description>
       </Dialog.Header>
