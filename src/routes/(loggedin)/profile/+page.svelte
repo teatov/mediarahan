@@ -141,7 +141,7 @@
       <h1 class="text-4xl font-bold" title={user.username}>{user.username}</h1>
       <div class="flex justify-between flex-wrap gap-2">
         <EditProfile data={editProfileForm} externalAccounts={user.externalAccounts} />
-        <form method="POST" action="?/logout" use:enhance>
+        <form method="POST" action="/logout" use:enhance>
           <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
         </form>
       </div>
