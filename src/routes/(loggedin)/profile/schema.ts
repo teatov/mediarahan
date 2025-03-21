@@ -10,3 +10,9 @@ export const editProfileFormSchema = z.object({
 });
 
 export type EditProfileFormSchema = typeof editProfileFormSchema;
+
+export const donatePayLoginFormSchema = z.object({
+  token: z.string().min(1),
+});
+
+export type DonatePayLoginFormSchema = typeof donatePayLoginFormSchema;

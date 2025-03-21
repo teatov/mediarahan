@@ -21,11 +21,12 @@
     providerStyles,
     providers,
   } from '$lib/providers';
+  import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
 
   let { data } = $props();
 
-  let { user, externalAccounts, editProfileForm, avatarUrl } = $derived(data);
+  let { user, externalAccounts, editProfileForm, avatarUrl, donatePayLoginForm } = $derived(data);
 
   const userProviders = $derived(Object.keys(externalAccounts) as ProviderName[]);
 </script>
@@ -66,6 +67,8 @@
         {@render removeProviderDialog(provider)}
       </div>
     </div>
+  {:else if provider === 'donatepay'}
+    <DonatePayLogin data={donatePayLoginForm} />
   {:else}
     <Button class="w-full" variant={provider} href={'/login/' + provider}>
       <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}

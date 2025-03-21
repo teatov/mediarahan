@@ -8,6 +8,9 @@ export const globalErrorMap: z.ZodErrorMap = (issue, ctx) => {
   switch (issue.code) {
     case z.ZodIssueCode.too_small:
       if (issue.type === 'string') {
+        if (issue.minimum === 1) {
+          return { message: `Поле обязательно` };
+        }
         return { message: `Длина должна быть не менее ${issue.minimum}` };
       }
       return { message: `Значение должно быть не менее ${issue.minimum}` };
