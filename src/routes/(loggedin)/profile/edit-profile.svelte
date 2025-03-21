@@ -43,12 +43,12 @@
         <Form.FieldErrors />
       </Form.Field>
 
-      <Form.Fieldset {form} name="externalAccountAvatar" class="space-y-3">
+      <Form.Fieldset {form} name="avatarProvider" class="space-y-3">
         <Form.Legend>Аватарка</Form.Legend>
         <RadioGroup.Root
-          bind:value={$formData.externalAccountAvatar}
+          bind:value={$formData.avatarProvider}
           class="block columns-2 space-y-2"
-          name="externalAccountAvatar"
+          name="avatarProvider"
         >
           {#each Object.values(externalAccounts) as externalAccount}
             {#if externalAccount.avatarUrl}
