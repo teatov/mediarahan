@@ -27,7 +27,7 @@
 
   let { user, externalAccounts, editProfileForm, avatarUrl } = $derived(data);
 
-  const userProviders = Object.keys(externalAccounts) as ProviderName[];
+  const userProviders = $derived(Object.keys(externalAccounts) as ProviderName[]);
 </script>
 
 <svelte:head>

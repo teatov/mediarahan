@@ -14,7 +14,7 @@
   import { editProfileFormSchema, type EditProfileFormSchema } from './schema';
 
   let {
-    data = $bindable(),
+    data,
     externalAccounts,
   }: {
     data: SuperValidated<Infer<EditProfileFormSchema>>;
