@@ -1,7 +1,7 @@
 <script lang="ts">
   import { IconLogin } from '@tabler/icons-svelte';
-  import Avatar from '$lib/components/layout/Avatar.svelte';
-  import Logo from '$lib/components/layout/Logo.svelte';
+  import Avatar from '$lib/components/layout/avatar.svelte';
+  import Logo from '$lib/components/layout/logo.svelte';
   import { Button } from '$lib/components/ui/button';
 
   let { user, url }: { user: App.Locals['user']; url: URL } = $props();

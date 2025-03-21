@@ -1,5 +1,5 @@
 <script lang="ts">
-  import ThemeToggle from '$lib/components/layout/ThemeToggle.svelte';
+  import ThemeToggle from '$lib/components/layout/theme-toggle.svelte';
 </script>
 
 <footer class="container flex max-w-6xl items-end justify-between py-2">

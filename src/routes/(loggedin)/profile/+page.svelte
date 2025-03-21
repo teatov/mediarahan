@@ -8,8 +8,8 @@
     IconEdit,
   } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
-  import AutoProviderIcon from '$lib/components/icons/AutoProviderIcon.svelte';
-  import Avatar from '$lib/components/layout/Avatar.svelte';
+  import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
+  import Avatar from '$lib/components/layout/avatar.svelte';
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import { Button, buttonVariants, type ButtonVariant } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';

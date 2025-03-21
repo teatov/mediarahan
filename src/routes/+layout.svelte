@@ -3,8 +3,8 @@
   import { toast } from 'svelte-sonner';
   import { getFlash } from 'sveltekit-flash-message';
   import { page } from '$app/state';
-  import Footer from '$lib/components/layout/Footer.svelte';
-  import Header from '$lib/components/layout/Header.svelte';
+  import Footer from '$lib/components/layout/footer.svelte';
+  import Header from '$lib/components/layout/header.svelte';
   import { Toaster } from '$lib/components/ui/sonner';
   import '../app.css';
 

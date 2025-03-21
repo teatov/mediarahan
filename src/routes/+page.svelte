@@ -1,8 +1,8 @@
 <script lang="ts">
   import { toast } from 'svelte-sonner';
-  import NumberFormat from '$lib/components/format/NumberFormat.svelte';
-  import DateTimeFormat from '$lib/components/format/DateTimeFormat.svelte';
-  import Spinner from '$lib/components/icons/Spinner.svelte';
+  import NumberFormat from '$lib/components/format/number-format.svelte';
+  import DateTimeFormat from '$lib/components/format/datetime-format.svelte';
+  import Spinner from '$lib/components/icons/spinner.svelte';
   import { Button } from '$lib/components/ui/button';
 </script>
 

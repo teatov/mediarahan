@@ -2,7 +2,7 @@
   import { IconExclamationCircle, IconCircleCheck } from '@tabler/icons-svelte';
   import { mode } from 'mode-watcher';
   import { Toaster as Sonner, type ToasterProps as SonnerProps } from 'svelte-sonner';
-  import Spinner from '$lib/components/icons/Spinner.svelte';
+  import Spinner from '$lib/components/icons/spinner.svelte';
 
   let restProps: SonnerProps = $props();
 </script>
