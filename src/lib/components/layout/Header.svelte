@@ -42,7 +42,7 @@
     <div class="bg-background border-b py-2 overflow-x-auto">
       <div class="container flex max-w-6xl items-center justify-center gap-4">
         {@render navLink('/wheel', 'Колесо')}
-        {@render navLink('/wheel/slots', 'Ячейки')}
+        {@render navLink('/wheel/list', 'Список')}
         {@render navLink('/wheel/settings', 'Настройки')}
       </div>
     </div>
