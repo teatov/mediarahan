@@ -1,16 +1,9 @@
 <script lang="ts">
-  import {
-    IconLogout,
-    IconTrash,
-    IconLogin,
-    IconMessageStar,
-    IconMessageDollar,
-  } from '@tabler/icons-svelte';
+  import { IconLogout, IconLogin, IconMessageStar, IconMessageDollar } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
   import Avatar from '$lib/components/layout/avatar.svelte';
-  import * as AlertDialog from '$lib/components/ui/alert-dialog';
-  import { Button, buttonVariants } from '$lib/components/ui/button';
+  import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import {
     type ProviderName,
@@ -21,6 +14,7 @@
     providerStyles,
     providers,
   } from '$lib/providers';
+  import DeleteAccount from './delete-account.svelte';
   import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
   import RemoveService from './remove-service.svelte';
@@ -79,41 +73,6 @@
   {/if}
 {/snippet}
 
-{#snippet deleteAccountDialog()}
-  <AlertDialog.Root>
-    <AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' }) + ' w-full'}>
-      <IconTrash />Удалить аккаунт
-    </AlertDialog.Trigger>
-    <AlertDialog.Content>
-      <AlertDialog.Header>
-        <AlertDialog.Title class="text-destructive">Удалить аккаунт?</AlertDialog.Title>
-        <AlertDialog.Description>
-          Будет удалено <b>ВСЁ</b> что связано с вашим аккаунтом. Навсегда.
-        </AlertDialog.Description>
-      </AlertDialog.Header>
-      <AlertDialog.Footer>
-        <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
-        <AlertDialog.Root>
-          <AlertDialog.Trigger class={buttonVariants({ variant: 'destructive' })}>
-            Удалить
-          </AlertDialog.Trigger>
-          <AlertDialog.Content>
-            <AlertDialog.Header>
-              <AlertDialog.Title class="text-destructive">ТОЧНО?</AlertDialog.Title>
-            </AlertDialog.Header>
-            <AlertDialog.Footer>
-              <AlertDialog.Cancel>Не точно</AlertDialog.Cancel>
-              <AlertDialog.Action class={buttonVariants({ variant: 'destructive' })}>
-                Точно.
-              </AlertDialog.Action>
-            </AlertDialog.Footer>
-          </AlertDialog.Content>
-        </AlertDialog.Root>
-      </AlertDialog.Footer>
-    </AlertDialog.Content>
-  </AlertDialog.Root>
-{/snippet}
-
 <Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex gap-6">
     <Avatar username={user.username} src={avatarUrl} class="size-24" />
@@ -145,6 +104,6 @@
     <Card.Title>Опасное</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    {@render deleteAccountDialog()}
+    <DeleteAccount />
   </Card.Content>
 </Card.Root>

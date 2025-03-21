@@ -95,4 +95,16 @@ export const actions: Actions = {
 
     return { form };
   },
+
+  deleteAccount: async (event) => {
+    if (!event.locals.session) {
+      return fail(401);
+    }
+
+    await db.delete(table.user).where(eq(table.user.id, event.locals.session.userId));
+
+    await auth.invalidateSession(event.locals.session.id);
+    auth.deleteSessionTokenCookie(event);
+    redirect(302, '/');
+  },
 };
