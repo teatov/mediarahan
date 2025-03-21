@@ -25,8 +25,7 @@
 
   let form = superForm(data, {
     validators: zodClient(editProfileFormSchema),
-    invalidateAll: true,
-    resetForm: false,
+    invalidateAll: 'force',
     onUpdated() {
       open = false;
     },
