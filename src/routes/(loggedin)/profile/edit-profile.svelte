@@ -23,17 +23,16 @@
 
   let open = $state(false);
 
-  let form = $derived(
-    superForm(data, {
-      validators: zodClient(editProfileFormSchema),
-      invalidateAll: true,
-      onUpdated() {
-        open = false;
-      },
-    }),
-  );
+  let form = superForm(data, {
+    validators: zodClient(editProfileFormSchema),
+    invalidateAll: true,
+    resetForm: false,
+    onUpdated() {
+      open = false;
+    },
+  });
 
-  const { form: formData, delayed, enhance, submitting } = $derived(form);
+  const { form: formData, delayed, enhance, submitting } = form;
 </script>
 
 <Dialog.Root bind:open>
@@ -58,7 +57,7 @@
         <Form.Legend>Аватарка</Form.Legend>
         <RadioGroup.Root
           bind:value={$formData.avatarProvider}
-          class="block columns-2 space-y-2"
+          class="block columns-1 sm:columns-2 space-y-2"
           name="avatarProvider"
         >
           {#each Object.values(externalAccounts) as externalAccount}
@@ -89,8 +88,10 @@
       </Form.Fieldset>
 
       <Dialog.Footer class="items-center">
-        {#if $delayed}<Spinner />{/if}
-        <Form.Button disabled={$submitting}>Сохранить</Form.Button>
+        <Form.Button disabled={$submitting}>
+          {#if $delayed}<Spinner />{/if}
+          Сохранить
+        </Form.Button>
       </Dialog.Footer>
     </form>
   </Dialog.Content>
