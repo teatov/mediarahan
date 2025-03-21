@@ -36,7 +36,11 @@ export async function validateSessionToken(token: string) {
     with: {
       user: {
         columns: { username: true, avatarUrl: true },
-        with: { externalAccounts: { columns: { provider: true, externalUsername: true } } },
+        with: {
+          externalAccounts: {
+            columns: { provider: true, externalUsername: true, avatarUrl: true },
+          },
+        },
       },
     },
   });

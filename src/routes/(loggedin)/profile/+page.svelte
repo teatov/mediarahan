@@ -5,7 +5,6 @@
     IconLogin,
     IconMessageStar,
     IconMessageDollar,
-    IconEdit,
   } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
@@ -13,7 +12,6 @@
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import { Button, buttonVariants, type ButtonVariant } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
-  import * as Dialog from '$lib/components/ui/dialog';
   import {
     type ProviderName,
     authProviders,
@@ -23,9 +21,10 @@
     providerStyles,
     providers,
   } from '$lib/providers';
+  import EditProfile from './edit-profile.svelte';
 
   let { data } = $props();
-  let { user, externalAccounts } = data;
+  let { user, externalAccounts, editProfileForm } = data;
 
   const userProviders = Object.keys(externalAccounts) as ProviderName[];
 </script>
@@ -71,20 +70,6 @@
       <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
     </Button>
   {/if}
-{/snippet}
-
-{#snippet editProfileDialog()}
-  <Dialog.Root>
-    <Dialog.Trigger class={buttonVariants()}><IconEdit />Редактировать</Dialog.Trigger>
-    <Dialog.Content>
-      <Dialog.Header>
-        <Dialog.Title>Редактировать профиль</Dialog.Title>
-      </Dialog.Header>
-      <Dialog.Footer>
-        <Button type="submit">Сохранить</Button>
-      </Dialog.Footer>
-    </Dialog.Content>
-  </Dialog.Root>
 {/snippet}
 
 {#snippet removeProviderDialog(provider: ProviderName)}
@@ -149,7 +134,7 @@
     <div class="space-y-2 w-full min-w-0">
       <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
       <div class="flex justify-between flex-wrap gap-2">
-        {@render editProfileDialog()}
+        <EditProfile data={editProfileForm} externalAccounts={user.externalAccounts} />
         <form method="post" action="/logout" use:enhance>
           <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
         </form>
