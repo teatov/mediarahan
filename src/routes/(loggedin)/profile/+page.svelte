@@ -24,9 +24,8 @@
   import EditProfile from './edit-profile.svelte';
 
   let { data } = $props();
-  let { user, externalAccounts, editProfileForm, avatarUrl } = data;
 
-  const userProviders = Object.keys(externalAccounts) as ProviderName[];
+  const userProviders = Object.keys(data.externalAccounts) as ProviderName[];
 </script>
 
 <svelte:head>
@@ -41,7 +40,7 @@
           <AutoProviderIcon {provider} class="inline -mt-0.5" />
           {providerLabels[provider]}
         </span>:
-        <strong class="ml-1">{externalAccounts[provider].externalUsername}</strong>
+        <strong class="ml-1">{data.externalAccounts[provider].externalUsername}</strong>
       </div>
       <div class="flex items-center gap-2">
         {#if pointSocketProviders.includes(provider)}
@@ -130,16 +129,16 @@
 
 <Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex gap-6">
-    <Avatar username={user.username} src={avatarUrl} class="size-24" />
+    <Avatar username={data.user.username} src={data.avatarUrl} class="size-24" />
     <div class="space-y-2 w-full min-w-0">
-      <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
-      <div class="flex justify-between flex-wrap gap-2">
-        <EditProfile data={editProfileForm} externalAccounts={user.externalAccounts} />
-        <form method="post" action="/logout" use:enhance>
-          <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
-        </form>
-      </div>
+    <h1 class="text-4xl font-bold truncate" title={data.user.username}>{data.user.username}</h1>
+    <div class="flex justify-between flex-wrap gap-2">
+      <EditProfile data={data.editProfileForm} externalAccounts={data.user.externalAccounts} />
+      <form method="post" action="/logout" use:enhance>
+        <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
+      </form>
     </div>
+  </div>
   </Card.Content>
 </Card.Root>
 
