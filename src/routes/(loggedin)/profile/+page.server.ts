@@ -11,7 +11,7 @@ export const load: PageServerLoad = async (event) => {
     {
       username: data.user.username,
       externalAccountAvatar: data.user.externalAccounts.find(
-        (externalAccount) => externalAccount.avatarUrl === data.user.avatarUrl,
+        (externalAccount) => externalAccount.provider === data.user.avatarProvider,
       )?.provider,
     },
     zod(editProfileFormSchema),

@@ -2,14 +2,20 @@ import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp, pgEnum, primaryKey, unique } from 'drizzle-orm/pg-core';
 import { providers } from '../../providers';
 
+export const providerEnum = pgEnum('provider', providers);
+
 export const user = pgTable('user', {
   id: text('id').primaryKey(),
   username: text('username').notNull(),
-  avatarUrl: text('avatar_url'),
+  avatarProvider: providerEnum(),
 });
 
-export const userRelations = relations(user, ({ many }) => ({
+export const userRelations = relations(user, ({ many, one }) => ({
   externalAccounts: many(externalAccount),
+  avatarProvider: one(externalAccount, {
+    fields: [user.id, user.avatarProvider],
+    references: [externalAccount.userId, externalAccount.provider],
+  }),
 }));
 
 export type User = typeof user.$inferSelect;
@@ -32,8 +38,6 @@ export const sessionRelations = relations(session, ({ one }) => ({
 
 export type Session = typeof session.$inferSelect;
 export type NewSession = typeof session.$inferInsert;
-
-export const providerEnum = pgEnum('provider', providers);
 
 export const externalAccount = pgTable(
   'external_account',

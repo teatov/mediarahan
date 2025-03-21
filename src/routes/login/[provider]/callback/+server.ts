@@ -148,7 +148,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
       const userId = generateUserId();
 
       await db.transaction(async (tx) => {
-        await tx.insert(table.user).values({ id: userId, username, avatarUrl });
+        await tx.insert(table.user).values({ id: userId, username, avatarProvider: provider.name });
         await tx.insert(table.externalAccount).values(createExternalAccountValues(userId));
       });
 

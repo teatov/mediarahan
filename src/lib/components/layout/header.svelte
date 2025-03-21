@@ -4,7 +4,8 @@
   import Logo from '$lib/components/layout/logo.svelte';
   import { Button } from '$lib/components/ui/button';
 
-  let { user, url }: { user: App.Locals['user']; url: URL } = $props();
+  let { user, url, avatarUrl }: { user: App.Locals['user']; url: URL; avatarUrl: string | null | undefined } =
+    $props();
 </script>
 
 {#snippet navLink(href: string, label: string, section: boolean = false, dim: boolean = false)}
@@ -32,7 +33,9 @@
         {@render navLink('/docs', 'Документация', true)}
       </nav>
       {#if user}
-        <a href="/profile" class="inline-block" title="На страницу профиля"><Avatar {user} /></a>
+        <a href="/profile" class="inline-block" title="На страницу профиля">
+          <Avatar username={user.username} src={avatarUrl} />
+        </a>
       {:else}
         <Button href="/login"><IconLogin />Войти</Button>
       {/if}

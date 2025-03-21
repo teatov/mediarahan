@@ -24,7 +24,7 @@
   import EditProfile from './edit-profile.svelte';
 
   let { data } = $props();
-  let { user, externalAccounts, editProfileForm } = data;
+  let { user, externalAccounts, editProfileForm, avatarUrl } = data;
 
   const userProviders = Object.keys(externalAccounts) as ProviderName[];
 </script>
@@ -130,7 +130,7 @@
 
 <Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex gap-6">
-    <Avatar {user} class="size-24" />
+    <Avatar username={user.username} src={avatarUrl} class="size-24" />
     <div class="space-y-2 w-full min-w-0">
       <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
       <div class="flex justify-between flex-wrap gap-2">

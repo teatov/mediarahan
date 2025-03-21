@@ -27,7 +27,7 @@
 <ModeWatcher defaultMode="dark" />
 <Toaster />
 <div class="relative flex min-h-screen flex-col justify-between">
-  <Header user={data.user} url={page.url} />
+  <Header user={data.user} url={page.url} avatarUrl={data.avatarUrl} />
   <div class="space-y-4">
     {@render children()}
   </div>
