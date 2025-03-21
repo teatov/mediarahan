@@ -68,7 +68,9 @@
       </div>
     </div>
   {:else if provider === 'donatepay'}
-    <DonatePayLogin data={donatePayLoginForm} />
+    <DonatePayLogin data={donatePayLoginForm} >
+      <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
+    </DonatePayLogin>
   {:else}
     <Button class="w-full" variant={provider} href={'/login/' + provider}>
       <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
