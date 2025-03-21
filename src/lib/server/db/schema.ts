@@ -1,12 +1,12 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, text, timestamp, pgEnum, primaryKey, unique } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, text, timestamp, pgEnum, primaryKey, unique } from 'drizzle-orm/pg-core';
 import { providers } from '../../providers';
 
 export const providerEnum = pgEnum('provider', providers);
 
 export const user = pgTable('user', {
-  id: text().primaryKey(),
-  username: text().notNull(),
+  id: varchar({ length: 255 }).primaryKey(),
+  username: varchar({ length: 255 }).notNull(),
   avatarProvider: providerEnum(),
 });
 
@@ -22,8 +22,8 @@ export type User = typeof user.$inferSelect;
 export type NewUser = typeof user.$inferInsert;
 
 export const session = pgTable('session', {
-  id: text().primaryKey(),
-  userId: text()
+  id: varchar({ length: 255 }).primaryKey(),
+  userId: varchar({ length: 255 })
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   expiresAt: timestamp({ withTimezone: true, mode: 'date' }).notNull(),
@@ -42,12 +42,12 @@ export type NewSession = typeof session.$inferInsert;
 export const externalAccount = pgTable(
   'external_account',
   {
-    userId: text()
+    userId: varchar({ length: 255 })
       .notNull()
       .references(() => user.id, { onDelete: 'cascade' }),
     provider: providerEnum().notNull(),
-    externalUserId: text().notNull(),
-    externalUsername: text().notNull(),
+    externalUserId: varchar({ length: 255 }).notNull(),
+    externalUsername: varchar({ length: 255 }).notNull(),
     socketTokenEncrypted: text(),
     accessTokenEncrypted: text(),
     accessTokenExpiresAt: timestamp({
