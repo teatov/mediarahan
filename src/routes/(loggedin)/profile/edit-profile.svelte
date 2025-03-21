@@ -2,6 +2,7 @@
   import { IconEdit } from '@tabler/icons-svelte';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
+  import Spinner from '$lib/components/icons/spinner.svelte';
   import * as Avatar from '$lib/components/ui/avatar';
   import { buttonVariants } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
@@ -20,12 +21,20 @@
     externalAccounts: PageServerData['user']['externalAccounts'];
   } = $props();
 
-  const form = superForm(data, { validators: zodClient(editProfileFormSchema) });
+  let open = $state(false);
 
-  const { form: formData, enhance } = form;
+  const form = superForm(data, {
+    validators: zodClient(editProfileFormSchema),
+    invalidateAll: true,
+    onUpdated() {
+      open = false;
+    }
+  });
+
+  const { form: formData, delayed, enhance, submitting } = form;
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open>
   <Dialog.Trigger class={buttonVariants()}><IconEdit />Редактировать</Dialog.Trigger>
   <Dialog.Content>
     <form method="POST" class="space-y-4" action="?/editProfile" use:enhance>
@@ -77,8 +86,9 @@
         <Form.FieldErrors />
       </Form.Fieldset>
 
-      <Dialog.Footer>
-        <Form.Button>Сохранить</Form.Button>
+      <Dialog.Footer class="items-center">
+        {#if $delayed}<Spinner />{/if}
+        <Form.Button disabled={$submitting}>Сохранить</Form.Button>
       </Dialog.Footer>
     </form>
   </Dialog.Content>
