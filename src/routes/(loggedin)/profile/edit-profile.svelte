@@ -14,7 +14,7 @@
   import { editProfileFormSchema, type EditProfileFormSchema } from './schema';
 
   let {
-    data,
+    data = $bindable(),
     externalAccounts,
   }: {
     data: SuperValidated<Infer<EditProfileFormSchema>>;
@@ -23,15 +23,15 @@
 
   let open = $state(false);
 
-  const form = superForm(data, {
+  let form = $derived(superForm(data, {
     validators: zodClient(editProfileFormSchema),
     invalidateAll: true,
     onUpdated() {
       open = false;
     }
-  });
+  }));
 
-  const { form: formData, delayed, enhance, submitting } = form;
+  const { form: formData, delayed, enhance, submitting } = $derived(form);
 </script>
 
 <Dialog.Root bind:open>
