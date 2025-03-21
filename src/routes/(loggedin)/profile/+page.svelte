@@ -91,9 +91,15 @@
       </AlertDialog.Header>
       <AlertDialog.Footer>
         <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
-        <AlertDialog.Action class={buttonVariants({ variant: 'destructive' })}>
-          Отвязать
-        </AlertDialog.Action>
+        <form
+                method="POST"
+                action={'/logout/' + provider}
+                use:enhance
+              >
+              <AlertDialog.Action class={buttonVariants({ variant: 'destructive' })} type="submit">
+                Отвязать
+              </AlertDialog.Action>
+            </form>
       </AlertDialog.Footer>
     </AlertDialog.Content>
   </AlertDialog.Root>
