@@ -47,7 +47,7 @@
         <Form.Legend>Аватарка</Form.Legend>
         <RadioGroup.Root
           bind:value={$formData.externalAccountAvatar}
-          class="block columns-2"
+          class="block columns-2 space-y-2"
           name="externalAccountAvatar"
         >
           {#each Object.values(externalAccounts) as externalAccount}
@@ -56,7 +56,7 @@
                 <Form.Control>
                   {#snippet children({ props })}
                     <RadioGroup.Item value={externalAccount.provider} {...props} />
-                    <Form.Label class="flex items-center space-x-3">
+                    <Form.Label class="flex items-center space-x-3 cursor-pointer">
                       <Avatar.Root class="size-16">
                         <Avatar.Image
                           src={externalAccount.avatarUrl}
