@@ -88,7 +88,7 @@
         <Form.FieldErrors />
       </Form.Fieldset>
 
-      <Dialog.Footer class="items-center">
+      <Dialog.Footer>
         <Form.Button disabled={$submitting}>
           {#if $delayed}<Spinner />{/if}
           Сохранить

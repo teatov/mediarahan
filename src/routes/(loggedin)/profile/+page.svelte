@@ -10,7 +10,7 @@
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
   import Avatar from '$lib/components/layout/avatar.svelte';
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
-  import { Button, buttonVariants, type ButtonVariant } from '$lib/components/ui/button';
+  import { Button, buttonVariants } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import {
     type ProviderName,
@@ -23,6 +23,7 @@
   } from '$lib/providers';
   import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
+  import RemoveService from './remove-service.svelte';
 
   let { data } = $props();
 
@@ -64,11 +65,11 @@
             <IconLogin />
           </span>
         {/if}
-        {@render removeProviderDialog(provider)}
+        <RemoveService {provider} />
       </div>
     </div>
   {:else if provider === 'donatepay'}
-    <DonatePayLogin data={donatePayLoginForm} >
+    <DonatePayLogin data={donatePayLoginForm}>
       <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
     </DonatePayLogin>
   {:else}
@@ -76,33 +77,6 @@
       <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
     </Button>
   {/if}
-{/snippet}
-
-{#snippet removeProviderDialog(provider: ProviderName)}
-  <AlertDialog.Root>
-    <AlertDialog.Trigger
-      class={buttonVariants({ variant: (provider + 'Outline') as ButtonVariant })}
-    >
-      Отвязать
-    </AlertDialog.Trigger>
-    <AlertDialog.Content>
-      <AlertDialog.Header>
-        <AlertDialog.Title>Отвязать {providerLabels[provider]} от аккаунта?</AlertDialog.Title>
-      </AlertDialog.Header>
-      <AlertDialog.Footer>
-        <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
-        <form
-                method="POST"
-                action={'/logout/' + provider}
-                use:enhance
-              >
-              <AlertDialog.Action class={buttonVariants({ variant: 'destructive' })} type="submit">
-                Отвязать
-              </AlertDialog.Action>
-            </form>
-      </AlertDialog.Footer>
-    </AlertDialog.Content>
-  </AlertDialog.Root>
 {/snippet}
 
 {#snippet deleteAccountDialog()}
