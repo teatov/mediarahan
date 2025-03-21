@@ -43,7 +43,7 @@
           <AutoProviderIcon {provider} class="inline -mt-0.5" />
           {providerLabels[provider]}
         </span>:
-        <strong class="ml-1">{externalAccounts[provider].externalUsername}</strong>
+        <span class="ml-1 font-semibold">{externalAccounts[provider].externalUsername}</span>
       </div>
       <div class="flex items-center gap-2">
         {#if pointSocketProviders.includes(provider)}
