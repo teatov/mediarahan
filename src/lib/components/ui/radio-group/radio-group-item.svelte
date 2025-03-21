@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RadioGroup as RadioGroupPrimitive, type WithoutChildrenOrChild } from "bits-ui";
-	import Circle from "lucide-svelte/icons/circle";
+	import { IconCircle } from '@tabler/icons-svelte';
 	import { cn } from "$lib/utils.js";
 
 	let {
@@ -21,7 +21,7 @@
 	{#snippet children({ checked })}
 		<div class="flex items-center justify-center">
 			{#if checked}
-				<Circle class="size-2.5 fill-current text-current" />
+				<IconCircle class="size-2.5 fill-current text-current" />
 			{/if}
 		</div>
 	{/snippet}
