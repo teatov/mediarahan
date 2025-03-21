@@ -23,13 +23,15 @@
 
   let open = $state(false);
 
-  let form = $derived(superForm(data, {
-    validators: zodClient(editProfileFormSchema),
-    invalidateAll: true,
-    onUpdated() {
-      open = false;
-    }
-  }));
+  let form = $derived(
+    superForm(data, {
+      validators: zodClient(editProfileFormSchema),
+      invalidateAll: true,
+      onUpdated() {
+        open = false;
+      },
+    }),
+  );
 
   const { form: formData, delayed, enhance, submitting } = $derived(form);
 </script>

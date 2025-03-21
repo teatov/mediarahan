@@ -133,14 +133,14 @@
   <Card.Content class="flex gap-6">
     <Avatar username={user.username} src={avatarUrl} class="size-24" />
     <div class="space-y-2 w-full min-w-0">
-    <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
-    <div class="flex justify-between flex-wrap gap-2">
-      <EditProfile data={editProfileForm} externalAccounts={user.externalAccounts} />
-      <form method="post" action="/logout" use:enhance>
-        <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
-      </form>
+      <h1 class="text-4xl font-bold truncate" title={user.username}>{user.username}</h1>
+      <div class="flex justify-between flex-wrap gap-2">
+        <EditProfile data={editProfileForm} externalAccounts={user.externalAccounts} />
+        <form method="post" action="/logout" use:enhance>
+          <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
+        </form>
+      </div>
     </div>
-  </div>
   </Card.Content>
 </Card.Root>
 

@@ -1,6 +1,6 @@
+import { z } from 'zod';
 import { providers } from '$lib/providers';
 import { globalErrorMap } from '$lib/zod';
-import { z } from 'zod';
 
 z.setErrorMap(globalErrorMap);
 

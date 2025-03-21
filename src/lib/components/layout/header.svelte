@@ -4,8 +4,11 @@
   import Logo from '$lib/components/layout/logo.svelte';
   import { Button } from '$lib/components/ui/button';
 
-  let { user, url, avatarUrl }: { user: App.Locals['user']; url: URL; avatarUrl: string | null | undefined } =
-    $props();
+  let {
+    user,
+    url,
+    avatarUrl,
+  }: { user: App.Locals['user']; url: URL; avatarUrl: string | null | undefined } = $props();
 </script>
 
 {#snippet navLink(href: string, label: string, section: boolean = false, dim: boolean = false)}
