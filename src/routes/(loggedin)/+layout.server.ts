@@ -14,17 +14,17 @@ export const load: LayoutServerLoad = async (event) => {
 
   const externalAccounts = user.externalAccounts.reduce(
     (prev, curr) => {
-      prev[curr.provider] = curr;
+      prev[curr.provider] = {
+        provider: curr.provider,
+        externalUsername: curr.externalUsername,
+        avatarUrl: curr.avatarUrl,
+      };
       return prev;
     },
     {} as Partial<
       Record<
         ProviderName,
-        {
-          provider: table.ExternalAccount['provider'];
-          externalUsername: table.ExternalAccount['externalUsername'];
-          avatarUrl: table.ExternalAccount['avatarUrl'];
-        }
+        Pick<table.ExternalAccount, 'provider' | 'externalUsername' | 'avatarUrl'>
       >
     >,
   );
