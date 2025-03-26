@@ -3,9 +3,10 @@ import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = loadFlash(async (event) => {
   const { user } = event.locals;
-  const avatarUrl = user?.externalAccounts.find(
-    (externalAccount) => externalAccount.provider === user.avatarProvider,
-  )?.avatarUrl ?? null;
+  const avatarUrl =
+    user?.externalAccounts.find(
+      (externalAccount) => externalAccount.provider === user.avatarProvider,
+    )?.avatarUrl ?? null;
 
   return {
     user: user ? { username: user.username, avatarProvider: user.avatarProvider } : null,
