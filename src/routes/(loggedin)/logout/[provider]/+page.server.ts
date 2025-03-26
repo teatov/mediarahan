@@ -34,7 +34,7 @@ export const actions: Actions = {
     }
 
     const userAuthProviders = externalAccounts
-      .filter((account) => providerInfo[account.provider].auth)
+      .filter((account) => providerInfo[account.provider].oauth)
       .map((externalAccount) => externalAccount.provider);
 
     if (externalAccounts.length <= 1) {
@@ -49,7 +49,7 @@ export const actions: Actions = {
       );
     }
 
-    if (providerInfo[userExternalAccount.provider].auth && userAuthProviders.length <= 1) {
+    if (providerInfo[userExternalAccount.provider].oauth && userAuthProviders.length <= 1) {
       return redirect(
         '/profile',
         {

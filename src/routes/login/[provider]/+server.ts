@@ -34,7 +34,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     if (existingExternalAccount) {
       return errorRedirect('Этот сервис уже привязан');
     }
-  } else if (!providerInfo[providerName].auth) {
+  } else if (!providerInfo[providerName].oauth) {
     return errorRedirect('Этот сервис не предназначен для входа');
   }
 

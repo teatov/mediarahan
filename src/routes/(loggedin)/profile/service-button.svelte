@@ -29,7 +29,7 @@
         <IconMessageDollar />
       </span>
     {/if}
-    {#if provider.auth}
+    {#if provider.oauth}
       <span title="Через этот сервис можно входить в аккаунт" class="cursor-help">
         <IconLogin />
       </span>
