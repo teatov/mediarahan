@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
+  import type { HTMLAnchorAttributes } from 'svelte/elements';
   import { cn } from '$lib/utils';
 
   let { class: className, children, href, ...restProps }: HTMLAnchorAttributes = $props();
