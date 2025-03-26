@@ -1,4 +1,4 @@
-import type { Emote } from '$lib/emote';
+import { type Emote } from '$lib/emote';
 import type { EmoteProvider } from '$lib/server/emote';
 
 type SevenTvEmotes = {
@@ -35,10 +35,6 @@ export const sevenTvPersonal: EmoteProvider = {
       };
     };
 
-    if (import.meta.env.DEV) {
-      console.log(data);
-    }
-
     const emotes = extractEmotes(data.emote_set.emotes);
 
     return { label: '7TV - ' + data.emote_set.name, emotes, order: 0 };
@@ -60,10 +56,6 @@ export const sevenTvGlobal: EmoteProvider = {
       name: string;
       emotes: SevenTvEmotes;
     };
-
-    if (import.meta.env.DEV) {
-      console.log(data);
-    }
 
     const emotes = extractEmotes(data.emotes);
 

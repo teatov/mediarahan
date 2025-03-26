@@ -45,6 +45,7 @@ const oauthProvider: OauthProvider = {
       externalUserId: claims.sub,
       username: claims.preferred_username,
       avatarUrl: claims.picture,
+      accessToken: tokens.accessToken(),
     };
   },
 };

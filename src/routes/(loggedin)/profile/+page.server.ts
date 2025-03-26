@@ -116,37 +116,42 @@ export const actions: Actions = {
 
     const form = await superValidate(event, zod(z.object({})));
 
-    const twitchUserId = event.locals.user?.externalAccounts.find(
+    const twitchExternalAccount = event.locals.user?.externalAccounts.find(
       (externalAccount) => externalAccount.provider === 'twitch',
-    )?.externalUserId;
+    );
 
-    if (!twitchUserId) {
+    if (!twitchExternalAccount) {
       return fail(401);
     }
+
+    const accessToken = auth.decryptToken(twitchExternalAccount.accessTokenEncrypted!);
 
     const emoteSets: EmoteSet[] = [];
 
     await Promise.all(
       emoteProviders.map(async (emoteProvider) => {
         try {
-          const emoteSet = await emoteProvider.getEmotes(twitchUserId);
-          if (emoteSet) {
+          const emoteSet = await emoteProvider.getEmotes(
+            twitchExternalAccount.externalUserId,
+            accessToken,
+          );
+          console.log(emoteSet)
+          if (emoteSet && emoteSet.emotes.length > 0) {
             emoteSet.emotes.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             emoteSets.push(emoteSet);
           }
         } catch (e) {
           console.error(e);
           setFlash(
-            { type: 'error', message: 'Не удалось запросить смайлики у ' + emoteProvider.name },
+            {
+              type: 'error',
+              message: `Ошибка при получении смайликов ${emoteProvider.name}. Попробуйте ещё раз.`,
+            },
             event,
           );
         }
       }),
     );
-
-    if (import.meta.env.DEV) {
-      console.log(emoteSets);
-    }
 
     emoteSets.sort((a, b) => a.order - b.order);
 
