@@ -5,7 +5,7 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { providerInfo, type ProviderName } from '$lib/providers';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import providers from '$lib/server/oauth';
+import oauthProviders from '$lib/server/oauth';
 import type { RequestEvent } from './$types';
 
 export async function GET(event: RequestEvent): Promise<Response> {
@@ -19,7 +19,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     );
   }
 
-  if (!Object.keys(providers).includes(providerName)) {
+  if (!Object.keys(oauthProviders).includes(providerName)) {
     return errorRedirect('Такого сервиса не существует');
   }
 
@@ -38,7 +38,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return errorRedirect('Этот сервис не предназначен для входа');
   }
 
-  const provider = providers[providerName]!;
+  const oauthProvider = oauthProviders[providerName]!;
 
   let state: string | undefined = undefined;
   const cookieOptions: CookieSerializeOptions & { path: string } = {
@@ -49,18 +49,18 @@ export async function GET(event: RequestEvent): Promise<Response> {
     sameSite: 'lax',
   };
 
-  if (provider.stateCookie) {
+  if (oauthProvider.stateCookie) {
     state = arctic.generateState();
-    event.cookies.set(provider.stateCookie, state, cookieOptions);
+    event.cookies.set(oauthProvider.stateCookie, state, cookieOptions);
   }
 
   let codeVerifier: string | undefined = undefined;
-  if (provider.verifierCookie) {
+  if (oauthProvider.verifierCookie) {
     codeVerifier = arctic.generateCodeVerifier();
-    event.cookies.set(provider.verifierCookie, codeVerifier, cookieOptions);
+    event.cookies.set(oauthProvider.verifierCookie, codeVerifier, cookieOptions);
   }
 
-  const url = provider.createAuthorizationURL(state, codeVerifier);
+  const url = oauthProvider.createAuthorizationURL(state, codeVerifier);
 
   return redirect(302, url);
 }

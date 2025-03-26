@@ -7,7 +7,7 @@ import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import providers from '$lib/server/oauth';
+import oauthProviders from '$lib/server/oauth';
 
 export async function GET(event: RequestEvent): Promise<Response> {
   const providerName = event.params.provider as ProviderName;
@@ -20,7 +20,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     );
   }
 
-  if (!providerName || !Object.keys(providers).includes(providerName)) {
+  if (!providerName || !Object.keys(oauthProviders).includes(providerName)) {
     return errorRedirect('Такого сервиса не существует');
   }
 
@@ -39,21 +39,21 @@ export async function GET(event: RequestEvent): Promise<Response> {
     return errorRedirect('Этот сервис не предназначен для входа');
   }
 
-  const provider = providers[providerName]!;
+  const oauthProvider = oauthProviders[providerName]!;
 
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
-  const storedState = provider.stateCookie
-    ? (event.cookies.get(provider.stateCookie) ?? undefined)
+  const storedState = oauthProvider.stateCookie
+    ? (event.cookies.get(oauthProvider.stateCookie) ?? undefined)
     : undefined;
-  const storedCodeVerifier = provider.verifierCookie
-    ? (event.cookies.get(provider.verifierCookie) ?? undefined)
+  const storedCodeVerifier = oauthProvider.verifierCookie
+    ? (event.cookies.get(oauthProvider.verifierCookie) ?? undefined)
     : undefined;
 
   if (
     !code ||
-    (provider.stateCookie && (!state || !storedState || state !== storedState)) ||
-    (provider.verifierCookie && !storedCodeVerifier)
+    (oauthProvider.stateCookie && (!state || !storedState || state !== storedState)) ||
+    (oauthProvider.verifierCookie && !storedCodeVerifier)
   ) {
     console.error({ code, state, storedState, storedCodeVerifier });
     return errorRedirect('Сервис, через который вы пытаетесь войти, вернул неправильные данные');
@@ -62,9 +62,9 @@ export async function GET(event: RequestEvent): Promise<Response> {
   let tokens: arctic.OAuth2Tokens | null = null;
 
   try {
-    tokens = await provider.validateAuthorizationCode(
+    tokens = await oauthProvider.validateAuthorizationCode(
       code,
-      provider.verifierCookie ? storedCodeVerifier : undefined,
+      oauthProvider.verifierCookie ? storedCodeVerifier : undefined,
     );
   } catch (e) {
     console.error(e);
@@ -95,11 +95,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
     accessToken,
     accessTokenExpiresAt,
     refreshToken,
-  } = await provider.getUserInfo(tokens);
+  } = await oauthProvider.getUserInfo(tokens);
 
   const existingExternalAccount = await db.query.externalAccount.findFirst({
     where: and(
-      eq(table.externalAccount.provider, provider.name),
+      eq(table.externalAccount.provider, oauthProvider.name),
       eq(table.externalAccount.externalUserId, externalUserId),
     ),
   });
@@ -110,7 +110,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
 
   const createExternalAccountValues = (userId: string): table.NewExternalAccount => ({
     userId: userId,
-    provider: provider.name,
+    provider: oauthProvider.name,
     externalUserId,
     externalUsername: username,
     socketTokenEncrypted: socketToken ? auth.encryptToken(socketToken) : null,
@@ -148,7 +148,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
       const userId = generateUserId();
 
       await db.transaction(async (tx) => {
-        await tx.insert(table.user).values({ id: userId, username, avatarProvider: provider.name });
+        await tx.insert(table.user).values({ id: userId, username, avatarProvider: oauthProvider.name });
         await tx.insert(table.externalAccount).values(createExternalAccountValues(userId));
       });
 
