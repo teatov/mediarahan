@@ -48,6 +48,11 @@
       </ul>
     </ScrollArea>
 
+    <Dialog.Description>
+      Смайлики не обновляются автоматически. Если вы добавили себе новые или изменили старые, то
+      нажмите на кнопку ниже.
+    </Dialog.Description>
+
     <form method="POST" action="?/updateEmotes" use:enhance>
       <Form.Button disabled={$submitting} class="w-full">
         {#if $delayed}<Spinner />{/if}

@@ -67,7 +67,13 @@
     <Card.Title>Смайлики</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    <Emotes {emotes} />
+    {#if emotes.length === 0 && !externalAccounts.twitch}
+      <Card.Description>
+        Привяжите к аккаунту Twitch, чтобы из него можно было импортировать смайлики.
+      </Card.Description>
+    {:else}
+      <Emotes {emotes} />
+    {/if}
   </Card.Content>
 </Card.Root>
 
