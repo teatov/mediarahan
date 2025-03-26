@@ -18,7 +18,7 @@
     externalAccounts,
   }: {
     data: SuperValidated<Infer<EditProfileFormSchema>>;
-    externalAccounts: PageServerData['user']['externalAccounts'];
+    externalAccounts: PageServerData['externalAccounts'];
   } = $props();
 
   let open = $state(false);

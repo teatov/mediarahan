@@ -28,7 +28,7 @@
     <div class="space-y-2 w-full min-w-0">
       <h1 class="text-4xl font-bold" title={user.username}>{user.username}</h1>
       <div class="flex justify-between flex-wrap gap-2">
-        <EditProfile data={editProfileForm} externalAccounts={user.externalAccounts} />
+        <EditProfile data={editProfileForm} externalAccounts={externalAccounts} />
         <form method="POST" action="/logout" use:enhance>
           <Button type="submit" variant="destructive"><IconLogout />Выйти</Button>
         </form>
@@ -47,7 +47,7 @@
       {#if userProviders.includes(providerName)}
         <ServiceButton
           {providerName}
-          externalUsername={externalAccounts[providerName].externalUsername}
+          externalUsername={externalAccounts[providerName]!.externalUsername}
         />
       {:else if providerName === 'donatepay'}
         <DonatePayLogin data={donatePayLoginForm}>

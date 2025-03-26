@@ -7,5 +7,8 @@ export const load: LayoutServerLoad = loadFlash(async (event) => {
     (externalAccount) => externalAccount.provider === user.avatarProvider,
   )?.avatarUrl;
 
-  return { user, avatarUrl };
+  return {
+    user: user ? { username: user.username, avatarProvider: user.avatarProvider } : null,
+    avatarUrl,
+  };
 });

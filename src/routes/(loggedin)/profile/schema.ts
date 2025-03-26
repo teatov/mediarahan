@@ -6,7 +6,7 @@ z.setErrorMap(globalErrorMap);
 
 export const editProfileFormSchema = z.object({
   username: z.string().min(1).max(50),
-  avatarProvider: z.enum(providers).optional(),
+  avatarProvider: z.enum(providers).nullable(),
 });
 
 export type EditProfileFormSchema = typeof editProfileFormSchema;

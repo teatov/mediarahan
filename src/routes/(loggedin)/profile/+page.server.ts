@@ -17,9 +17,7 @@ export const load: PageServerLoad = async (event) => {
   const editProfileForm = await superValidate(
     {
       username: data.user.username,
-      avatarProvider: data.user.externalAccounts.find(
-        (externalAccount) => externalAccount.provider === data.user.avatarProvider,
-      )?.provider,
+      avatarProvider: data.user.avatarProvider,
     },
     zod(editProfileFormSchema),
   );

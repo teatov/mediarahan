@@ -35,11 +35,8 @@ export async function validateSessionToken(token: string) {
     where: eq(table.session.id, sessionId),
     with: {
       user: {
-        columns: { username: true, avatarProvider: true },
         with: {
-          externalAccounts: {
-            columns: { provider: true, externalUsername: true, avatarUrl: true },
-          },
+          externalAccounts: true,
         },
       },
     },
