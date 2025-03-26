@@ -131,6 +131,7 @@ export const actions: Actions = {
         try {
           const emoteSet = await emoteProvider.getEmotes(twitchUserId);
           if (emoteSet) {
+            emoteSet.emotes.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             emoteSets.push(emoteSet);
           }
         } catch (e) {
@@ -147,10 +148,12 @@ export const actions: Actions = {
       console.log(emoteSets);
     }
 
+    emoteSets.sort((a, b) => a.order - b.order);
+
     try {
       await db
         .update(table.user)
-        .set({ emotes: emoteSets.toSorted((a, b) => a.order - b.order) })
+        .set({ emotes: emoteSets })
         .where(eq(table.user.id, event.locals.session.userId));
     } catch (e) {
       console.error(e);
