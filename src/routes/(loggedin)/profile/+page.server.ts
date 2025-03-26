@@ -26,7 +26,7 @@ export const load: PageServerLoad = async (event) => {
   );
   const donatePayLoginForm = await superValidate(zod(donatePayLoginFormSchema));
 
-  return { ...data, editProfileForm, donatePayLoginForm, emotes: event.locals.user!.emotes };
+  return { ...data, editProfileForm, donatePayLoginForm, emoteSets: event.locals.user!.emotes };
 };
 
 export const actions: Actions = {

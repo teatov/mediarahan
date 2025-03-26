@@ -14,7 +14,7 @@
 
   let { data } = $props();
 
-  let { user, externalAccounts, editProfileForm, avatarUrl, donatePayLoginForm, emotes } =
+  let { user, externalAccounts, editProfileForm, avatarUrl, donatePayLoginForm, emoteSets } =
     $derived(data);
 </script>
 
@@ -67,12 +67,12 @@
     <Card.Title>Смайлики</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    {#if emotes.length === 0 && !externalAccounts.twitch}
+    {#if emoteSets.length === 0 && !externalAccounts.twitch}
       <Card.Description>
         Привяжите к аккаунту Twitch, чтобы из него можно было импортировать смайлики.
       </Card.Description>
     {:else}
-      <Emotes {emotes} />
+      <Emotes {emoteSets} />
     {/if}
   </Card.Content>
 </Card.Root>

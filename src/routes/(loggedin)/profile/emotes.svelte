@@ -6,11 +6,12 @@
   import { buttonVariants } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import * as Form from '$lib/components/ui/form';
+  import { Input } from '$lib/components/ui/input';
   import { ScrollArea } from '$lib/components/ui/scroll-area/index';
   import type { EmoteSet } from '$lib/emote';
   import { cn } from '$lib/utils';
 
-  let { emotes }: { emotes: EmoteSet[] } = $props();
+  let { emoteSets }: { emoteSets: EmoteSet[] } = $props();
 
   let form = superForm(
     {},
@@ -20,6 +21,8 @@
   );
 
   const { delayed, enhance, submitting } = form;
+
+  let search = $state('');
 </script>
 
 <Dialog.Root>
@@ -31,19 +34,28 @@
       <Dialog.Title>Смайлики</Dialog.Title>
     </Dialog.Header>
 
-    <ScrollArea class="border max-h-96">
+    <Input bind:value={search} placeholder="Поиск..." />
+
+    <ScrollArea class="border h-96">
       <ul class="divide-y">
-        {#each emotes as emoteSet}
-          <li class="space-y-2 p-2">
-            <p class="font-semibold sticky top-0 bg-background">{emoteSet.label}</p>
-            <ul class="flex flex-wrap gap-2">
-              {#each emoteSet.emotes as emote}
-                <li>
-                  <Emote {emote} />
-                </li>
-              {/each}
-            </ul>
-          </li>
+        {#each emoteSets as emoteSet}
+          {@const emotes = search
+            ? emoteSet.emotes.filter((emote) =>
+                emote.name.toLowerCase().includes(search.toLowerCase()),
+              )
+            : emoteSet.emotes}
+          {#if emotes.length > 0}
+            <li class="space-y-2 p-2">
+              <p class="font-semibold sticky top-0 bg-background">{emoteSet.label}</p>
+              <ul class="flex flex-wrap gap-2">
+                {#each emotes as emote}
+                  <li>
+                    <Emote {emote} />
+                  </li>
+                {/each}
+              </ul>
+            </li>
+          {/if}
         {/each}
       </ul>
     </ScrollArea>
