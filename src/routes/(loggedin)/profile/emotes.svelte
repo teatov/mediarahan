@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { IconRefresh } from '@tabler/icons-svelte';
+  import { IconRefresh, IconSearch } from '@tabler/icons-svelte';
   import { superForm } from 'sveltekit-superforms';
   import Spinner from '$lib/components/icons/spinner.svelte';
   import Emote from '$lib/components/layout/emote.svelte';
@@ -34,7 +34,12 @@
       <Dialog.Title>Смайлики</Dialog.Title>
     </Dialog.Header>
 
-    <Input bind:value={search} placeholder="Поиск..." />
+    <div class="relative">
+      <IconSearch
+        class="text-muted-foreground absolute left-2 top-[50%] translate-y-[-50%] pointer-events-none"
+      />
+      <Input bind:value={search} placeholder="Поиск..." class="pl-10" />
+    </div>
 
     <ScrollArea class="border h-96">
       <ul class="divide-y">
