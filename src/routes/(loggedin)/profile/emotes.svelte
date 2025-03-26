@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { IconRefresh } from '@tabler/icons-svelte';
   import { superForm } from 'sveltekit-superforms';
   import Spinner from '$lib/components/icons/spinner.svelte';
   import Emote from '$lib/components/layout/emote.svelte';
@@ -50,6 +51,7 @@
     <form method="POST" action="?/updateEmotes" use:enhance>
       <Form.Button disabled={$submitting} class="w-full">
         {#if $delayed}<Spinner />{/if}
+        <IconRefresh />
         Обновить смайлики
       </Form.Button>
     </form>
