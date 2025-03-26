@@ -1,7 +1,7 @@
 import { fail } from '@sveltejs/kit';
 import { eq, and } from 'drizzle-orm';
 import { redirect } from 'sveltekit-flash-message/server';
-import { authProviders, type ProviderName } from '$lib/providers';
+import { providerInfo, type ProviderName } from '$lib/providers';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import type { Actions } from './$types';
@@ -32,7 +32,7 @@ export const actions: Actions = {
     }
 
     const userAuthProviders = externalAccounts
-      .filter((account) => authProviders.includes(account.provider))
+      .filter((account) => providerInfo[account.provider].auth)
       .map((externalAccount) => externalAccount.provider);
 
     if (externalAccounts.length <= 1) {
@@ -47,7 +47,7 @@ export const actions: Actions = {
       );
     }
 
-    if (authProviders.includes(userExternalAccount.provider) && userAuthProviders.length <= 1) {
+    if (providerInfo[userExternalAccount.provider].auth && userAuthProviders.length <= 1) {
       return redirect(
         '/profile',
         {
