@@ -1,11 +1,12 @@
 import type { EmoteSet } from '$lib/emote';
-import type { ProviderName } from '$lib/providers';
+import seventv from '$lib/server/emote/seventv';
 
 export type EmoteProvider = {
-  name: ProviderName;
-  getEmotes(): Promise<EmoteSet[]>;
+  name: string;
+
+  getEmotes(userId: string): Promise<EmoteSet | null>;
 };
 
-const emoteProviders: Partial<Record<ProviderName, EmoteProvider>> = {};
+const emoteProviders = [seventv];
 
 export default emoteProviders;

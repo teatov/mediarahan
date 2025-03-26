@@ -18,7 +18,7 @@ export const user = pgTable('user', {
   id: varchar({ length: 255 }).primaryKey(),
   username: varchar({ length: 255 }).notNull(),
   avatarProvider: providerEnum(),
-  emotes: json().$type<EmoteSet[]>().default([]),
+  emotes: json().$type<EmoteSet[]>().notNull().default([]),
 });
 
 export const userRelations = relations(user, ({ many, one }) => ({

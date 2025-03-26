@@ -9,11 +9,13 @@
   import DeleteAccount from './delete-account.svelte';
   import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
+  import Emotes from './emotes.svelte';
   import ServiceButton from './service-button.svelte';
 
   let { data } = $props();
 
-  let { user, externalAccounts, editProfileForm, avatarUrl, donatePayLoginForm } = $derived(data);
+  let { user, externalAccounts, editProfileForm, avatarUrl, donatePayLoginForm, emotes } =
+    $derived(data);
 </script>
 
 <svelte:head>
@@ -57,6 +59,15 @@
         </Button>
       {/if}
     {/each}
+  </Card.Content>
+</Card.Root>
+
+<Card.Root class="mx-auto max-w-lg">
+  <Card.Header>
+    <Card.Title>Смайлики</Card.Title>
+  </Card.Header>
+  <Card.Content class="space-y-4">
+    <Emotes {emotes} />
   </Card.Content>
 </Card.Root>
 
