@@ -28,7 +28,7 @@ export const twitchPersonal: EmoteProvider = {
 
     const emotes = extractEmotes(data);
 
-    return { label: 'Twitch', emotes, order: 7 };
+    return { label: 'Twitch', emotes };
   },
 };
 
@@ -51,7 +51,7 @@ export const twitchGlobal: EmoteProvider = {
 
     const emotes = extractEmotes(data);
 
-    return { label: 'Twitch - Global Emotes', emotes, order: 8 };
+    return { label: 'Twitch - Global Emotes', emotes };
   },
 };
 

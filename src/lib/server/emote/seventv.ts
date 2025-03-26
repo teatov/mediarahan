@@ -37,7 +37,7 @@ export const sevenTvPersonal: EmoteProvider = {
 
     const emotes = extractEmotes(data.emote_set.emotes);
 
-    return { label: '7TV - ' + data.emote_set.name, emotes, order: 0 };
+    return { label: '7TV - ' + data.emote_set.name, emotes };
   },
 };
 
@@ -59,7 +59,7 @@ export const sevenTvGlobal: EmoteProvider = {
 
     const emotes = extractEmotes(data.emotes);
 
-    return { label: '7TV - ' + data.name, emotes, order: 1 };
+    return { label: '7TV - ' + data.name, emotes };
   },
 };
 

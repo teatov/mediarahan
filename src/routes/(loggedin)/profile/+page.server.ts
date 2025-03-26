@@ -129,13 +129,14 @@ export const actions: Actions = {
     const emoteSets: EmoteSet[] = [];
 
     await Promise.all(
-      emoteProviders.map(async (emoteProvider) => {
+      emoteProviders.map(async (emoteProvider, index) => {
         try {
           const emoteSet = await emoteProvider.getEmotes(
             twitchExternalAccount.externalUserId,
             accessToken,
           );
           if (emoteSet && emoteSet.emotes.length > 0) {
+            emoteSet.index = index;
             emoteSet.emotes.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             emoteSets.push(emoteSet);
           }
@@ -152,7 +153,7 @@ export const actions: Actions = {
       }),
     );
 
-    emoteSets.sort((a, b) => a.order - b.order);
+    emoteSets.sort((a, b) => a.index! - b.index!);
 
     try {
       await db

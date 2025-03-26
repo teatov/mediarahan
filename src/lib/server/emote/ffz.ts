@@ -28,7 +28,7 @@ export const ffzPersonal: EmoteProvider = {
       emotes = emotes.concat(extractEmotes(sets[key].emoticons));
     }
 
-    return { label: 'FrankerFaceZ', emotes, order: 5 };
+    return { label: 'FrankerFaceZ', emotes };
   },
 };
 
@@ -52,7 +52,7 @@ export const ffzGlobal: EmoteProvider = {
       emotes = emotes.concat(extractEmotes(sets[key].emoticons));
     }
 
-    return { label: 'FrankerFaceZ - Global Emotes', emotes, order: 6 };
+    return { label: 'FrankerFaceZ - Global Emotes', emotes };
   },
 };
 

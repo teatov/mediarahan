@@ -26,7 +26,7 @@ export const bttvPersonal: EmoteProvider = {
     const channelEmotes = extractEmotes(data.channelEmotes);
     const sharedEmotes = extractEmotes(data.sharedEmotes);
 
-    return { label: 'BetterTTV', emotes: [...channelEmotes, ...sharedEmotes], order: 3 };
+    return { label: 'BetterTTV', emotes: [...channelEmotes, ...sharedEmotes] };
   },
 };
 
@@ -45,7 +45,7 @@ export const bttvGlobal: EmoteProvider = {
 
     const emotes = extractEmotes(data);
 
-    return { label: 'BetterTTV - Global Emotes', emotes, order: 4 };
+    return { label: 'BetterTTV - Global Emotes', emotes };
   },
 };
 
