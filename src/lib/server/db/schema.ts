@@ -1,5 +1,15 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, varchar, text, timestamp, pgEnum, primaryKey, unique } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  varchar,
+  text,
+  timestamp,
+  pgEnum,
+  primaryKey,
+  unique,
+  json,
+} from 'drizzle-orm/pg-core';
+import type { EmoteSet } from '$lib/emote';
 import { providers } from '../../providers';
 
 export const providerEnum = pgEnum('provider', providers);
@@ -8,6 +18,7 @@ export const user = pgTable('user', {
   id: varchar({ length: 255 }).primaryKey(),
   username: varchar({ length: 255 }).notNull(),
   avatarProvider: providerEnum(),
+  emotes: json().$type<EmoteSet[]>().default([]),
 });
 
 export const userRelations = relations(user, ({ many, one }) => ({
