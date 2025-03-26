@@ -124,14 +124,14 @@ export const actions: Actions = {
       return fail(401);
     }
 
-    let emoteSets: EmoteSet[] = [];
+    const emoteSets: EmoteSet[] = [];
 
     await Promise.all(
       emoteProviders.map(async (emoteProvider) => {
         try {
           const emoteSet = await emoteProvider.getEmotes(twitchUserId);
           if (emoteSet) {
-            emoteSets = emoteSets.concat(emoteSet);
+            emoteSets.push(emoteSet);
           }
         } catch (e) {
           console.error(e);
@@ -150,7 +150,7 @@ export const actions: Actions = {
     try {
       await db
         .update(table.user)
-        .set({ emotes: emoteSets })
+        .set({ emotes: emoteSets.toSorted((a, b) => a.order - b.order) })
         .where(eq(table.user.id, event.locals.session.userId));
     } catch (e) {
       console.error(e);

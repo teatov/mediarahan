@@ -17,7 +17,7 @@ type SevenTvEmotes = {
   };
 }[];
 
-export const sevenTvUser: EmoteProvider = {
+export const sevenTvPersonal: EmoteProvider = {
   name: '7TV',
 
   getEmotes: async (userId: string) => {
@@ -40,8 +40,8 @@ export const sevenTvUser: EmoteProvider = {
     }
 
     const emotes = extractEmotes(data.emote_set.emotes);
-    const emoteSet = { label: '7TV - ' + data.emote_set.name, emotes };
-    return [emoteSet];
+
+    return { label: '7TV - ' + data.emote_set.name, emotes, order: 0 };
   },
 };
 
@@ -66,8 +66,8 @@ export const sevenTvGlobal: EmoteProvider = {
     }
 
     const emotes = extractEmotes(data.emotes);
-    const emoteSet = { label: '7TV - ' + data.name, emotes };
-    return [emoteSet];
+
+    return { label: '7TV - ' + data.name, emotes, order: 1 };
   },
 };
 

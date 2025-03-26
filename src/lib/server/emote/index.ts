@@ -1,12 +1,12 @@
 import type { EmoteSet } from '$lib/emote';
-import { sevenTvUser, sevenTvGlobal } from '$lib/server/emote/seventv';
+import { sevenTvPersonal, sevenTvGlobal } from '$lib/server/emote/seventv';
 
 export type EmoteProvider = {
   name: string;
 
-  getEmotes(userId: string): Promise<EmoteSet[] | null>;
+  getEmotes(userId: string): Promise<EmoteSet | null>;
 };
 
-const emoteProviders = [sevenTvUser, sevenTvGlobal];
+const emoteProviders = [sevenTvPersonal, sevenTvGlobal];
 
 export default emoteProviders;
