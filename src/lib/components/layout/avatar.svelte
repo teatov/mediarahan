@@ -6,7 +6,7 @@
     username,
     src,
     ...restProps
-  }: { username: string; src: string | null | undefined } & AvatarPrimitive.RootProps = $props();
+  }: { username: string; src: string | null } & AvatarPrimitive.RootProps = $props();
 </script>
 
 <Avatar.Root {...restProps}>

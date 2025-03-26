@@ -8,7 +8,7 @@
     user,
     url,
     avatarUrl,
-  }: { user: App.Locals['user']; url: URL; avatarUrl: string | null | undefined } = $props();
+  }: { user: { username: string } | null; url: URL; avatarUrl: string | null } = $props();
 </script>
 
 {#snippet navLink(href: string, label: string, section: boolean = false, dim: boolean = false)}
