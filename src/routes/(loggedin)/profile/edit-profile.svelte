@@ -58,26 +58,28 @@
         <Form.Legend>Аватарка</Form.Legend>
         <RadioGroup.Root
           bind:value={$formData.avatarProvider}
-          class="block columns-1 sm:columns-2 space-y-2"
+          class="grid grid-cols-3 sm:grid-cols-5 gap-2"
           name="avatarProvider"
         >
           {#each Object.values(externalAccounts) as externalAccount}
-            {@const provider = providerInfo[externalAccount.provider]}
             {#if externalAccount.avatarUrl}
-              <div class="flex items-center space-x-3">
-                <Form.Control>
-                  {#snippet children({ props })}
-                    <RadioGroup.Item value={externalAccount.provider} {...props} />
-                    <Form.Label class="flex items-center space-x-3 cursor-pointer">
-                      <Avatar.Root class="size-16">
-                        <Avatar.Image src={externalAccount.avatarUrl} alt={provider.label} />
-                        <Avatar.Fallback>?</Avatar.Fallback>
-                      </Avatar.Root>
-                      <span>{provider.label}</span>
-                    </Form.Label>
-                  {/snippet}
-                </Form.Control>
-              </div>
+              <Form.Control>
+                {#snippet children({ props })}
+                  {@const providerLabel = providerInfo[externalAccount.provider].label}
+                  <Form.Label
+                    class="[&:has([data-state=checked])>div]:ring-primary flex flex-col items-center gap-2"
+                  >
+                    <RadioGroup.Item value={externalAccount.provider} {...props} class="sr-only" />
+                    <Avatar.Root
+                      class="size-16 ring-offset-background ring-2 ring-muted ring-offset-3 cursor-pointer"
+                    >
+                      <Avatar.Image src={externalAccount.avatarUrl} alt={providerLabel} />
+                      <Avatar.Fallback>?</Avatar.Fallback>
+                    </Avatar.Root>
+                    <span class="text-xs">{providerLabel}</span>
+                  </Form.Label>
+                {/snippet}
+              </Form.Control>
             {/if}
           {/each}
         </RadioGroup.Root>
