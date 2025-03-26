@@ -27,4 +27,11 @@ export type Provider = {
   getUserInfo(tokens: arctic.OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
-export default { twitch, github, google, donationalerts } as Record<string, Provider>;
+const providers: Partial<Record<ProviderName, Provider>> = {
+  twitch,
+  github,
+  google,
+  donationalerts,
+};
+
+export default providers;
