@@ -12,12 +12,14 @@ export const actions: Actions = {
       return fail(401);
     }
 
+    const providerName = event.params.provider as ProviderName;
+
     const externalAccounts = await db.query.externalAccount.findMany({
       where: eq(table.externalAccount.userId, event.locals.session!.userId),
     });
 
     const userExternalAccount = externalAccounts.find(
-      (account) => account.provider === event.params.provider,
+      (account) => account.provider === providerName,
     );
 
     if (!userExternalAccount) {
@@ -64,7 +66,7 @@ export const actions: Actions = {
       .where(
         and(
           eq(table.externalAccount.userId, event.locals.session.userId),
-          eq(table.externalAccount.provider, event.params.provider as ProviderName),
+          eq(table.externalAccount.provider, providerName),
         ),
       );
 

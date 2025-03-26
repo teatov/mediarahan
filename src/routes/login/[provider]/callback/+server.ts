@@ -10,7 +10,7 @@ import * as table from '$lib/server/db/schema';
 import providers from '$lib/server/providers';
 
 export async function GET(event: RequestEvent): Promise<Response> {
-  const providerName = event.params.provider;
+  const providerName = event.params.provider as ProviderName;
 
   function errorRedirect(message: string) {
     return redirect(
@@ -27,7 +27,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
   if (event.locals.session) {
     const existingExternalAccount = await db.query.externalAccount.findFirst({
       where: and(
-        eq(table.externalAccount.provider, providerName as ProviderName),
+        eq(table.externalAccount.provider, providerName),
         eq(table.externalAccount.userId, event.locals.session.userId),
       ),
     });
@@ -35,11 +35,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
     if (existingExternalAccount) {
       return errorRedirect('Этот сервис уже привязан');
     }
-  } else if (!providerInfo[providerName as ProviderName].auth) {
+  } else if (!providerInfo[providerName].auth) {
     return errorRedirect('Этот сервис не предназначен для входа');
   }
 
-  const provider = providers[providerName];
+  const provider = providers[providerName]!;
 
   const code = event.url.searchParams.get('code');
   const state = event.url.searchParams.get('state');
