@@ -124,14 +124,14 @@ export const actions: Actions = {
       return fail(401);
     }
 
-    const emoteSets: EmoteSet[] = [];
+    let emoteSets: EmoteSet[] = [];
 
     await Promise.all(
       emoteProviders.map(async (emoteProvider) => {
         try {
           const emoteSet = await emoteProvider.getEmotes(twitchUserId);
           if (emoteSet) {
-            emoteSets.push(emoteSet);
+            emoteSets = emoteSets.concat(emoteSet);
           }
         } catch (e) {
           console.error(e);

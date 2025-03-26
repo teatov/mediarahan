@@ -31,7 +31,7 @@
     </Dialog.Header>
 
     <ScrollArea class="border max-h-96">
-      <ul class="space-y-4">
+      <ul class="divide-y">
         {#each emotes as emoteSet}
           <li class="space-y-2 p-2">
             <p class="font-semibold">{emoteSet.label}</p>
