@@ -5,7 +5,7 @@
   import Avatar from '$lib/components/layout/avatar.svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
-  import { type ProviderName, providerLabels, providers } from '$lib/providers';
+  import { type ProviderName, providerInfo, providers } from '$lib/providers';
   import DeleteAccount from './delete-account.svelte';
   import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
@@ -42,16 +42,20 @@
     <Card.Title>Сервисы</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    {#each providers as provider}
-      {#if userProviders.includes(provider)}
-        <ServiceButton {provider} externalUsername={externalAccounts[provider].externalUsername} />
-      {:else if provider === 'donatepay'}
+    {#each providers as providerName}
+      {@const provider = providerInfo[providerName]}
+      {#if userProviders.includes(providerName)}
+        <ServiceButton
+          {providerName}
+          externalUsername={externalAccounts[providerName].externalUsername}
+        />
+      {:else if providerName === 'donatepay'}
         <DonatePayLogin data={donatePayLoginForm}>
-          <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
+          <AutoProviderIcon {providerName} />Привязать {provider.label}
         </DonatePayLogin>
       {:else}
-        <Button class="w-full" variant={provider} href={'/login/' + provider}>
-          <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
+        <Button class="w-full" variant={providerName} href={'/login/' + providerName}>
+          <AutoProviderIcon {providerName} />Привязать {provider.label}
         </Button>
       {/if}
     {/each}

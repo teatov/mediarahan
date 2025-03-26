@@ -4,17 +4,17 @@
   import IconBrandDonationAlerts from '$lib/components/icons/icon-brand-donationalerts.svelte';
   import type { ProviderName } from '$lib/providers';
 
-  let { provider, ...restProps }: { provider: ProviderName } & IconProps = $props();
+  let { providerName, ...restProps }: { providerName: ProviderName } & IconProps = $props();
 </script>
 
-{#if provider === 'github'}
+{#if providerName === 'github'}
   <IconBrandGithub {...restProps} />
-{:else if provider === 'twitch'}
+{:else if providerName === 'twitch'}
   <IconBrandTwitch {...restProps} />
-{:else if provider === 'google'}
+{:else if providerName === 'google'}
   <IconBrandGoogle {...restProps} />
-{:else if provider === 'donationalerts'}
+{:else if providerName === 'donationalerts'}
   <IconBrandDonationAlerts {...restProps} />
-{:else if provider === 'donatepay'}
+{:else if providerName === 'donatepay'}
   <IconBrandDonatePay {...restProps} />
 {/if}

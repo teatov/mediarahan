@@ -9,7 +9,7 @@
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import * as RadioGroup from '$lib/components/ui/radio-group/index';
-  import { providerLabels } from '$lib/providers';
+  import { providerInfo } from '$lib/providers';
   import type { PageServerData } from './$types';
   import { editProfileFormSchema, type EditProfileFormSchema } from './schema';
 
@@ -62,6 +62,7 @@
           name="avatarProvider"
         >
           {#each Object.values(externalAccounts) as externalAccount}
+            {@const provider = providerInfo[externalAccount.provider]}
             {#if externalAccount.avatarUrl}
               <div class="flex items-center space-x-3">
                 <Form.Control>
@@ -69,15 +70,10 @@
                     <RadioGroup.Item value={externalAccount.provider} {...props} />
                     <Form.Label class="flex items-center space-x-3 cursor-pointer">
                       <Avatar.Root class="size-16">
-                        <Avatar.Image
-                          src={externalAccount.avatarUrl}
-                          alt={providerLabels[externalAccount.provider]}
-                        />
+                        <Avatar.Image src={externalAccount.avatarUrl} alt={provider.label} />
                         <Avatar.Fallback>?</Avatar.Fallback>
                       </Avatar.Root>
-                      <span>
-                        {providerLabels[externalAccount.provider]}
-                      </span>
+                      <span>{provider.label}</span>
                     </Form.Label>
                   {/snippet}
                 </Form.Control>

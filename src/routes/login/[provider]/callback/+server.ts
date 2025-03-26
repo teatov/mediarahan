@@ -2,7 +2,7 @@ import type { RequestEvent } from '@sveltejs/kit';
 import * as arctic from 'arctic';
 import { eq, and } from 'drizzle-orm';
 import { redirect } from 'sveltekit-flash-message/server';
-import { authProviders, type ProviderName } from '$lib/providers';
+import { providerInfo, type ProviderName } from '$lib/providers';
 import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 import db from '$lib/server/db';
@@ -35,7 +35,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     if (existingExternalAccount) {
       return errorRedirect('Этот сервис уже привязан');
     }
-  } else if (!authProviders.includes(providerName as ProviderName)) {
+  } else if (!providerInfo[providerName as ProviderName].auth) {
     return errorRedirect('Этот сервис не предназначен для входа');
   }
 
