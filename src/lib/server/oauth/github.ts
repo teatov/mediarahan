@@ -1,6 +1,6 @@
 import * as arctic from 'arctic';
 import { env } from '$env/dynamic/private';
-import type { Provider } from '$lib/server/providers';
+import type { OauthProvider } from '$lib/server/oauth';
 
 const oauth = new arctic.GitHub(
   env.GITHUB_CLIENT_ID,
@@ -8,7 +8,7 @@ const oauth = new arctic.GitHub(
   env.ORIGIN + '/login/github/callback',
 );
 
-export default {
+const oauthProvider: OauthProvider = {
   name: 'github',
   stateCookie: 'github_oauth_state',
 
@@ -40,4 +40,6 @@ export default {
       avatarUrl: data.avatar_url,
     };
   },
-} as Provider;
+};
+
+export default oauthProvider;

@@ -1,6 +1,6 @@
 import * as arctic from 'arctic';
 import { env } from '$env/dynamic/private';
-import type { Provider } from '$lib/server/providers';
+import type { OauthProvider } from '$lib/server/oauth';
 
 const oauth = new arctic.Twitch(
   env.TWITCH_CLIENT_ID,
@@ -8,7 +8,7 @@ const oauth = new arctic.Twitch(
   env.ORIGIN + '/login/twitch/callback',
 );
 
-export default {
+const oauthProvider: OauthProvider = {
   name: 'twitch',
   stateCookie: 'twitch_oauth_state',
 
@@ -47,4 +47,6 @@ export default {
       avatarUrl: claims.picture,
     };
   },
-} as Provider;
+};
+
+export default oauthProvider;

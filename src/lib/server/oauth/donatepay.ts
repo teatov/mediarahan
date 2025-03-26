@@ -35,7 +35,5 @@ export const getUserInfo = async (accessToken: string): Promise<ProviderUserInfo
     avatarUrl: data.avatar,
     socketToken: socketTokenData.token,
     accessToken: accessToken,
-    accessTokenExpiresAt: null,
-    refreshToken: null,
   };
 };

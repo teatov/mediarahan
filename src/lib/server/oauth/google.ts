@@ -1,6 +1,6 @@
 import * as arctic from 'arctic';
 import { env } from '$env/dynamic/private';
-import type { Provider } from '$lib/server/providers';
+import type { OauthProvider } from '$lib/server/oauth';
 
 export const oauth = new arctic.Google(
   env.GOOGLE_CLIENT_ID,
@@ -8,7 +8,7 @@ export const oauth = new arctic.Google(
   env.ORIGIN + '/login/google/callback',
 );
 
-export default {
+const oauthProvider: OauthProvider = {
   name: 'google',
   stateCookie: 'google_oauth_state',
   verifierCookie: 'google_code_verifier',
@@ -38,4 +38,6 @@ export default {
       avatarUrl: claims.picture,
     };
   },
-} as Provider;
+};
+
+export default oauthProvider;

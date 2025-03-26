@@ -1,99 +1,105 @@
 import { decryptToken } from '../auth';
 import * as table from '../db/schema';
-import type { Message } from '../socket';
+import type { Message, SocketProvider } from '../socket';
 
-export async function createSocket(externalAccount: table.ExternalAccount) {
-  const channelId = `$alerts:donation_${externalAccount.externalUserId}`;
-  let clientId: string;
-  let connected: boolean = false;
+const socketProvider: SocketProvider = {
+  name: 'donationalerts',
 
-  const socket = new WebSocket('wss://centrifugo.donationalerts.com/connection/websocket');
+  createSocket: async (externalAccount: table.ExternalAccount) => {
+    const channelId = `$alerts:donation_${externalAccount.externalUserId}`;
+    let clientId: string;
+    let connected: boolean = false;
 
-  socket.addEventListener('open', () => {
-    console.log('Соединение с WebSocket установлено!');
+    const socket = new WebSocket('wss://centrifugo.donationalerts.com/connection/websocket');
 
-    const socketToken = decryptToken(externalAccount.socketTokenEncrypted!);
-    const connectMessage = {
-      params: {
-        token: socketToken,
-      },
-      id: 1,
-    };
-    socket.send(JSON.stringify(connectMessage));
-  });
+    socket.addEventListener('open', () => {
+      console.log('Соединение с WebSocket установлено!');
 
-  socket.addEventListener('message', async (event) => {
-    console.log('Сообщение: ', event.data);
+      const socketToken = decryptToken(externalAccount.socketTokenEncrypted!);
+      const connectMessage = {
+        params: {
+          token: socketToken,
+        },
+        id: 1,
+      };
+      socket.send(JSON.stringify(connectMessage));
+    });
 
-    let data: unknown;
-    try {
-      data = JSON.parse(event.data);
-    } catch (e) {
-      console.error(e);
-      return;
-    }
+    socket.addEventListener('message', async (event) => {
+      console.log('Сообщение: ', event.data);
 
-    if (!clientId && isClientIdMessage(data)) {
-      clientId = data.result.client;
-      const response = await requestChannels(clientId, channelId, externalAccount);
-      if (import.meta.env.DEV) {
-        console.log(response);
-      }
-
-      if (!isChannelsResponse(response)) {
-        console.error('Неправильный ответ с /centrifuge/subscribe');
+      let data: unknown;
+      try {
+        data = JSON.parse(event.data);
+      } catch (e) {
+        console.error(e);
         return;
       }
 
-      const { channels } = response;
-      const donationChannel = channels.find((channel) => channel.channel === channelId)!;
+      if (!clientId && isClientIdMessage(data)) {
+        clientId = data.result.client;
+        const response = await requestChannels(clientId, channelId, externalAccount);
+        if (import.meta.env.DEV) {
+          console.log(response);
+        }
 
-      const channelConnectMessage = {
-        params: {
-          channel: donationChannel.channel,
-          token: donationChannel.token,
+        if (!isChannelsResponse(response)) {
+          console.error('Неправильный ответ с /centrifuge/subscribe');
+          return;
+        }
+
+        const { channels } = response;
+        const donationChannel = channels.find((channel) => channel.channel === channelId)!;
+
+        const channelConnectMessage = {
+          params: {
+            channel: donationChannel.channel,
+            token: donationChannel.token,
+          },
+          method: 1,
+          id: 2,
+        };
+        socket.send(JSON.stringify(channelConnectMessage));
+        return;
+      }
+
+      if (!connected && isChannelConnectMessage(data)) {
+        connected = true;
+        console.log('Подключение официально готово!');
+        return;
+      }
+
+      if (!isDonationMessage(data)) {
+        return;
+      }
+
+      const donation = data.result.data.data;
+      const message: Message = {
+        username: donation.username,
+        text: donation.message,
+        value: donation.amount_in_user_currency,
+        sentAt: new Date(),
+        valueInCurrency: {
+          currency: donation.currency,
+          value: donation.amount,
         },
-        method: 1,
-        id: 2,
       };
-      socket.send(JSON.stringify(channelConnectMessage));
-      return;
-    }
+      if (import.meta.env.DEV) {
+        console.log(message);
+      }
+    });
 
-    if (!connected && isChannelConnectMessage(data)) {
-      connected = true;
-      console.log('Подключение официально готово!');
-      return;
-    }
+    socket.addEventListener('close', (event) => {
+      console.log('Соединение с WebSocket закрыто:', event.code, event.reason);
+    });
 
-    if (!isDonationMessage(data)) {
-      return;
-    }
+    socket.addEventListener('error', (error) => {
+      console.error('Ошибка WebSocket:', error);
+    });
 
-    const donation = data.result.data.data;
-    const message: Message = {
-      username: donation.username,
-      text: donation.message,
-      value: donation.amount_in_user_currency,
-      sentAt: new Date(),
-      valueInCurrency: {
-        currency: donation.currency,
-        value: donation.amount,
-      },
-    };
-    if (import.meta.env.DEV) {
-      console.log(message);
-    }
-  });
-
-  socket.addEventListener('close', (event) => {
-    console.log('Соединение с WebSocket закрыто:', event.code, event.reason);
-  });
-
-  socket.addEventListener('error', (error) => {
-    console.error('Ошибка WebSocket:', error);
-  });
-}
+    return socket;
+  },
+};
 
 async function requestChannels(
   clientId: string,
@@ -234,3 +240,5 @@ function isDonationMessage(data: unknown): data is DonationMessage {
     'id' in data.result.data.data
   );
 }
+
+export default socketProvider;

@@ -1,21 +1,21 @@
 import * as arctic from 'arctic';
 import type { ProviderName } from '$lib/providers';
-import donationalerts from '$lib/server/providers/donationalerts';
-import github from '$lib/server/providers/github';
-import google from '$lib/server/providers/google';
-import twitch from '$lib/server/providers/twitch';
+import donationalerts from '$lib/server/oauth/donationalerts';
+import github from '$lib/server/oauth/github';
+import google from '$lib/server/oauth/google';
+import twitch from '$lib/server/oauth/twitch';
 
 export type ProviderUserInfo = {
   externalUserId: string;
   username: string;
-  avatarUrl: string | null;
-  accessToken: string | null;
-  accessTokenExpiresAt: Date | null;
-  socketToken: string | null;
-  refreshToken: string | null;
+  avatarUrl?: string;
+  accessToken?: string;
+  accessTokenExpiresAt?: Date;
+  socketToken?: string;
+  refreshToken?: string;
 };
 
-export type Provider = {
+export type OauthProvider = {
   name: ProviderName;
   stateCookie?: string;
   verifierCookie?: string;
@@ -27,11 +27,11 @@ export type Provider = {
   getUserInfo(tokens: arctic.OAuth2Tokens): Promise<ProviderUserInfo>;
 };
 
-const providers: Partial<Record<ProviderName, Provider>> = {
+const oauthProviders: Partial<Record<ProviderName, OauthProvider>> = {
   twitch,
   github,
   google,
   donationalerts,
 };
 
-export default providers;
+export default oauthProviders;

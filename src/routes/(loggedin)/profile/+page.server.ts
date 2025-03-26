@@ -7,7 +7,7 @@ import type { ProviderName } from '$lib/providers';
 import * as auth from '$lib/server/auth';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import { getUserInfo } from '$lib/server/providers/donatepay';
+import { getUserInfo } from '$lib/server/oauth/donatepay';
 import type { PageServerLoad, Actions } from './$types';
 import { editProfileFormSchema, donatePayLoginFormSchema } from './schema';
 

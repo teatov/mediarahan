@@ -5,7 +5,7 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { providerInfo, type ProviderName } from '$lib/providers';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import providers from '$lib/server/providers';
+import providers from '$lib/server/oauth';
 import type { RequestEvent } from './$types';
 
 export async function GET(event: RequestEvent): Promise<Response> {

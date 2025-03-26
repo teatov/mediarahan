@@ -7,7 +7,7 @@ import * as auth from '$lib/server/auth';
 import { generateUserId } from '$lib/server/auth';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import providers from '$lib/server/providers';
+import providers from '$lib/server/oauth';
 
 export async function GET(event: RequestEvent): Promise<Response> {
   const providerName = event.params.provider as ProviderName;

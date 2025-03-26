@@ -1,6 +1,6 @@
 import * as arctic from 'arctic';
 import { env } from '$env/dynamic/private';
-import type { Provider } from '$lib/server/providers';
+import type { OauthProvider } from '$lib/server/oauth';
 
 const oauth = new arctic.DonationAlerts(
   env.DONATIONALERTS_CLIENT_ID,
@@ -8,7 +8,7 @@ const oauth = new arctic.DonationAlerts(
   env.ORIGIN + '/login/donationalerts/callback',
 );
 
-export default {
+const oauthProvider: OauthProvider = {
   name: 'donationalerts',
 
   createAuthorizationURL: () => {
@@ -51,4 +51,6 @@ export default {
       refreshToken: tokens.refreshToken(),
     };
   },
-} as Provider;
+};
+
+export default oauthProvider;
