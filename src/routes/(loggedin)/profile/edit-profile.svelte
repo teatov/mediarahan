@@ -58,7 +58,7 @@
         <Form.Legend>Аватарка</Form.Legend>
         <RadioGroup.Root
           bind:value={$formData.avatarProvider}
-          class="grid grid-cols-3 sm:grid-cols-5 gap-2"
+          class="grid grid-cols-4 sm:grid-cols-5 gap-2"
           name="avatarProvider"
         >
           {#each Object.values(externalAccounts) as externalAccount}
