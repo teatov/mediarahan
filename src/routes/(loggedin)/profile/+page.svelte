@@ -1,23 +1,15 @@
 <script lang="ts">
-  import { IconLogout, IconLogin, IconMessageStar, IconMessageDollar } from '@tabler/icons-svelte';
+  import { IconLogout } from '@tabler/icons-svelte';
   import { enhance } from '$app/forms';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
   import Avatar from '$lib/components/layout/avatar.svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
-  import {
-    type ProviderName,
-    authProviders,
-    donationSocketProviders,
-    pointSocketProviders,
-    providerLabels,
-    providerStyles,
-    providers,
-  } from '$lib/providers';
+  import { type ProviderName, providerLabels, providers } from '$lib/providers';
   import DeleteAccount from './delete-account.svelte';
   import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
-  import RemoveService from './remove-service.svelte';
+  import ServiceButton from './service-button.svelte';
 
   let { data } = $props();
 
@@ -29,49 +21,6 @@
 <svelte:head>
   <title>Профиль</title>
 </svelte:head>
-
-{#snippet providerButton(provider: ProviderName)}
-  {#if userProviders.includes(provider)}
-    <div class="flex items-center justify-between gap-2">
-      <div class="truncate">
-        <span class={providerStyles[provider]}>
-          <AutoProviderIcon {provider} class="inline -mt-0.5" />
-          {providerLabels[provider]}
-        </span>:
-        <span class="ml-1 font-semibold">{externalAccounts[provider].externalUsername}</span>
-      </div>
-      <div class="flex items-center gap-2">
-        {#if pointSocketProviders.includes(provider)}
-          <span
-            title="Через этот сервис можно принимать награды за баллы канала"
-            class="cursor-help"
-          >
-            <IconMessageStar />
-          </span>
-        {/if}
-        {#if donationSocketProviders.includes(provider)}
-          <span title="Через этот сервис можно принимать донаты" class="cursor-help">
-            <IconMessageDollar />
-          </span>
-        {/if}
-        {#if authProviders.includes(provider)}
-          <span title="Через этот сервис можно входить в аккаунт" class="cursor-help">
-            <IconLogin />
-          </span>
-        {/if}
-        <RemoveService {provider} />
-      </div>
-    </div>
-  {:else if provider === 'donatepay'}
-    <DonatePayLogin data={donatePayLoginForm}>
-      <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
-    </DonatePayLogin>
-  {:else}
-    <Button class="w-full" variant={provider} href={'/login/' + provider}>
-      <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
-    </Button>
-  {/if}
-{/snippet}
 
 <Card.Root class="mx-auto max-w-lg">
   <Card.Content class="flex gap-6">
@@ -94,7 +43,17 @@
   </Card.Header>
   <Card.Content class="space-y-4">
     {#each providers as provider}
-      {@render providerButton(provider)}
+      {#if userProviders.includes(provider)}
+        <ServiceButton {provider} externalUsername={externalAccounts[provider].externalUsername} />
+      {:else if provider === 'donatepay'}
+        <DonatePayLogin data={donatePayLoginForm}>
+          <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
+        </DonatePayLogin>
+      {:else}
+        <Button class="w-full" variant={provider} href={'/login/' + provider}>
+          <AutoProviderIcon {provider} />Привязать {providerLabels[provider]}
+        </Button>
+      {/if}
     {/each}
   </Card.Content>
 </Card.Root>
