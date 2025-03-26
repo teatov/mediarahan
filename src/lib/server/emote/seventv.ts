@@ -73,7 +73,7 @@ export const sevenTvGlobal: EmoteProvider = {
 
 function extractEmotes(emotes: SevenTvEmotes) {
   return emotes.map((emote): Emote => {
-    const data = emote.data.host.files.find((file) => file.name === '2x.avif')!;
+    const data = emote.data.host.files.find((file) => file.name === '1x.avif')!;
 
     return {
       name: emote.name,
