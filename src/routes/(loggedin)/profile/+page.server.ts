@@ -135,7 +135,6 @@ export const actions: Actions = {
             twitchExternalAccount.externalUserId,
             accessToken,
           );
-          console.log(emoteSet)
           if (emoteSet && emoteSet.emotes.length > 0) {
             emoteSet.emotes.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
             emoteSets.push(emoteSet);
