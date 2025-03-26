@@ -12,4 +12,6 @@
   title={emote.name}
   width={emote.width}
   height={emote.height}
+  loading="lazy"
+  decoding="async"
 />
