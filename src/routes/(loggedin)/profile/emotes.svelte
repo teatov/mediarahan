@@ -34,11 +34,11 @@
       <ul class="divide-y">
         {#each emotes as emoteSet}
           <li class="space-y-2 p-2">
-            <p class="font-semibold">{emoteSet.label}</p>
+            <p class="font-semibold sticky top-0 bg-background">{emoteSet.label}</p>
             <ul class="flex flex-wrap gap-2">
               {#each emoteSet.emotes as emote}
                 <li>
-                  <Emote {emote} class="size-8" />
+                  <Emote {emote} />
                 </li>
               {/each}
             </ul>
