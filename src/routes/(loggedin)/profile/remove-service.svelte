@@ -32,8 +32,9 @@
   </AlertDialog.Trigger>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Отвязать {PROVIDER_INFO[providerName].label} от аккаунта?</AlertDialog.Title
-      >
+      <AlertDialog.Title>
+        Отвязать {PROVIDER_INFO[providerName].label} от аккаунта?
+      </AlertDialog.Title>
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Отмена</AlertDialog.Cancel>
