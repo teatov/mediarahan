@@ -19,6 +19,11 @@ export const user = pgTable('user', {
   username: varchar({ length: 255 }).notNull(),
   avatarProvider: providerEnum(),
   emotes: json().$type<EmoteSet[]>().notNull().default([]),
+  createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp({ withTimezone: true, mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });
 
 export const userRelations = relations(user, ({ many, one }) => ({
@@ -67,6 +72,11 @@ export const externalAccount = pgTable(
     }),
     refreshTokenEncrypted: text(),
     avatarUrl: text(),
+    createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
+    updatedAt: timestamp({ withTimezone: true, mode: 'date' })
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
   },
   (table) => [
     primaryKey({ columns: [table.provider, table.userId] }),
