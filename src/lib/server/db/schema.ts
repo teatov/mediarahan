@@ -8,8 +8,10 @@ import {
   primaryKey,
   unique,
   json,
+  boolean,
 } from 'drizzle-orm/pg-core';
 import type { EmoteSet } from '$lib/emote';
+import type { WheelSettings } from '$lib/zod/wheel-settings';
 import { PROVIDERS } from '../../providers';
 
 export const providerEnum = pgEnum('provider', PROVIDERS);
@@ -28,6 +30,7 @@ export const user = pgTable('user', {
 
 export const userRelations = relations(user, ({ many, one }) => ({
   externalAccounts: many(externalAccount),
+  wheels: many(wheel),
   avatarProvider: one(externalAccount, {
     fields: [user.id, user.avatarProvider],
     references: [externalAccount.userId, externalAccount.provider],
@@ -93,3 +96,28 @@ export const externalAccountRelations = relations(externalAccount, ({ one }) => 
 
 export type ExternalAccount = typeof externalAccount.$inferSelect;
 export type NewExternalAccount = typeof externalAccount.$inferInsert;
+
+export const wheel = pgTable('wheel', {
+  id: varchar({ length: 255 }).primaryKey(),
+  userId: varchar({ length: 255 })
+    .notNull()
+    .references(() => user.id, { onDelete: 'cascade' }),
+  name: varchar({ length: 255 }).notNull(),
+  isPublic: boolean().notNull().default(false),
+  settings: json().notNull().$type<WheelSettings>(),
+  createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
+  updatedAt: timestamp({ withTimezone: true, mode: 'date' })
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const wheelRelations = relations(wheel, ({ one }) => ({
+  user: one(user, {
+    fields: [wheel.userId],
+    references: [user.id],
+  }),
+}));
+
+export type Wheel = typeof wheel.$inferSelect;
+export type NewWheel = typeof wheel.$inferInsert;
