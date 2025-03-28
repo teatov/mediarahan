@@ -10,9 +10,9 @@ import {
   json,
 } from 'drizzle-orm/pg-core';
 import type { EmoteSet } from '$lib/emote';
-import { providers } from '../../providers';
+import { PROVIDERS } from '../../providers';
 
-export const providerEnum = pgEnum('provider', providers);
+export const providerEnum = pgEnum('provider', PROVIDERS);
 
 export const user = pgTable('user', {
   id: varchar({ length: 255 }).primaryKey(),

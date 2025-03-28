@@ -3,7 +3,7 @@
   import Spinner from '$lib/components/icons/spinner.svelte';
   import * as AlertDialog from '$lib/components/ui/alert-dialog';
   import { buttonVariants, type ButtonVariant } from '$lib/components/ui/button';
-  import { type ProviderName, providerInfo } from '$lib/providers';
+  import { type ProviderName, PROVIDER_INFO } from '$lib/providers';
 
   let { providerName }: { providerName: ProviderName } = $props();
 
@@ -32,7 +32,7 @@
   </AlertDialog.Trigger>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Отвязать {providerInfo[providerName].label} от аккаунта?</AlertDialog.Title
+      <AlertDialog.Title>Отвязать {PROVIDER_INFO[providerName].label} от аккаунта?</AlertDialog.Title
       >
     </AlertDialog.Header>
     <AlertDialog.Footer>

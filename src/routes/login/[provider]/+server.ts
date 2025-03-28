@@ -2,7 +2,7 @@ import * as arctic from 'arctic';
 import type { CookieSerializeOptions } from 'cookie';
 import { eq, and } from 'drizzle-orm';
 import { redirect } from 'sveltekit-flash-message/server';
-import { providerInfo, type ProviderName } from '$lib/providers';
+import { PROVIDER_INFO, type ProviderName } from '$lib/providers';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import oauthProviders from '$lib/server/oauth';
@@ -34,7 +34,7 @@ export async function GET(event: RequestEvent): Promise<Response> {
     if (existingExternalAccount) {
       return errorRedirect('Этот сервис уже привязан');
     }
-  } else if (!providerInfo[providerName].oauth) {
+  } else if (!PROVIDER_INFO[providerName].oauth) {
     return errorRedirect('Этот сервис не предназначен для входа');
   }
 

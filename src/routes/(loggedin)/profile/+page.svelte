@@ -5,7 +5,7 @@
   import Avatar from '$lib/components/layout/avatar.svelte';
   import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
-  import { providerInfo, providers } from '$lib/providers';
+  import { PROVIDER_INFO, PROVIDERS } from '$lib/providers';
   import DeleteAccount from './delete-account.svelte';
   import DonatePayLogin from './donatepay-login.svelte';
   import EditProfile from './edit-profile.svelte';
@@ -42,8 +42,8 @@
     <Card.Title>Сервисы</Card.Title>
   </Card.Header>
   <Card.Content class="space-y-4">
-    {#each providers as providerName}
-      {@const provider = providerInfo[providerName]}
+    {#each PROVIDERS as providerName}
+      {@const provider = PROVIDER_INFO[providerName]}
       {#if Object.keys(externalAccounts).includes(providerName)}
         <ServiceButton
           {providerName}

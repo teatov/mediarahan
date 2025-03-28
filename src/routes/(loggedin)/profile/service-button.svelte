@@ -1,13 +1,13 @@
 <script lang="ts">
   import { IconLogin, IconMessageStar, IconMessageDollar } from '@tabler/icons-svelte';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
-  import { type ProviderName, providerInfo } from '$lib/providers';
+  import { type ProviderName, PROVIDER_INFO } from '$lib/providers';
   import RemoveService from './remove-service.svelte';
 
   let { providerName, externalUsername }: { providerName: ProviderName; externalUsername: string } =
     $props();
 
-  const provider = providerInfo[providerName];
+  const provider = PROVIDER_INFO[providerName];
 </script>
 
 <div class="flex items-center justify-between gap-2">

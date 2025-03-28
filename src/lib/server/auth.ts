@@ -9,7 +9,7 @@ import * as table from '$lib/server/db/schema';
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
-export const sessionCookieName = 'auth-session';
+export const SESSION_COOKIE_NAME = 'auth-session';
 
 export function generateSessionToken() {
   const bytes = crypto.getRandomValues(new Uint8Array(18));
@@ -73,7 +73,7 @@ export async function invalidateSession(sessionId: string) {
 }
 
 export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date) {
-  event.cookies.set(sessionCookieName, token, {
+  event.cookies.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
     expires: expiresAt,
     path: '/',
@@ -83,7 +83,7 @@ export function setSessionTokenCookie(event: RequestEvent, token: string, expire
 }
 
 export function deleteSessionTokenCookie(event: RequestEvent) {
-  event.cookies.delete(sessionCookieName, {
+  event.cookies.delete(SESSION_COOKIE_NAME, {
     path: '/',
   });
 }

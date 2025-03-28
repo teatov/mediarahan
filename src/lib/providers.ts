@@ -1,6 +1,6 @@
-export const providers = ['twitch', 'google', 'donationalerts', 'donatepay', 'github'] as const;
+export const PROVIDERS = ['twitch', 'google', 'donationalerts', 'donatepay', 'github'] as const;
 
-export type ProviderName = (typeof providers)[number];
+export type ProviderName = (typeof PROVIDERS)[number];
 
 export type ProviderInfo = {
   label: string;
@@ -9,7 +9,7 @@ export type ProviderInfo = {
   socket?: { points?: boolean; donations?: boolean };
 };
 
-export const providerInfo: Record<ProviderName, ProviderInfo> = {
+export const PROVIDER_INFO: Record<ProviderName, ProviderInfo> = {
   twitch: { label: 'Twitch', style: 'text-twitch', oauth: true, socket: { points: true } },
   google: { label: 'Google', style: 'text-google-foreground dark:text-google', oauth: true },
   donationalerts: {

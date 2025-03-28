@@ -9,7 +9,7 @@
   import * as Form from '$lib/components/ui/form';
   import { Input } from '$lib/components/ui/input';
   import * as RadioGroup from '$lib/components/ui/radio-group/index';
-  import { providerInfo } from '$lib/providers';
+  import { PROVIDER_INFO } from '$lib/providers';
   import type { PageServerData } from './$types';
   import { editProfileFormSchema, type EditProfileFormSchema } from './schema';
 
@@ -65,7 +65,7 @@
             {#if externalAccount.avatarUrl}
               <Form.Control>
                 {#snippet children({ props })}
-                  {@const providerLabel = providerInfo[externalAccount.provider].label}
+                  {@const providerLabel = PROVIDER_INFO[externalAccount.provider].label}
                   <Form.Label
                     class="[&:has([data-state=checked])>div]:ring-primary flex flex-col items-center gap-2"
                   >
