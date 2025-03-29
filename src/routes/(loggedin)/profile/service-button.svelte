@@ -1,6 +1,7 @@
 <script lang="ts">
   import { IconLogin, IconMessageStar, IconMessageDollar } from '@tabler/icons-svelte';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
+  import ProviderInfoIcons from '$lib/components/layout/provider-info-icons.svelte';
   import { type ProviderName, PROVIDER_INFO } from '$lib/providers';
   import RemoveService from './remove-service.svelte';
 
@@ -19,21 +20,7 @@
     <span class="ml-1 font-semibold">{externalUsername}</span>
   </div>
   <div class="flex items-center gap-2">
-    {#if provider.socket?.points}
-      <span title="Через этот сервис можно принимать награды за баллы канала" class="cursor-help">
-        <IconMessageStar />
-      </span>
-    {/if}
-    {#if provider.socket?.donations}
-      <span title="Через этот сервис можно принимать донаты" class="cursor-help">
-        <IconMessageDollar />
-      </span>
-    {/if}
-    {#if provider.oauth}
-      <span title="Через этот сервис можно входить в аккаунт" class="cursor-help">
-        <IconLogin />
-      </span>
-    {/if}
+    <ProviderInfoIcons {providerName} />
     <RemoveService {providerName} />
   </div>
 </div>

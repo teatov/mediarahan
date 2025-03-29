@@ -4,6 +4,7 @@
   import { zodClient } from 'sveltekit-superforms/adapters';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
   import Spinner from '$lib/components/icons/spinner.svelte';
+  import ProviderInfoIcons from '$lib/components/layout/provider-info-icons.svelte';
   import * as Card from '$lib/components/ui/card';
   import { Checkbox } from '$lib/components/ui/checkbox/index';
   import * as Form from '$lib/components/ui/form';
@@ -37,11 +38,13 @@
     $formData.providers = $formData.providers.filter((i) => i !== provider);
   }
 
-  let socketProviders = $derived(SOCKET_PROVIDERS.filter(
-    (providerName) =>
-      Object.keys(externalAccounts).includes(providerName) ||
-      $formData.providers.includes(providerName),
-  ));
+  let socketProviders = $derived(
+    SOCKET_PROVIDERS.filter(
+      (providerName) =>
+        Object.keys(externalAccounts).includes(providerName) ||
+        $formData.providers.includes(providerName),
+    ),
+  );
 </script>
 
 <form method="POST" class="space-y-4" action={'/wheel/settings/' + wheelId} use:enhance>
@@ -75,28 +78,33 @@
         <Form.Legend>Интеграции</Form.Legend>
         <div class="space-y-2">
           {#each socketProviders as providerName}
-            <div class="flex flex-row items-center space-x-3">
+            <div class="flex justify-between">
               <Form.Control>
                 {#snippet children({ props })}
-                  <Checkbox
-                    {...props}
-                    checked={$formData.providers.includes(providerName)}
-                    value={providerName}
-                    onCheckedChange={(v) => {
-                      if (v) {
-                        addProvider(providerName);
-                      } else {
-                        removeProvider(providerName);
-                      }
-                    }}
-                  />
-                  <Form.Label
-                    class={'font-normal font-base flex items-center gap-2 ' +
-                      PROVIDER_INFO[providerName].style}
-                  >
-                    <AutoProviderIcon {providerName} />
-                    {PROVIDER_INFO[providerName].label}
-                  </Form.Label>
+                  <div class="flex items-center space-x-3">
+                    <Checkbox
+                      {...props}
+                      checked={$formData.providers.includes(providerName)}
+                      value={providerName}
+                      onCheckedChange={(v) => {
+                        if (v) {
+                          addProvider(providerName);
+                        } else {
+                          removeProvider(providerName);
+                        }
+                      }}
+                    />
+                    <Form.Label
+                      class={'font-normal font-base flex items-center gap-2 ' +
+                        PROVIDER_INFO[providerName].style}
+                    >
+                      <AutoProviderIcon {providerName} />
+                      {PROVIDER_INFO[providerName].label}
+                    </Form.Label>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <ProviderInfoIcons {providerName} oauth={false} />
+                  </div>
                 {/snippet}
               </Form.Control>
             </div>
