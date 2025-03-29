@@ -39,9 +39,12 @@
     Выбрать другое колесо...
   </Dialog.Trigger>
   <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Колёса</Dialog.Title>
+    </Dialog.Header>
+
     <form method="POST" class="space-y-4" action="?/currentWheel" use:enhance>
       <Form.Fieldset {form} name="currentWheelId" class="space-y-3">
-        <Form.Legend>Колёса</Form.Legend>
         <ScrollArea class="border h-96">
           <RadioGroup.Root
             bind:value={$formData.currentWheelId}
