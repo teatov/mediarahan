@@ -58,7 +58,12 @@
   }
 </script>
 
-<form method="POST" class="space-y-4" action={'/wheel/settings/' + wheelId} use:enhance>
+<form
+  method="POST"
+  class="space-y-4"
+  action={'/wheel/settings/' + wheelId + '?/saveSettings'}
+  use:enhance
+>
   <Card.Root class="mx-auto max-w-lg">
     <Card.Content>
       <Form.Button disabled={$submitting} class="w-full">
