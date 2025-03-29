@@ -1,20 +1,28 @@
 <script lang="ts">
   import * as Card from '$lib/components/ui/card';
+  import NewWheel from './new-wheel.svelte';
+  import WheelList from './wheel-list.svelte';
 
   let { data } = $props();
-
-  let { wheel } = $derived(data);
+  let { currentWheel, currentWheelForm, newWheelForm, wheels } = $derived(data);
 </script>
 
 <svelte:head>
-  <title>Настройки колеса</title>
+  <title>{currentWheel?.name ?? 'Колесо'} - Настройки</title>
 </svelte:head>
 
+<div class="mx-auto max-w-lg space-y-2">
+  <h1 class="text-4xl font-extrabold tracking-tight">
+    {currentWheel?.name ?? 'Колесо'}
+  </h1>
+  <div class="flex gap-4">
+    <WheelList data={currentWheelForm} {wheels}>Выбрать другое колесо...</WheelList>
+    <NewWheel data={newWheelForm} />
+  </div>
+</div>
+
 <Card.Root class="mx-auto max-w-lg">
-  <Card.Header>
-    <Card.Title>Настройки колеса</Card.Title>
-  </Card.Header>
   <Card.Content class="space-y-4">
-    <pre>{JSON.stringify(wheel, null, 2)}</pre>
+    <pre>{JSON.stringify(currentWheel, null, 2)}</pre>
   </Card.Content>
 </Card.Root>

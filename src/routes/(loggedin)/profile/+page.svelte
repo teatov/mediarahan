@@ -13,7 +13,6 @@
   import ServiceButton from './service-button.svelte';
 
   let { data } = $props();
-
   let { user, externalAccounts, editProfileForm, avatarUrl, donatePayLoginForm, emoteSets } =
     $derived(data);
 </script>

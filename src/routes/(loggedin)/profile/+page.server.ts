@@ -19,8 +19,8 @@ export const load: PageServerLoad = async (event) => {
 
   const editProfileForm = await superValidate(
     {
-      username: data.user.username,
-      avatarProvider: data.user.avatarProvider ?? undefined,
+      username: event.locals.user!.username,
+      avatarProvider: event.locals.user!.avatarProvider ?? undefined,
     },
     zod(editProfileFormSchema),
   );

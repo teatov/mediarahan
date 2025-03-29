@@ -71,12 +71,19 @@
                   >
                     <RadioGroup.Item value={externalAccount.provider} {...props} class="sr-only" />
                     <Avatar.Root
-                      class="size-16 ring-offset-background ring-2 ring-muted ring-offset-3 cursor-pointer"
+                      class="size-16 ring-offset-background ring ring-muted ring-offset-3 cursor-pointer"
                     >
                       <Avatar.Image src={externalAccount.avatarUrl} alt={providerLabel} />
                       <Avatar.Fallback>?</Avatar.Fallback>
                     </Avatar.Root>
-                    <span class="text-xs">{providerLabel}</span>
+                    <span
+                      class={'text-xs ' +
+                        ($formData.avatarProvider === externalAccount.provider
+                          ? 'text-primary'
+                          : '')}
+                    >
+                      {providerLabel}
+                    </span>
                   </Form.Label>
                 {/snippet}
               </Form.Control>

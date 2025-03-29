@@ -12,5 +12,5 @@ export const load: LayoutServerLoad = async (event) => {
       }
     : null;
 
-  return { ...data, wheel };
+  return { ...data, currentWheel: wheel };
 };
