@@ -111,7 +111,7 @@ export const wheel = pgTable('wheel', {
     .notNull()
     .references(() => user.id, { onDelete: 'cascade' }),
   name: varchar({ length: 255 }).notNull(),
-  isPublic: boolean().notNull().default(false),
+  isPublic: boolean().notNull(),
   settings: json().notNull().$type<WheelSettings>(),
   createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp({ withTimezone: true, mode: 'date' })

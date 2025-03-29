@@ -56,6 +56,7 @@ export const actions: Actions = {
         await tx.insert(table.wheel).values({
           id: wheelId,
           name: form.data.name,
+          isPublic: true,
           userId: event.locals.session!.userId,
           settings: wheelSettingsSchema.parse({}),
         });
