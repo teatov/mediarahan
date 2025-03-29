@@ -43,8 +43,8 @@
       <Dialog.Title>Колёса</Dialog.Title>
     </Dialog.Header>
 
-    <form method="POST" class="space-y-4" action="?/currentWheel" use:enhance>
-      <Form.Fieldset {form} name="currentWheelId" class="space-y-3">
+    <form method="POST" class="space-y-4 min-w-0" action="?/currentWheel" use:enhance>
+      <Form.Fieldset {form} name="currentWheelId" class="space-y-3 min-w-0">
         <ScrollArea class="border h-96">
           <RadioGroup.Root
             bind:value={$formData.currentWheelId}

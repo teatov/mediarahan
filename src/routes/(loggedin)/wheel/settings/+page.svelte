@@ -4,8 +4,14 @@
   import WheelSettings from './wheel-settings.svelte';
 
   let { data } = $props();
-  let { currentWheel, currentWheelForm, newWheelForm, wheelSettingsForm, wheels, externalAccounts } =
-    $derived(data);
+  let {
+    currentWheel,
+    currentWheelForm,
+    newWheelForm,
+    wheelSettingsForm,
+    wheels,
+    externalAccounts,
+  } = $derived(data);
 </script>
 
 <svelte:head>
@@ -18,7 +24,7 @@
       {currentWheel.name}
     </h1>
   {/if}
-  <div class="flex gap-4 items-center">
+  <div class="flex gap-4 items-center flex-col sm:flex-row">
     {#if wheels.length > 0}
       <WheelList data={currentWheelForm} {wheels} />
     {:else}
