@@ -1,6 +1,6 @@
 <script lang="ts">
   import { IconCheck } from '@tabler/icons-svelte';
-  import SuperDebug, { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+  import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
   import Spinner from '$lib/components/icons/spinner.svelte';
@@ -55,7 +55,6 @@
         <IconCheck />Сохранить настройки
       </Form.Button>
     </Card.Content>
-    <SuperDebug data={$formData} />
   </Card.Root>
 
   <Card.Root class="mx-auto max-w-lg">
