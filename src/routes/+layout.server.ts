@@ -1,15 +1,19 @@
 import { loadFlash } from 'sveltekit-flash-message/server';
+import type { User } from '$lib/server/db/schema';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = loadFlash(async (event) => {
-  const { user } = event.locals;
+  const user: Pick<User, 'username' | 'avatarProvider'> | null = event.locals.user
+    ? {
+        username: event.locals.user.username,
+        avatarProvider: event.locals.user.avatarProvider,
+      }
+    : null;
+
   const avatarUrl =
-    user?.externalAccounts.find(
-      (externalAccount) => externalAccount.provider === user.avatarProvider,
+    event.locals.user?.externalAccounts.find(
+      (externalAccount) => externalAccount.provider === event.locals.user?.avatarProvider,
     )?.avatarUrl ?? null;
 
-  return {
-    user: user ? { username: user.username, avatarProvider: user.avatarProvider } : null,
-    avatarUrl,
-  };
+  return { user, avatarUrl };
 });
