@@ -37,6 +37,7 @@ export async function validateSessionToken(token: string) {
       user: {
         with: {
           externalAccounts: true,
+          currentWheel: true,
         },
       },
     },

@@ -9,6 +9,7 @@ import {
   unique,
   json,
   boolean,
+  type AnyPgColumn,
 } from 'drizzle-orm/pg-core';
 import type { EmoteSet } from '$lib/emote';
 import type { WheelSettings } from '$lib/zod/wheel-settings';
@@ -21,6 +22,7 @@ export const user = pgTable('user', {
   username: varchar({ length: 255 }).notNull(),
   avatarProvider: providerEnum(),
   emotes: json().$type<EmoteSet[]>().notNull().default([]),
+  currentWheelId: varchar({ length: 255 }).references((): AnyPgColumn => wheel.id),
   createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp({ withTimezone: true, mode: 'date' })
     .defaultNow()
@@ -34,6 +36,10 @@ export const userRelations = relations(user, ({ many, one }) => ({
   avatarProvider: one(externalAccount, {
     fields: [user.id, user.avatarProvider],
     references: [externalAccount.userId, externalAccount.provider],
+  }),
+  currentWheel: one(wheel, {
+    fields: [user.currentWheelId],
+    references: [wheel.id],
   }),
 }));
 
