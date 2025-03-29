@@ -22,7 +22,9 @@ export const user = pgTable('user', {
   username: varchar({ length: 255 }).notNull(),
   avatarProvider: providerEnum(),
   emotes: json().$type<EmoteSet[]>().notNull().default([]),
-  currentWheelId: varchar({ length: 255 }).references((): AnyPgColumn => wheel.id),
+  currentWheelId: varchar({ length: 255 }).references((): AnyPgColumn => wheel.id, {
+    onDelete: 'set null',
+  }),
   createdAt: timestamp({ withTimezone: true, mode: 'date' }).defaultNow().notNull(),
   updatedAt: timestamp({ withTimezone: true, mode: 'date' })
     .defaultNow()
