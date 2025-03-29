@@ -1,9 +1,8 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
+  import { IconPlus } from '@tabler/icons-svelte';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import Spinner from '$lib/components/icons/spinner.svelte';
-  import A from '$lib/components/typography/A.svelte';
   import { buttonVariants } from '$lib/components/ui/button';
   import * as Dialog from '$lib/components/ui/dialog';
   import * as Form from '$lib/components/ui/form';
@@ -32,7 +31,7 @@
 </script>
 
 <Dialog.Root bind:open>
-  <Dialog.Trigger class={buttonVariants()}>Новое колесо</Dialog.Trigger>
+  <Dialog.Trigger class={buttonVariants()}><IconPlus />Новое колесо</Dialog.Trigger>
   <Dialog.Content>
     <Dialog.Header>
       <Dialog.Title>Новое колесо</Dialog.Title>

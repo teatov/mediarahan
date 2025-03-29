@@ -54,9 +54,9 @@
             {#each wheels as wheel}
               <Form.Control>
                 {#snippet children({ props })}
-                  <Form.Label class="[&:has([data-state=checked])>div]:border-primary block">
+                  <Form.Label class="[&:has([data-state=checked])>div]:border-primary block text-base">
                     <RadioGroup.Item value={wheel.id} {...props} class="sr-only" />
-                    <div class="border cursor-pointer p-2 space-y-1">
+                    <div class="border cursor-pointer p-2">
                       <div class={$formData.currentWheelId === wheel.id ? 'text-primary' : ''}>
                         {wheel.name}
                       </div>
