@@ -6,6 +6,7 @@ z.setErrorMap(globalErrorMap);
 
 export const wheelSettingsFormSchema = wheelSettingsSchema.extend({
   name: z.string().min(1).max(100),
+  isPublic: z.boolean(),
 });
 
 export type WheelSettingsFormSchema = typeof wheelSettingsFormSchema;

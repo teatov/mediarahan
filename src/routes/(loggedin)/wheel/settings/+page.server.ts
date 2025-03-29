@@ -23,7 +23,7 @@ export const load: PageServerLoad = async (event) => {
   const currentWheel = event.locals.user!.currentWheel;
   const wheelSettingsForm = currentWheel
     ? await superValidate(
-        { ...currentWheel.settings, name: currentWheel.name },
+        { ...currentWheel.settings, name: currentWheel.name, isPublic: currentWheel.isPublic },
         zod(wheelSettingsFormSchema),
       )
     : null;

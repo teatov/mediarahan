@@ -19,12 +19,12 @@ export const actions: Actions = {
       return fail(400, { form });
     }
 
-    const { name, ...settings } = form.data;
+    const { name, isPublic, ...settings } = form.data;
 
     try {
       await db
         .update(table.wheel)
-        .set({ name, settings })
+        .set({ name, isPublic, settings })
         .where(
           and(
             eq(table.wheel.userId, event.locals.session.userId),

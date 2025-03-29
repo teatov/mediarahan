@@ -1,10 +1,14 @@
 <script lang="ts">
-  import { IconCheck } from '@tabler/icons-svelte';
+  import { IconCheck, IconCopy } from '@tabler/icons-svelte';
+  import { toast } from 'svelte-sonner';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
+  import { page } from '$app/state';
   import AutoProviderIcon from '$lib/components/icons/auto-provider-icon.svelte';
   import Spinner from '$lib/components/icons/spinner.svelte';
   import ProviderInfoIcons from '$lib/components/layout/provider-info-icons.svelte';
+  import A from '$lib/components/typography/A.svelte';
+  import { Button } from '$lib/components/ui/button';
   import * as Card from '$lib/components/ui/card';
   import { Checkbox } from '$lib/components/ui/checkbox/index';
   import * as Form from '$lib/components/ui/form';
@@ -45,6 +49,13 @@
         $formData.providers.includes(providerName),
     ),
   );
+
+  let publicUrl = $derived(page.url.origin + '/public/wheel/' + wheelId);
+
+  function copyPublicUrl() {
+    navigator.clipboard.writeText(publicUrl);
+    toast.message('Ссылка скопирована в буфер обмена');
+  }
 </script>
 
 <form method="POST" class="space-y-4" action={'/wheel/settings/' + wheelId} use:enhance>
@@ -71,6 +82,32 @@
           {/snippet}
         </Form.Control>
         <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Field {form} name="isPublic" class="space-y-1">
+        <Form.Control>
+          {#snippet children({ props })}
+            <div class="flex items-center space-x-3">
+              <Checkbox {...props} bind:checked={$formData.isPublic} />
+              <Form.Label>Сделать список общедоступным</Form.Label>
+            </div>
+          {/snippet}
+        </Form.Control>
+        <Form.Description>
+          Если эта опция включена, любой человек сможет просматривать список этого колеса по
+          отдельной ссылке. Удобно для длинных списков, которые не умещаются на экран.
+        </Form.Description>
+        {#if $formData.isPublic}
+          <div class="flex justify-between items-center leading-none">
+            <div>
+              <p>Общедоступная ссылка на список:</p>
+              <p><A href={publicUrl} class="text-xs">{publicUrl}</A></p>
+            </div>
+            <Button size="icon" title="Скопировать в буфер обмена" onclick={copyPublicUrl}>
+              <IconCopy />
+            </Button>
+          </div>
+        {/if}
       </Form.Field>
 
       <Form.Fieldset {form} name="providers">
