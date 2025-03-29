@@ -12,17 +12,25 @@
 </svelte:head>
 
 <div class="mx-auto max-w-lg space-y-2">
-  <h1 class="text-4xl font-extrabold tracking-tight">
-    {currentWheel?.name ?? 'Колесо'}
-  </h1>
-  <div class="flex gap-4">
-    <WheelList data={currentWheelForm} {wheels}>Выбрать другое колесо...</WheelList>
+  {#if currentWheel}
+    <h1 class="text-4xl font-extrabold tracking-tight">
+      {currentWheel.name}
+    </h1>
+  {/if}
+  <div class="flex gap-4 items-center">
+    {#if wheels.length > 0}
+      <WheelList data={currentWheelForm} {wheels}>Выбрать другое колесо...</WheelList>
+    {:else}
+      <div class="w-full">Колёс нет. Создайте новое:</div>
+    {/if}
     <NewWheel data={newWheelForm} />
   </div>
 </div>
 
-<Card.Root class="mx-auto max-w-lg">
-  <Card.Content class="space-y-4">
-    <pre>{JSON.stringify(currentWheel, null, 2)}</pre>
-  </Card.Content>
-</Card.Root>
+{#if currentWheel}
+  <Card.Root class="mx-auto max-w-lg">
+    <Card.Content class="space-y-4">
+      <pre>{JSON.stringify(currentWheel, null, 2)}</pre>
+    </Card.Content>
+  </Card.Root>
+{/if}

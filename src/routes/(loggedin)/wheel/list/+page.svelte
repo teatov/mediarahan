@@ -1,4 +1,6 @@
 <script lang="ts">
+  import NoWheel from '../no-wheel.svelte';
+
   let { data } = $props();
   let { currentWheel } = $derived(data);
 </script>
@@ -7,4 +9,8 @@
   <title>{currentWheel?.name ?? 'Колесо'} - Список</title>
 </svelte:head>
 
-Список
+{#if currentWheel}
+  <div class="text-center">{currentWheel.name}</div>
+{:else}
+  <NoWheel />
+{/if}
