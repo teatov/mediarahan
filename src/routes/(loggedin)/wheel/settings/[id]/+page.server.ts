@@ -5,8 +5,8 @@ import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
-import type { Actions } from './$types';
 import { wheelSettingsFormSchema } from '../schema';
+import type { Actions } from './$types';
 
 export const actions: Actions = {
   default: async (event) => {
@@ -33,10 +33,11 @@ export const actions: Actions = {
         );
     } catch (e) {
       console.error(e);
-      setFlash({ type: 'error', message: 'Ошибка при обновлении текущего колеса' }, event);
+      setFlash({ type: 'error', message: 'Ошибка при сохранении настроек колеса' }, event);
       return fail(500, { form });
     }
 
+    setFlash({ message: 'Настройки сохранены', type: 'success' }, event);
     return { form };
   },
 };

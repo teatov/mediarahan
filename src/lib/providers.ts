@@ -20,3 +20,7 @@ export const PROVIDER_INFO: Record<ProviderName, ProviderInfo> = {
   donatepay: { label: 'DonatePay', style: 'text-donatepay', socket: { donations: true } },
   github: { label: 'GitHub', style: 'text-github dark:text-github-foreground', oauth: true },
 };
+
+export const SOCKET_PROVIDERS = PROVIDERS.filter(
+  (providerName) => PROVIDER_INFO[providerName].socket,
+);

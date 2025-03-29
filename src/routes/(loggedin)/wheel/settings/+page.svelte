@@ -1,18 +1,11 @@
 <script lang="ts">
-  import * as Card from '$lib/components/ui/card';
   import NewWheel from './new-wheel.svelte';
   import WheelList from './wheel-list.svelte';
   import WheelSettings from './wheel-settings.svelte';
 
   let { data } = $props();
-  let {
-    externalAccounts,
-    currentWheel,
-    currentWheelForm,
-    newWheelForm,
-    wheelSettingsForm,
-    wheels,
-  } = $derived(data);
+  let { currentWheel, currentWheelForm, newWheelForm, wheelSettingsForm, wheels, externalAccounts } =
+    $derived(data);
 </script>
 
 <svelte:head>
