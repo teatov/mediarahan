@@ -35,7 +35,7 @@
 </script>
 
 <Dialog.Root bind:open>
-  <Dialog.Trigger class={buttonVariants({ variant: 'secondary' }) + ' w-full'}>
+  <Dialog.Trigger class={buttonVariants({ variant: 'outline' }) + ' w-full'}>
     Выбрать другое колесо...
   </Dialog.Trigger>
   <Dialog.Content>
