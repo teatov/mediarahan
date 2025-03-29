@@ -27,7 +27,7 @@
 
 <Dialog.Root>
   <Dialog.Trigger class={cn(buttonVariants({ variant: 'secondary' }), 'w-full')}>
-    Открыть список смайликов
+    Открыть список смайликов...
   </Dialog.Trigger>
   <Dialog.Content>
     <Dialog.Header>
