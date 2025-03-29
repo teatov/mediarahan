@@ -6,8 +6,9 @@ export const load: LayoutServerLoad = async (event) => {
 
   const currentWheel = event.locals.user!.currentWheel;
 
-  const wheel: Pick<Wheel, 'name'> | null = currentWheel
+  const wheel: Pick<Wheel, 'id' | 'name'> | null = currentWheel
     ? {
+        id: currentWheel.id,
         name: currentWheel.name,
       }
     : null;

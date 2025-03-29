@@ -2,9 +2,17 @@
   import * as Card from '$lib/components/ui/card';
   import NewWheel from './new-wheel.svelte';
   import WheelList from './wheel-list.svelte';
+  import WheelSettings from './wheel-settings.svelte';
 
   let { data } = $props();
-  let { currentWheel, currentWheelForm, newWheelForm, wheels } = $derived(data);
+  let {
+    externalAccounts,
+    currentWheel,
+    currentWheelForm,
+    newWheelForm,
+    wheelSettingsForm,
+    wheels,
+  } = $derived(data);
 </script>
 
 <svelte:head>
@@ -19,7 +27,7 @@
   {/if}
   <div class="flex gap-4 items-center">
     {#if wheels.length > 0}
-      <WheelList data={currentWheelForm} {wheels}>Выбрать другое колесо...</WheelList>
+      <WheelList data={currentWheelForm} {wheels} />
     {:else}
       <div class="w-full">Колёс нет. Создайте новое:</div>
     {/if}
@@ -27,10 +35,6 @@
   </div>
 </div>
 
-{#if currentWheel}
-  <Card.Root class="mx-auto max-w-lg">
-    <Card.Content class="space-y-4">
-      <pre>{JSON.stringify(currentWheel, null, 2)}</pre>
-    </Card.Content>
-  </Card.Root>
+{#if currentWheel && wheelSettingsForm}
+  <WheelSettings wheelId={currentWheel.id} data={wheelSettingsForm} {externalAccounts} />
 {/if}

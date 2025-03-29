@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
   import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
   import { zodClient } from 'sveltekit-superforms/adapters';
   import DatetimeFormat from '$lib/components/format/datetime-format.svelte';
@@ -15,11 +14,9 @@
   let {
     data,
     wheels,
-    children,
   }: {
     data: SuperValidated<Infer<CurrentWheelFormSchema>>;
     wheels: PageData['wheels'];
-    children: Snippet;
   } = $props();
 
   let open = $state(false);
@@ -39,7 +36,7 @@
 
 <Dialog.Root bind:open>
   <Dialog.Trigger class={buttonVariants({ variant: 'secondary' }) + ' w-full'}>
-    {@render children?.()}
+    Выбрать другое колесо...
   </Dialog.Trigger>
   <Dialog.Content>
     <form method="POST" class="space-y-4" action="?/currentWheel" use:enhance>
@@ -54,7 +51,9 @@
             {#each wheels as wheel}
               <Form.Control>
                 {#snippet children({ props })}
-                  <Form.Label class="[&:has([data-state=checked])>div]:border-primary block text-base">
+                  <Form.Label
+                    class="[&:has([data-state=checked])>div]:border-primary block text-base"
+                  >
                     <RadioGroup.Item value={wheel.id} {...props} class="sr-only" />
                     <div class="border cursor-pointer p-2">
                       <div class={$formData.currentWheelId === wheel.id ? 'text-primary' : ''}>

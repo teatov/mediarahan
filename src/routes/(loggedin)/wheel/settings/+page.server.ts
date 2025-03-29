@@ -1,7 +1,7 @@
 import { encodeBase64url } from '@oslojs/encoding';
 import { fail } from '@sveltejs/kit';
 import crypto from 'crypto';
-import { eq, desc } from 'drizzle-orm';
+import { eq, and, desc } from 'drizzle-orm';
 import { setFlash } from 'sveltekit-flash-message/server';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
@@ -9,7 +9,7 @@ import db from '$lib/server/db';
 import * as table from '$lib/server/db/schema';
 import { wheelSettingsSchema } from '$lib/zod/wheel-settings';
 import type { PageServerLoad, Actions } from './$types';
-import { currentWheelFormSchema, newWheelFormSchema } from './schema';
+import { currentWheelFormSchema, newWheelFormSchema, wheelSettingsFormSchema } from './schema';
 
 export const load: PageServerLoad = async (event) => {
   const data = await event.parent();
@@ -20,13 +20,21 @@ export const load: PageServerLoad = async (event) => {
   );
   const newWheelForm = await superValidate(zod(newWheelFormSchema));
 
+  const currentWheel = event.locals.user!.currentWheel;
+  const wheelSettingsForm = currentWheel
+    ? await superValidate(
+        { ...currentWheel.settings, name: currentWheel.name },
+        zod(wheelSettingsFormSchema),
+      )
+    : null;
+
   const wheels = await db.query.wheel.findMany({
     where: eq(table.wheel.userId, event.locals.session!.userId),
     columns: { id: true, name: true, createdAt: true },
     orderBy: desc(table.wheel.createdAt),
   });
 
-  return { ...data, currentWheelForm, newWheelForm, wheels };
+  return { ...data, currentWheelForm, newWheelForm, wheelSettingsForm, wheels };
 };
 
 export const actions: Actions = {
@@ -71,7 +79,19 @@ export const actions: Actions = {
     }
 
     const form = await superValidate(event, zod(currentWheelFormSchema));
-    if (!form.valid) {
+    if (!form.valid || !form.data.currentWheelId) {
+      return fail(400, { form });
+    }
+
+    const existingWheel = await db.query.wheel.findFirst({
+      where: and(
+        eq(table.wheel.id, form.data.currentWheelId),
+        eq(table.wheel.userId, event.locals.session.userId),
+      ),
+    });
+
+    if (!existingWheel) {
+      setFlash({ type: 'error', message: 'Колесо не найдено' }, event);
       return fail(400, { form });
     }
 
